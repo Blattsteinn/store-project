@@ -1,0 +1,52 @@
+
+<%= form_with model: @product do |form| %>
+    <div>
+        <%= form.label :title %> <br>
+        <%= form.text_field :title %>
+    </div>
+
+    <div>
+        <%= form.label :visibility %> <br>
+        <%= form.select  :visibility, 
+        [["Live", "live"], 
+        ["Hidden", "hidden"], 
+        ["Private", "private"], 
+        ["On Hold", "on_hold"]]  %>
+    </div>
+
+    <div>
+        <%= form.label :description %> <br>
+        <%= form.textarea  :description %>
+    </div>
+
+    <div>
+        <%= form.label :pricing %> <br>
+        <%= form.number_field :pricing, placeholder: "0.00", step: :any, min: 0 %>
+    </div>
+
+    <div>
+        <%= form.label :payment_type %> <br>
+        <%= form.select :payment_type,
+        [ ["Single Payment", "single_payment"],
+        ["Subscription", "subscription"],
+        ["Pay What You Want", "any"] ]%>
+    </div>
+    
+    <div>
+        <%= form.label :deliverables %> <br>
+        <%= form.select :deliverables,
+        [ ["Static Value", "static"],
+        ["License Key", "licence"],
+        ["Unique Codes & Serials", "serial"]
+        ]
+         %>
+    </div>
+
+    <div>
+        <%= form.label :stock %> <br>
+        <%= form.number_field :stock , in: 1..100 %>
+    </div>
+
+    <%= form.submit %>
+
+<% end %>

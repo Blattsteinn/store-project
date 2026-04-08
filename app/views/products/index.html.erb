@@ -1,0 +1,13 @@
+<h1>Products</h1>
+
+<%= link_to "New Product", new_product_path %>
+
+<% @products.each do |product| %>
+  <div>
+    <h2><%= link_to product.title, product_path(product) %></h2>
+    <p><strong>Price:</strong> <%= product.pricing %></p>
+    <p><strong>Stock:</strong> <%= product.stock %></p>
+    <p><strong>Visibility:</strong> <%= product.visibility %></p>
+  </div>
+  <hr>
+<% end %>

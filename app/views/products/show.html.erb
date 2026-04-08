@@ -1,0 +1,16 @@
+<h1><%= @product.title %></h1>
+
+<p><strong>Description:</strong> <%= @product.description %></p>
+<p><strong>Price:</strong> <%= @product.pricing %></p>
+<p><strong>Payment Type:</strong> <%= @product.payment_type %></p>
+<p><strong>Deliverables:</strong> <%= @product.deliverables %></p>
+<p><strong>Stock:</strong> <%= @product.stock %></p>
+<p><strong>Visibility:</strong> <%= @product.visibility %></p>
+
+<% if @product.product_images.any? %>
+  <% @product.product_images.order(:priority).each do |image| %>
+    <img src="<%= image.url %>" alt="<%= @product.title %>">
+  <% end %>
+<% end %>
+
+<%= link_to "Back to products", products_path %>
