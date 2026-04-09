@@ -13,9 +13,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   
   resources :products
-  resources :cart_items, only: [:create, :destroy]
+  
+  post   "cart_items",     to: "cart_items#create",  as: "cart_items"
+  patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
+  delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
+
+  resources :orders, only: [:index, :create, :destroy]
+  resources :order_items, only: [:create, :destroy]
 
   get "cart", to: "carts#show", as: "cart"
+
 
   root "products#index"
 end

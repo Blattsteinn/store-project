@@ -24,7 +24,7 @@
   </head>
 
   <body>
-    <nav>
+    <nav style = "display: flex; gap: 10px;" >
       <%= link_to "Home", root_path if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
       <%= link_to "Products", products_path %>
       <% if user_signed_in? %>
@@ -32,7 +32,19 @@
       <% else %>
         <%= link_to "Sign In", new_user_session_path %>
       <% end %>
-      <%= link_to "Cart", cart_path %>
+      <div style="display: flex">
+          <%= link_to (image_tag '/assets/cart-outline.svg', class: 'cart-icon'), cart_path %>
+
+          <p> 
+            <% if session[:cart].nil?  %> 
+              <%= 0 %>
+            <% else  %>
+              <%= session[:cart].length %>
+            <% end %>  
+          </p>
+
+      </div>
+      
     </nav>
     <%= yield %>
   </body>

@@ -8,3 +8,44 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ .cart-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* ***************** */
+body{
+    /* background-color: #18181b; */
+    max-width: 1000px;
+    
+}
+ /* ---------------------------- */
+ #cart-container{
+    background-color: #0c0c0d;
+    border: 2px solid grey;
+    padding: 25px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+ }
+
+ /* ---------------------------- */
+ #cart-items-container{
+    background-color: #000000;
+    grid-columns: 1
+ }
+
+ .cart-item{
+    border: 2px solid grey;
+    margin-bottom: 10px;
+ }
+
+ /* ---------------------------- */
+ #check-out-container{
+    grid-columns: 2;
+    border: 2px solid grey;
+
+ }

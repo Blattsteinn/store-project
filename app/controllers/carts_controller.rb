@@ -1,6 +1,12 @@
 class CartsController < ApplicationController
+
     def show
-        @cart_items = current_user.cart_items
+        if session[:cart].present?
+            @cart_items = session[:cart].map do |product_id, quantity|
+                [Product.find(product_id), quantity]
+            end
+        else
+            @cart_items = []
+        end
     end
-    
 end

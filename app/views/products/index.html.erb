@@ -3,6 +3,9 @@
 <%= link_to "New Product", new_product_path %>
 
 <% @products.each do |product| %>
+    <% if product.stock <= 0 %>
+        <%# next %>
+    <% end %>
   <div>
     <h2><%= link_to product.title, product_path(product) %></h2>
     <p><strong>Price:</strong> <%= product.pricing %></p>
