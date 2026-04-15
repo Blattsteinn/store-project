@@ -1,0 +1,33 @@
+ /* ======================== */
+ /* Product model styling */
+ #product-container{
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr;
+   gap: 10px;
+ }
+
+ .product-box{
+   border: 2px solid black;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+
+ .product-box-image-container{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   height: 150px;
+
+   
+ }
+
+  .product-box-image-container img{
+   max-height: 150px;
+  }
+
+ .product-box-text-container{
+   display: flex;
+   gap: 10px;
+ }

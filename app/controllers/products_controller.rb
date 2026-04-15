@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-    # before_action :authenticate_user!
-    # before_action :require_admin!
+    before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :destroy]
+
     def index
         @products = Product.all
     end
@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
 
     def new
         @product = Product.new
+        @product.product_images.build
     end
 
     def create
@@ -24,14 +25,19 @@ class ProductsController < ApplicationController
 
     def edit
         @product = Product.find(params[:id])
+        @product.product_images.build
     end
 
     def update
         @product = Product.find(params[:id])
+        
         if @product.update(product_params) 
-            redirect_to @product
+            flash[:successful_edit] = "Product successfully edited."
+            redirect_to dashboard_products_path
+
         else
-            render :new, status: :unprocessable_entity
+            flash.now[:fail_edit]= "Product failed to edit"
+            render :edit, status: :unprocessable_entity
         end
     end
 
@@ -43,7 +49,8 @@ class ProductsController < ApplicationController
 
     private
     def product_params
-        params.expect(product: [:title, :visibility, :description, :pricing, :payment_type, :deliverables, :stock  ])
+        params.expect(product: [:title, :visibility, :description, :pricing, :payment_type, :deliverables, 
+        :stock, product_images_attributes: [[:image, :priority, :_destroy, :id]]])
     end
 
 end

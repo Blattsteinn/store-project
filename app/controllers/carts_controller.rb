@@ -1,5 +1,4 @@
 class CartsController < ApplicationController
-
     def show
         if session[:cart].present?
             @cart_items = session[:cart].map do |product_id, quantity|

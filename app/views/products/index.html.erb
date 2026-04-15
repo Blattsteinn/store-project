@@ -1,16 +1,25 @@
 <h1>Products</h1>
 
-<%= link_to "New Product", new_product_path %>
-
-<% @products.each do |product| %>
+<div id="product-container">
+  <% @products.each do |product| %>
     <% if product.stock <= 0 %>
-        <%# next %>
+      <%# next %>
     <% end %>
-  <div>
-    <h2><%= link_to product.title, product_path(product) %></h2>
-    <p><strong>Price:</strong> <%= product.pricing %></p>
-    <p><strong>Stock:</strong> <%= product.stock %></p>
-    <p><strong>Visibility:</strong> <%= product.visibility %></p>
-  </div>
-  <hr>
-<% end %>
+    <div class="product-box">
+      <h3><%= link_to product.title, product_path(product) %> </h3>
+
+      <div class="product-box-image-container">
+        <% product.product_images.each do |image| %>
+            <%= image_tag image.image, alt: product.title, style: "max-width: 300px;" %>
+            <% break %> <%# Break for now%>
+        <% end %>
+      </div>
+
+      <div class="product-box-text-container">
+        <p> Price:      <%= product.pricing %></p>
+        <p> Stock:      <%= product.stock %></p>
+      </div>
+
+    </div>
+  <% end %>
+<div>

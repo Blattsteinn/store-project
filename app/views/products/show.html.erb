@@ -1,23 +1,39 @@
-<h1><%= @product.title %></h1>
-
-<p><strong>Description:</strong> <%= @product.description %></p>
-<p><strong>Price:</strong> <%= @product.pricing %></p>
-<p><strong>Payment Type:</strong> <%= @product.payment_type %></p>
-<p><strong>Deliverables:</strong> <%= @product.deliverables %></p>
-<p><strong>Stock:</strong> <%= @product.stock %></p>
-<p><strong>Visibility:</strong> <%= @product.visibility %></p>
-
-<% if @product.product_images.any? %>
-  <% @product.product_images.order(:priority).each do |image| %>
-    <img src="<%= image.url %>" alt="<%= @product.title %>">
-  <% end %>
-<% end %>
-
-
-<%= link_to "Edit", edit_product_path %>
-<%= button_to "Destroy product", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
-<%= button_to "Add To Cart", cart_items_path, method: :post, params:  {
-        product_id: @product.id, quantity: 1} %>
-
 
 <%= link_to "Back to products", products_path %>
+
+
+<div id="product-view-container">
+  <h1><%= @product.title %></h1>
+  
+
+  <div id="product-view-first-column">
+    
+    <div>
+      <% @product.product_images.each do |image| %>
+          <%= image_tag image.image, alt: @product.title, style: "max-width: 300px;" %>
+      <% end %>
+    </div>
+
+
+    <p> <%= @product.description %>  </p>
+    
+    <p>Payment Type: <%= @product.payment_type %> </p>
+    <p>Deliverables:  <%= @product.deliverables %> </p>
+    <p>Visibility:    <%= @product.visibility %>   </p>
+  </div>
+
+  <div id="product-view-second-column">
+    <p><%= @product.pricing %> (EUR)</p>
+    <p>Stock: <%= @product.stock %></p>
+
+    <%= form_with url: cart_items_path, method: :post do |f| %>
+      <%= f.hidden_field :product_id, value: @product.id %>
+
+      <%= f.label :quantity, "Quantity" %>
+      <%= f.number_field :quantity, value: 1, min: 1 %>
+
+      <%= f.submit "Add To Cart" %>
+    <% end %>
+  </div>
+
+</div>

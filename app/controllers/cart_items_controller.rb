@@ -1,47 +1,37 @@
 class CartItemsController < ApplicationController
     def create
-        product_id =  params[:product_id].to_s
-        quantity   =  params[:quantity].to_i
+        product  = Product.find(params[:product_id])
+        quantity = params[:quantity].to_i
 
-        product_stock = Product.find(product_id.to_i).stock
-        if product_stock < 1
-            return
-        end
+        return if product.stock < 1
 
+        product_id = product.id.to_s
         session[:cart] ||= {}
+
         if session[:cart][product_id].present?
             total = session[:cart][product_id].to_i + quantity
-            unless total > product_stock
-                session[:cart][product_id] = total
-            end
+            session[:cart][product_id] = total unless total > product.stock
         else
-            session[:cart][product_id] = quantity 
+            session[:cart][product_id] = quantity
         end
-        
-        redirect_to products_path, notice: "Added to cart"
 
+        redirect_to products_path, notice: "Added to cart"
     end
 
     def update
-        product_stock = Product.find(params[:product_id]).stock
-        if params[:quantity].to_i > product_stock || params[:quantity].to_i < 1
-            return
+        product = Product.find(params[:product_id])
+        quantity = params[:quantity].to_i
+
+        if quantity < 1 || quantity > product.stock
+            return redirect_to cart_path
         end
 
-        session[:cart][params[:product_id]] = params[:quantity]
+        session[:cart][params[:product_id].to_s] = quantity
         redirect_to cart_path
-
     end
 
     def destroy
-        product_id = params[:product_id].to_s
-        session[:cart].delete(product_id)
+        session[:cart].delete(params[:product_id].to_s)
         redirect_to cart_path, notice: "Removed from cart"
-    end
-
-    private
-
-    def check_stock
-        
     end
 end

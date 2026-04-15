@@ -1,0 +1,17 @@
+
+#product-view-container{
+    display: grid;
+    grid-template-columns: 70% 30%;
+
+    border: 2px solid black;
+}
+
+#product-view-first-column{
+    grid-column: 1;
+    
+}
+
+
+#product-view-second-column{
+    grid-column: 2;
+}

@@ -1,0 +1,27 @@
+
+
+<div id="product-view-container">
+  <h1><%= @product.title %></h1>
+
+  <div id="product-view-information">
+    <p>Description:   <%= @product.description %>  </p>
+    <p>Price:         <%= @product.pricing %>      </p>
+    <p>Payment Type:  <%= @product.payment_type %> </p>
+    <p>Deliverables:  <%= @product.deliverables %> </p>
+    <p>Stock:         <%= @product.stock  %>        </p>
+    <p>Visibility:    <%= @product.visibility %>   </p>
+
+  </div>
+
+  <div id="product-view-image">
+    <% @product.product_images.each do |image| %>
+      <%= image_tag image.image, alt: @product.title, style: "max-width: 300px;" %>
+    <% end %>
+  </div>
+
+  <%= link_to "Edit", edit_product_path(@product) %>
+  <%= button_to "Destroy product", @product, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+
+  <%= link_to "Back to products", dashboard_products_path %>
+
+</div>

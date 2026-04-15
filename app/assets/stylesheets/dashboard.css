@@ -1,0 +1,38 @@
+
+/* Template ------------------------------------------------ */
+#dashboard-header, .dashboard-product{
+    display: grid; 
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+}
+
+/* #dashboard-all-products{
+    display: grid; 
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+} */
+
+.dashboard-title{
+    grid-column: 1;
+}
+
+.dashboard-status{
+    grid-column: 2;
+}
+
+.dashboard-price{
+    grid-column: 3;
+}
+
+.dashboard-sales{
+    grid-column: 4;
+}
+
+.dashboard-more-choice{
+    grid-column: 5;
+}
+
+/* -------------------------------------------------------------- */
+
+.dashboard-product{
+    border: 2px solid black;
+    margin-bottom: 20px;
+}

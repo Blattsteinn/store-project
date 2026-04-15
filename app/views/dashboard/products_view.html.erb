@@ -1,0 +1,37 @@
+<%= link_to "New Product", new_product_path %>
+
+
+<div id="dashboard">
+  <% if flash[:successful_edit] %>
+    <p style="background: #d4edda; color: #155724; padding: 10px 16px; border-radius: 6px; border: 1px solid #c3e6cb;">
+      Successfully edited a post
+    </p>
+  <% end %>
+
+    <div id = "dashboard-header">
+      <p class="dashboard-title"> Title </p>
+      <p class="dashboard-status"> Status </p>
+      <p class="dashboard-price"> Price </p>
+      <p class="dashboard-sales"> Sales </p>
+    </div>
+
+    <% @products.each do |product| %>
+      <div class="dashboard-product">
+        <div class="dashboard-title">
+          <p> <%= link_to product.title, dashboard_product_view_path(product) %> </p>
+          <p> Stock: <%= product.stock %></p>
+        </div>
+
+        <p class="dashboard-status"> <%=product.visibility %> </p>
+        <p class="dashboard-price">  <%= product.pricing %>   </p>
+        <p class="dashboard-sales"> Didn't calculate </p>
+
+        <div>
+        <%= link_to "Edit", edit_product_path(product.id), class: "dashboard-more-choice" %> <br>
+        <%= link_to "View insights", dashboard_product_view_path(product) %>
+        </div>
+      </div>
+    <% end %>
+</div>
+ 
+

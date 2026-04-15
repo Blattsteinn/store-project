@@ -18,11 +18,15 @@ Rails.application.routes.draw do
   patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
 
+
   resources :orders, only: [:index, :create, :destroy]
   resources :order_items, only: [:create, :destroy]
 
   get "cart", to: "carts#show", as: "cart"
 
+  get "dashboard",              to: "dashboard#index",           as: "dashboard"
+  get "dashboard/products",     to: "dashboard#products_view",   as: "dashboard_products"
+  get "dashboard/products/:id", to: "dashboard#product_view",    as: "dashboard_product_view"
 
   root "products#index"
 end
