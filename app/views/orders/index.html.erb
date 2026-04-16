@@ -3,12 +3,21 @@
 
 <% unless @orders.nil? %>
     <% @orders.each do |order| %>
-        <h2> <%= order.id %> </h2>
+        <div>
+            <h3>Order #<%= order.id %> — <%= order.created_at.strftime("%b %d, %Y") %></h3>
             <ul>
             <% order.order_items.each do |item| %>
-               <li> <%= item.product.title %> </li>
+                <li>
+                    <%= item.product.title %>
+                    <% if item.variant %>
+                        — <%= item.variant.title %>
+                    <% end %>
+                    &times; <%= item.quantity %>
+                    (<%= item.price %> EUR each)
+                </li>
             <% end %>
             </ul>
+        </div>
     <% end %>
 <% else %>
     <p> No orders! </p>

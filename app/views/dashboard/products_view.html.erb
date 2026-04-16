@@ -19,11 +19,11 @@
       <div class="dashboard-product">
         <div class="dashboard-title">
           <p> <%= link_to product.title, dashboard_product_view_path(product) %> </p>
-          <p> Stock: <%= product.stock %></p>
+          <p> Stock: <%= product.variants.sum(:stock) %></p>
         </div>
 
         <p class="dashboard-status"> <%=product.visibility %> </p>
-        <p class="dashboard-price">  <%= product.pricing %>   </p>
+        <p class="dashboard-price">  <%= product.variants.minimum(:price)&.to_s || "—" %> EUR </p>
         <p class="dashboard-sales"> Didn't calculate </p>
 
         <div>

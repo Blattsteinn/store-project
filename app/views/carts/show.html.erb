@@ -4,14 +4,14 @@
 <div id="cart-container" data-controller="price">
     <% if @cart_items.any? %>
         <div id="cart-items-container">
-            <% @cart_items.each do |product, quantity| %>
+            <% @cart_items.each do |variant, quantity| %>
                 <div class="cart-item">
                     <%= button_to "Remove from cart", remove_cart_item_path, method: :delete,
-                    params: {product_id: product.id} %>
-                    <p> <%= product.title %>   </p>
+                    params: {variant_id: variant.id}, class: "remove-button" %>
+                    <p> <%= variant.product.title %>   </p>
 
                     <div style="display: flex; gap: 5px;">
-                        <p class="cart-product-price"> <%= product.pricing %> </p> 
+                        <p class="cart-product-price"> <%= variant.price %> </p> 
                         <p> EUR </p>
                     </div>
                     
@@ -22,13 +22,13 @@
                     
                     <div style="display: flex; gap: 5px;">
                         <%= button_to "-", cart_item_path, method: :patch,
-                            params: { product_id: product.id, quantity: quantity.to_i - 1 } %>
+                            params: { variant_id: variant.id, quantity: quantity.to_i - 1 }, class: "qty-button" %>
 
                         <%= button_to "+", cart_item_path, method: :patch,
-                            params: { product_id: product.id, quantity: quantity.to_i + 1 } %>
+                            params: { variant_id: variant.id, quantity: quantity.to_i + 1 }, class: "qty-button" %>
                     </div>
 
-                    <p> Stock remaining <%= product.stock %> </p>
+                    <p> Stock remaining <%= variant.stock %> </p>
 
                 </div>
             <% end %>

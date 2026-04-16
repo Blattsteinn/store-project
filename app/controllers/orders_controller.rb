@@ -5,26 +5,40 @@ class OrdersController < ApplicationController
         @orders = Order.where(user_id: current_user.id)
     end
 
+    def show
+        #add later
+    end
 
     def create
         if session[:cart].blank?
             redirect_to cart_path, alert: "Cart is empty" and return
         end
 
-        #recheck stock here.
+        cart_items = session[:cart].map do |variant_id, quantity|
+                [Variant.find(variant_id), quantity]
+        end
+        
+        # Validate all stock before touching the DB
+        cart_items.each do |variant, quantity|
+            if variant.stock < quantity
+                redirect_to cart_path, alert: "#{variant.title} is out of stock"
+                return
+            end
+        end
 
-        #["id", "created_at", "updated_at", "order_id", "product_id", "quantity", "price"]
+
         @order = Order.create!(user_id: current_user.id)
-        session[:cart].each do |product_id, quantity|
-           product = Product.find(product_id)
+        cart_items.each do |variant, quantity|
+           product = variant.product
            OrderItem.create!(
                 order_id: @order.id,
-                product_id: product_id,
+                product_id: product.id,
+                variant_id: variant.id,
                 quantity: quantity,
-                price: product.pricing
+                price: variant.price
             )
-
-            product.update!(stock: product.stock - quantity.to_i)
+            variant.update!(stock: variant.stock - quantity.to_i)
+            
         end
 
         session[:cart] = {}

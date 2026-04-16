@@ -3,6 +3,7 @@ class ProductsController < ApplicationController
 
     def index
         @products = Product.all
+        @products = @products.where("title ILIKE ?", "%#{params[:product_name]}%") if params[:product_name].present?
     end
 
     def show
@@ -12,6 +13,7 @@ class ProductsController < ApplicationController
     def new
         @product = Product.new
         @product.product_images.build
+        @product.variants.build
     end
 
     def create
@@ -25,14 +27,18 @@ class ProductsController < ApplicationController
 
     def edit
         @product = Product.find(params[:id])
-        @product.product_images.build
     end
 
     def update
         @product = Product.find(params[:id])
         
         if @product.update(product_params) 
-            flash[:successful_edit] = "Product successfully edited."
+            #This is probably not correct
+            if @product.previous_changes.any? || @product.saved_changes.any?
+                flash[:successful_edit] = "Product successfully edited."
+            else
+                flash[:successful_edit] = "No changes were made."
+            end
             redirect_to dashboard_products_path
 
         else
@@ -49,8 +55,10 @@ class ProductsController < ApplicationController
 
     private
     def product_params
-        params.expect(product: [:title, :visibility, :description, :pricing, :payment_type, :deliverables, 
-        :stock, product_images_attributes: [[:image, :priority, :_destroy, :id]]])
+        params.expect(product: [:title, :visibility, :description, :payment_type, :deliverables, 
+        product_images_attributes: [[:image, :priority, :_destroy, :id]],
+        variants_attributes: [[:stock, :price, :title, :description, :_destroy, :id]]
+        ])
     end
 
 end

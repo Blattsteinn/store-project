@@ -1,0 +1,31 @@
+.remove-button  {
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.remove-button {
+    background-color: #c0392b;
+}
+
+.qty-button  {
+    background-color: #3a3a3a;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.qty-button  {
+    background-color: #555;
+}
+
+ .cart-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+}

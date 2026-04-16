@@ -1,22 +1,13 @@
 
 
-<h3> <%= link_to "View product", dashboard_product_view_path(@product) %> </h3> 
+<p> <%= link_to "View product", dashboard_product_view_path(@product) %> </p> 
 
 <% if flash[:fail_edit] %>
     <p> <%= flash[:fail_edit]  %></p>
 <% end %>
 
 <%= form_with model: @product, multipart: true  do |form| %>
-
-    <div>
-        <%= form.label :stock %> <br>
-        <%= form.number_field :stock  %>
-    </div>
-
-    <div>
-        <%= form.label :pricing %> <br>
-        <%= form.number_field :pricing, placeholder: "0.00", step: :any, min: 0 %>
-    </div>
+    <%= form.submit %>
 
     <details open>
         <summary> General </summary>
@@ -38,8 +29,6 @@
             <%= form.label :description %> <br>
             <%= form.textarea  :description %>
         </div>
-
-
     </details>
 
     <details>
@@ -64,41 +53,148 @@
     </details>
 
     <details>
-        <summary>Media</summary>
-        <div>
-            <%= form.label :product_images, "Product Images" %> <br>
-            <%= form.fields_for :product_images do |image_form| %>
-                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-
-                        <% if image_form.object.image.attached? %>
-                            <%= image_tag image_form.object.image, style: "max-width: 200px;" %>
-                            <div>
-                                <%= image_form.label :image, "Change Image" %> <br>
-                                <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                            </div>
-
-                            <div>
-                                <%= image_form.label :_destroy, "Remove this image" %>
-                                <%= image_form.check_box :_destroy %>
-                            </div>
-
-                        <% else %>
-                             <%= image_form.label :image, "Upload Image" %> <br>
-                            <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                
-                        <% end %>
-
-                    <div>
-                        <%= image_form.label :priority, "Priority (1 = main)" %> <br>
-                        <%= image_form.number_field :priority, value: 1 %>
+        <summary>Variants</summary>
+        <div data-controller="insert-variant" style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+            
+            <template data-insert-variant-target="template">
+                <%= form.fields_for :variants, Variant.new, child_index: "NEW_RECORD" do |variant| %>
+                    <div style="border: 1px solid #eee; padding: 8px; margin: 8px 0;">
+                        <div>
+                            <%= variant.label :title %>
+                            <%= variant.text_field :title %>
+                        </div>
+                        <div>
+                            <%= variant.label :price %>
+                            <%= variant.number_field :price, min: 0  %>
+                        </div>
+                        <div>
+                            <%= variant.label :stock %>
+                            <%= variant.number_field :stock, min: 0  %>
+                        </div>
+                        <div>
+                            <%= variant.label :description %>
+                            <%= variant.textarea :description %>
+                        </div>
+                        <div>
+                            <%= variant.label :_destroy, "Remove this variant" %>
+                            <%= variant.check_box :_destroy %>
+                        </div>
                     </div>
-                    
-                    
-                </div>
-            <% end %>
+                <% end %>
+            </template>
+
+            <div>
+                <button type="button" data-action="insert-variant#add" > Add variant </button>
+            </div>
+
+            <p> Existing variants </p>
+            <div data-insert-variant-target="container">
+                <%= form.fields_for :variants do |variant| %>
+                    <div style="border: 1px solid #eee; padding: 8px; margin: 8px 0;">
+                        <div>
+                            <%= variant.label :title %>
+                            <%= variant.text_field :title %>
+                        </div>
+                        <div>
+                            <%= variant.label :price %>
+                            <%= variant.number_field :price, min: 0  %>
+                        </div>
+                        <div>
+                            <%= variant.label :stock %>
+                            <%= variant.number_field :stock, min: 0  %>
+                        </div>
+                        <div>
+                            <%= variant.label :description %>
+                            <%= variant.textarea :description %>
+                        </div>
+                        <div>
+                            <%= variant.label :_destroy, "Remove this variant" %>
+                            <%= variant.check_box :_destroy %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+
         </div>
     </details>
 
-    <%= form.submit %>
+    <details open>
+        <summary>Media</summary>
+        <div data-controller="insert-image">
+            <template data-insert-image-target="template">
+                <%= form.label :product_images, "Product Images" %> <br>
+                <%= form.fields_for :product_images, ProductImage.new, child_index: "NEW_IMAGE" do |image_form| %>
+                    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+
+                            <% if image_form.object.image.attached? %>
+                                <%= image_tag image_form.object.image, style: "max-width: 200px;" %>
+                                <div>
+                                    <%= image_form.label :image, "Change Image" %> <br>
+                                    <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                                </div>
+
+                                <div>
+                                    <%= image_form.label :_destroy, "Remove this image" %>
+                                    <%= image_form.check_box :_destroy %>
+                                </div>
+
+                            <% else %>
+                                <%= image_form.label :image, "Upload Image" %> <br>
+                                <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                    
+                            <% end %>
+
+                        <div>
+                            <%= image_form.label :priority, "Priority (1 = main)" %> <br>
+                            <%= image_form.number_field :priority, value: 1 %>
+                        </div>
+                        
+                    </div>
+                <% end %>
+            </template>
+
+            <div>
+                <button type="button" data-action="insert-image#add" >Add additional image</button>
+            </div>
+
+            <div data-insert-image-target="container">
+                <%= form.label :product_images, "Product Images" %> <br>
+                <%= form.fields_for :product_images do |image_form| %>
+                    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+
+                            <% if image_form.object.image.attached? %>
+                                <%= image_tag image_form.object.image, style: "max-width: 200px;" %>
+                                <div>
+                                    <%= image_form.label :image, "Change Image" %> <br>
+                                    <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                                </div>
+
+                                <div>
+                                    <%= image_form.label :_destroy, "Remove this image" %>
+                                    <%= image_form.check_box :_destroy %>
+                                </div>
+
+                            <% else %>
+                                <%= image_form.label :image, "Upload Image" %> <br>
+                                <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                    
+                            <% end %>
+
+                        <div>
+                            <%= image_form.label :priority, "Priority (1 = main)" %> <br>
+                            <%= image_form.number_field :priority, value: 1 %>
+                        </div>
+                        
+                    </div>
+                <% end %>
+            </div>
+
+            <div>
+                
+            </div>
+        </div>
+    </details>
+
+    
 
 <% end %>

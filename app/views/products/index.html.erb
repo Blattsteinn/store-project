@@ -1,25 +1,43 @@
-<h1>Products</h1>
 
-<div id="product-container">
-  <% @products.each do |product| %>
-    <% if product.stock <= 0 %>
-      <%# next %>
+
+<div id="product-index-page">
+
+  <div id="search-bar-container">
+    <%= form_with url: products_path, method: :get do |form| %>
+        <%= form.label :product_name, "What you're looking for?" %> <br>
+        <%= form.text_field :product_name %>
+        <%= form.submit "Search" %>
     <% end %>
-    <div class="product-box">
-      <h3><%= link_to product.title, product_path(product) %> </h3>
+  </div>
 
-      <div class="product-box-image-container">
-        <% product.product_images.each do |image| %>
-            <%= image_tag image.image, alt: product.title, style: "max-width: 300px;" %>
-            <% break %> <%# Break for now%>
-        <% end %>
+  <div id="product-container">
+    
+    <% @products.each do |product| %>
+      <div class="product-box">
+    
+        <div class="product-box-image-container">
+          <% product.product_images.each do |image| %>
+              <%= image_tag image.image, alt: product.title, style: "max-width: 300px;" %>
+              <% break %> <%# Break for now%>
+          <% end %>
+        </div>
+
+        <p><%= link_to product.title, product_path(product) %> </p>
+
+        <div class="product-box-text-container">
+          
+          <% stock = 0 %>
+          <% product.variants.each do |variant| %>
+            <% stock += variant.stock %>
+          <% end %>
+          <p> <%= product.variants.minimum(:price) %> (Cents) </p>
+          <p> <%= stock %> in stock </p>
+          
+        </div>
+
       </div>
+    <% end %>
 
-      <div class="product-box-text-container">
-        <p> Price:      <%= product.pricing %></p>
-        <p> Stock:      <%= product.stock %></p>
-      </div>
+  </div>
 
-    </div>
-  <% end %>
-<div>
+</div>

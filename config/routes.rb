@@ -19,9 +19,9 @@ Rails.application.routes.draw do
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
 
 
-  resources :orders, only: [:index, :create, :destroy]
+  resources :orders, only: [:show, :index, :create, :destroy]
   resources :order_items, only: [:create, :destroy]
-
+  resources :cart, only: [:show]
   get "cart", to: "carts#show", as: "cart"
 
   get "dashboard",              to: "dashboard#index",           as: "dashboard"
@@ -29,4 +29,7 @@ Rails.application.routes.draw do
   get "dashboard/products/:id", to: "dashboard#product_view",    as: "dashboard_product_view"
 
   root "products#index"
+
+
+
 end

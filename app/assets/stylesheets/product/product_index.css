@@ -1,16 +1,34 @@
  /* ======================== */
  /* Product model styling */
+
+ #product-index-page{
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  gap: 10px;
+
+ }
+ #search-bar-container{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+ }
  #product-container{
    display: grid;
    grid-template-columns: 1fr 1fr 1fr;
-   gap: 10px;
+   gap: 20px;
  }
 
  .product-box{
    border: 2px solid black;
+   padding: 10px;
+
    display: flex;
    flex-direction: column;
    align-items: center;
+
+   gap: 10px;
  }
 
  .product-box-image-container{
@@ -19,8 +37,6 @@
    justify-content: center;
 
    height: 150px;
-
-   
  }
 
   .product-box-image-container img{
@@ -28,6 +44,9 @@
   }
 
  .product-box-text-container{
-   display: flex;
-   gap: 10px;
+    align-self: flex-start;
+
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
  }

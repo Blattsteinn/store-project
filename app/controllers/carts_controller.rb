@@ -1,8 +1,8 @@
 class CartsController < ApplicationController
     def show
         if session[:cart].present?
-            @cart_items = session[:cart].map do |product_id, quantity|
-                [Product.find(product_id), quantity]
+            @cart_items = session[:cart].map do |variant_id, quantity|
+                [Variant.find(variant_id), quantity]
             end
         else
             @cart_items = []

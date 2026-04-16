@@ -3,37 +3,65 @@
 
 
 <div id="product-view-container">
-  <h1><%= @product.title %></h1>
+  
   
 
   <div id="product-view-first-column">
-    
-    <div>
+    <p class="title">
+      <%= @product.title %>
+    </p>
+
+    <div id="product-image-container">
       <% @product.product_images.each do |image| %>
-          <%= image_tag image.image, alt: @product.title, style: "max-width: 300px;" %>
+          <%= image_tag image.image, alt: @product.title %>
+          <% break %>
       <% end %>
     </div>
 
-
-    <p> <%= @product.description %>  </p>
+    <p class="description"> 
+      <%= @product.description %>  
+    </p>
     
-    <p>Payment Type: <%= @product.payment_type %> </p>
-    <p>Deliverables:  <%= @product.deliverables %> </p>
-    <p>Visibility:    <%= @product.visibility %>   </p>
   </div>
 
   <div id="product-view-second-column">
-    <p><%= @product.pricing %> (EUR)</p>
-    <p>Stock: <%= @product.stock %></p>
 
-    <%= form_with url: cart_items_path, method: :post do |f| %>
-      <%= f.hidden_field :product_id, value: @product.id %>
+      <div id="product-variant-container">
+        <% @product.variants.each do |variant| %>
+          <div class="product-separate-variant">
+            <div style="display: flex; flex-direction: column; ">
+              <p> <%= variant.title %> </p>
+              <p> <%= variant.description  %> </p>
+              <p> <%= variant.price        %> EUR </p>
+            </div>
 
-      <%= f.label :quantity, "Quantity" %>
-      <%= f.number_field :quantity, value: 1, min: 1 %>
+            <div>
+              <p> 
+                <%= variant.stock %> in stock 
+              </p>
 
-      <%= f.submit "Add To Cart" %>
-    <% end %>
+              <div>
+                <%= form_with url: cart_items_path, method: :post, html: { style: "display: flex; align-items: center; gap: 8px;" } do |f| %>
+                  <%= f.hidden_field :variant_id, value: variant.id %>
+
+                  <%= f.label :quantity, "Qty", style: "font-size: 0.85rem; margin: 0;" %>
+                  <%= f.number_field :quantity, value: 1, min: 1, max: variant.stock, style: "width: 52px; padding: 4px 6px; font-size: 0.85rem;" %>
+
+                  <%= f.submit "Add To Cart", style: "padding: 5px 12px; font-size: 0.85rem; cursor: pointer;" %>
+                <% end %>
+              </div>
+            </div>
+
+            
+          </div>
+          
+       
+          
+        <% end %>
+
+         
+      </div>
+
   </div>
 
 </div>
