@@ -2,7 +2,10 @@ class OrdersController < ApplicationController
     before_action :authenticate_admin!, only: [:destroy]
 
     def index
-        @orders = Order.where(user_id: current_user.id)
+        @orders = Order.includes([
+            order_items: [:product, :variant]
+        ]).where(user_id: current_user.id)
+
     end
 
     def show

@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+    scope :visible, ->{where(visibility: 'live')}
+    
     has_many :product_images, dependent: :destroy
     accepts_nested_attributes_for :product_images, allow_destroy: true,
     reject_if: ->(attrs) { attrs["image"].blank? }

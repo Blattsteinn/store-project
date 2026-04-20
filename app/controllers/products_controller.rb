@@ -2,12 +2,12 @@ class ProductsController < ApplicationController
     before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :destroy]
 
     def index
-        @products = Product.all
+        @products = Product.visible.includes(:variants, product_images: :image_attachment)
         @products = @products.where("title ILIKE ?", "%#{params[:product_name]}%") if params[:product_name].present?
     end
 
     def show
-        @product = Product.find(params[:id])
+        @product = Product.includes(:variants, product_images: :image_attachment).find(params[:id])
     end
 
     def new
