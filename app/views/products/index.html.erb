@@ -30,7 +30,7 @@
           <% product.variants.each do |variant| %>
             <% stock += variant.stock %>
           <% end %>
-          <p> <%= product.variants.minimum(:price) %> (Cents) </p>
+          <p> <%= convert_from_cents(product.variants.minimum(:price)) %> EUR </p>
           <p> <%= stock %> in stock </p>
           
         </div>

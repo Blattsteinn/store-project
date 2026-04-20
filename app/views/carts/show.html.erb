@@ -6,29 +6,31 @@
         <div id="cart-items-container">
             <% @cart_items.each do |variant, quantity| %>
                 <div class="cart-item">
-                    <%= button_to "Remove from cart", remove_cart_item_path, method: :delete,
-                    params: {variant_id: variant.id}, class: "remove-button" %>
-                    <p> <%= variant.product.title %>   </p>
+
+                    <div style="display: flex; gap: 10px;">
+                        <p> <%= variant.product.title %>  </p>
+                        <p> (<%= variant.title %>)  </p>
+                    </div>
 
                     <div style="display: flex; gap: 5px;">
-                        <p class="cart-product-price"> <%= variant.price %> </p> 
+                        <p class="cart-product-price"> <%= convert_from_cents(variant.price) %> </p> 
                         <p> EUR </p>
                     </div>
                     
                     <div style="display: flex; gap: 5px;">
-                        <p > Quantity:  </p> 
-                        <p class="cart-quantity"> <%= quantity %></p>
-                    </div>
-                    
-                    <div style="display: flex; gap: 5px;">
+                        <p>Total:</p> <p class="cart-quantity"><%= quantity %></p>
+                   
                         <%= button_to "-", cart_item_path, method: :patch,
                             params: { variant_id: variant.id, quantity: quantity.to_i - 1 }, class: "qty-button" %>
 
                         <%= button_to "+", cart_item_path, method: :patch,
                             params: { variant_id: variant.id, quantity: quantity.to_i + 1 }, class: "qty-button" %>
-                    </div>
 
-                    <p> Stock remaining <%= variant.stock %> </p>
+                        <p> (maximum </p> <p><%= variant.stock %>)  </p>    
+                    </div>
+                    
+                    <%= button_to "Remove from cart", remove_cart_item_path, method: :delete,
+                    params: {variant_id: variant.id}, class: "remove-button" %>
 
                 </div>
             <% end %>
@@ -36,7 +38,7 @@
 
         <div id="cart_summary">
             <div id="total">
-               Cart Summary:  <p data-price-target="price">a <p>
+               Cart Summary:  <p data-price-target="price"> <p>
             </div>
 
             <div id="payment_method">

@@ -14,11 +14,11 @@
       <p class="dashboard-price"> Price </p>
       <p class="dashboard-sales"> Sales </p>
     </div>
-
+    
     <% @products.each do |product| %>
       <div class="dashboard-product">
         <div class="dashboard-title">
-          <p> <%= link_to product.title, dashboard_product_view_path(product) %> </p>
+          <p id = "dashboard-link-to-product"> <%= link_to product.title, dashboard_product_view_path(product) %> </p>
           <p> Stock: <%= product.variants.sum(:stock) %></p>
         </div>
 

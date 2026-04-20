@@ -24,7 +24,7 @@
   </head>
 
   <body>
-    <nav style = "display: flex; gap: 10px;" >
+    <nav style = "display: flex; gap: 10px; margin-bottom: 20px;" >
       <%= link_to "Home", root_path if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
       <%= link_to "Products", products_path %>
       <%= link_to "Orders", orders_path %>

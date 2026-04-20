@@ -11,50 +11,55 @@
 
     <details open>
         <summary> General </summary>
-        <div>
-            <%= form.label :visibility %> <br>
-            <%= form.select  :visibility, 
-            [["Live", "live"], 
-            ["Hidden", "hidden"], 
-            ["Private", "private"], 
-            ["On Hold", "on_hold"]]  %>
-        </div>
+        <div id="edit-general-section">
+            <div>
+                <%= form.label :visibility %> <br>
+                <%= form.select  :visibility, 
+                [["Live", "live"], 
+                ["Hidden", "hidden"], 
+                ["Private", "private"], 
+                ["On Hold", "on_hold"]]  %>
+            </div>
 
-        <div>
-            <%= form.label  :title, "Product title" %> <br>
-            <%= form.text_field :title %>
-        </div>
+            <div>
+                <%= form.label  :title, "Product title" %> <br>
+                <%= form.text_field :title, class: "title-field" %>
+            </div>
 
-        <div id="edit-description">
-            <%= form.label :description %> <br>
-            <%= form.textarea  :description %>
+            <div id="edit-description">
+                <%= form.label :description %> <br>
+                <%= form.textarea  :description %>
+            </div>
         </div>
     </details>
 
     <details>
         <summary>Checkout</summary>
-        <div>
-            <%= form.label :payment_type %> <br>
-            <%= form.select :payment_type,
-            [ ["Single Payment", "single_payment"],
-            ["Subscription", "subscription"],
-            ["Pay What You Want", "any"] ]%>
-        </div>
-        
-        <div>
-            <%= form.label :deliverables %> <br>
-            <%= form.select :deliverables,
-            [ ["Static Value", "static"],
-            ["License Key", "licence"],
-            ["Unique Codes & Serials", "serial"]
-            ]
-            %>
+        <div id="edit-checkout-section">
+            <div>
+                <%= form.label :payment_type %> <br>
+                <%= form.select :payment_type,
+                [ ["Single Payment", "single_payment"],
+                ["Subscription", "subscription"],
+                ["Pay What You Want", "any"] ]%>
+            </div>
+            
+            <div>
+                <%= form.label :deliverables %> <br>
+                <%= form.select :deliverables,
+                [ ["Static Value", "static"],
+                ["License Key", "licence"],
+                ["Unique Codes & Serials", "serial"]
+                ]
+                %>
+            </div>
         </div>
     </details>
 
     <details>
         <summary>Variants</summary>
-        <div data-controller="insert-variant" style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+        <div data-controller="insert-variant" 
+        id="edit-variants-section">
             
             <template data-insert-variant-target="template">
                 <%= form.fields_for :variants, Variant.new, child_index: "NEW_RECORD" do |variant| %>
@@ -87,28 +92,27 @@
                 <button type="button" data-action="insert-variant#add" > Add variant </button>
             </div>
 
-            <p> Existing variants </p>
             <div data-insert-variant-target="container">
                 <%= form.fields_for :variants do |variant| %>
                     <div style="border: 1px solid #eee; padding: 8px; margin: 8px 0;">
                         <div>
-                            <%= variant.label :title %>
+                            <%= variant.label :title %> <br>
                             <%= variant.text_field :title %>
                         </div>
                         <div>
-                            <%= variant.label :price %>
+                            <%= variant.label :price %> <br>
                             <%= variant.number_field :price, min: 0  %>
                         </div>
                         <div>
-                            <%= variant.label :stock %>
+                            <%= variant.label :stock %> <br>
                             <%= variant.number_field :stock, min: 0  %>
                         </div>
                         <div>
-                            <%= variant.label :description %>
+                            <%= variant.label :description %> <br>
                             <%= variant.textarea :description %>
                         </div>
                         <div>
-                            <%= variant.label :_destroy, "Remove this variant" %>
+                            <%= variant.label :_destroy, "Remove this variant" %> <br>
                             <%= variant.check_box :_destroy %>
                         </div>
                     </div>
@@ -120,7 +124,7 @@
 
     <details open>
         <summary>Media</summary>
-        <div data-controller="insert-image">
+        <div data-controller="insert-image" id="edit-media-section">
             <template data-insert-image-target="template">
                 <%= form.label :product_images, "Product Images" %> <br>
                 <%= form.fields_for :product_images, ProductImage.new, child_index: "NEW_IMAGE" do |image_form| %>

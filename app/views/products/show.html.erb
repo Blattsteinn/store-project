@@ -32,7 +32,7 @@
             <div style="display: flex; flex-direction: column; ">
               <p> <%= variant.title %> </p>
               <p> <%= variant.description  %> </p>
-              <p> <%= variant.price        %> EUR </p>
+              <p> <%= convert_from_cents(variant.price) %> EUR </p>
             </div>
 
             <div>

@@ -15,32 +15,4 @@ body{
     max-width: 1200px;
     margin: 0 auto
 }
- /* ---------------------------- */
- #cart-container{
-    background-color: #0c0c0d;
-    border: 2px solid grey;
-    padding: 25px;
-    color: white;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
- }
-
- /* ---------------------------- */
- #cart-items-container{
-    background-color: #000000;
-    grid-column: 1
- }
-
- .cart-item{
-    border: 2px solid grey;
-    margin-bottom: 10px;
- }
-
- /* ---------------------------- */
- #check-out-container{
-    grid-column: 2;
-    border: 2px solid grey;
-
- }
-
+ 

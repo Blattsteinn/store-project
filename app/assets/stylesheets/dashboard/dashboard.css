@@ -34,5 +34,10 @@
 
 .dashboard-product{
     border: 2px solid black;
+    padding: 5px;
     margin-bottom: 20px;
+}
+
+.dashboard-product .dashboard-title #dashboard-link-to-product{
+    font-size: 18px;
 }

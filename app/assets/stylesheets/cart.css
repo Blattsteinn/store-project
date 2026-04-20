@@ -1,3 +1,40 @@
+/* ---------------------------- */
+ #cart-container{
+    background-color: #0c0c0d;
+    border: 2px solid grey;
+    padding: 25px;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+ }
+
+ /* ---------------------------- */
+ #cart-items-container{
+    background-color: #000000;
+    grid-column: 1
+ }
+
+ .cart-item{
+    border: 2px solid grey;
+    margin-bottom: 10px;
+    padding: 2px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+ }
+
+ /* ---------------------------- */
+ #check-out-container{
+    grid-column: 2;
+    border: 2px solid grey;
+
+ }
+
+ /* ================================ */
+ /*  === Buttons === */
+ /* ================================ */
 .remove-button  {
     background-color: #e74c3c;
     color: white;
@@ -13,8 +50,8 @@
 .qty-button  {
     background-color: #3a3a3a;
     color: white;
-    width: 28px;
-    height: 28px;
+    width:  20px;
+    height: 20px;
     border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
