@@ -1,15 +1,16 @@
 class OrdersController < ApplicationController
+    # pending, paid, processing, delivered, cancelled, refunded.
     before_action :authenticate_admin!, only: [:destroy]
 
     def index
-        @orders = Order.includes([
-            order_items: [:product, :variant]
-        ]).where(user_id: current_user.id)
-
+        @orders = Order.all.where(user_id: current_user.id)
+        
     end
 
     def show
-        #add later
+        @order = Order.includes([
+            order_items: [:product, :variant]
+        ]).find(params[:id])
     end
 
     def create
@@ -48,9 +49,21 @@ class OrdersController < ApplicationController
         redirect_to order_path(@order), notice: "Order created successfully"
     end
 
+    def update
+        @order = Order.find(params[:id])
+        @order.update!(order_params)
+        redirect_to dashboard_order_path(@order)
+    end
+
+
     def destroy
         @order = Order.find(params[:id])
         @order.destroy
         redirect_to products_path
+    end
+
+    private
+    def order_params
+        params.expect(order: [:status])
     end
 end

@@ -1,24 +1,16 @@
 
+<div>
+
 <h2> My orders </h2>
 
-<% unless @orders.nil? %>
-    <% @orders.each do |order| %>
-        <div>
-            <h3>Order #<%= order.id %> — <%= order.created_at.strftime("%b %d, %Y") %></h3>
-            <ul>
-            <% order.order_items.each do |item| %>
-                <li>
-                    <%= item.product.title %>
-                    <% if item.variant %>
-                        — <%= item.variant.title %>
-                    <% end %>
-                    &times; <%= item.quantity %>
-                    (<%= item.price %> EUR each)
-                </li>
-            <% end %>
-            </ul>
-        </div>
+    <% unless @orders.nil? %>
+        <% @orders.each do |order| %>
+            <div>
+                <h3>Order <%= link_to order.id, order_path(order) %> — <%= order.created_at.strftime("%b %d, %Y") %>, status: <%= order.status %> </h3>
+            </div>
+        <% end %>
+    <% else %>
+        <p> No orders! </p>
     <% end %>
-<% else %>
-    <p> No orders! </p>
-<% end %>
+
+</div>

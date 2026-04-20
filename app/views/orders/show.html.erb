@@ -1,0 +1,41 @@
+<div id="dashboard-order-page">
+  <h2>Order #<%= @order.id %></h2>
+
+  <p><strong>User:</strong> <%= @order.user.email %></p>
+  <p><strong>Placed at:</strong> <%= @order.created_at.strftime("%B %d, %Y %H:%M") %></p>
+  <p><strong>Status:</strong> <%= @order.status %></p>
+
+
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Variant</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order.order_items.each do |item| %>
+        <tr>
+          <td><%= link_to item.product.title, dashboard_product_view_path(item.product) %></td>
+          <td><%= item.variant.title %></td>
+          <td><%= item.quantity %></td>
+          <td><%= convert_from_cents(item.price) %> EUR</td>
+          <td><%= convert_from_cents(item.price * item.quantity) %> EUR</td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4"><strong>Total</strong></td>
+        <td><strong><%= convert_from_cents(@order.order_items.sum { |i| i.price * i.quantity }) %> EUR</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+    <hr>
+
+  <%= link_to "Back to Orders", orders_path %>
+</div>

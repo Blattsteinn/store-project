@@ -1,0 +1,36 @@
+
+
+<h2> All orders </h2>
+
+    <details>
+        <summary>Filter</summary>
+        <%= form_with url: dashboard_orders_path, method: :get do |form| %>
+            <%= form.label :status %> <br>
+
+            <% [["Pending", "pending"], ["Paid", "paid"], ["Delivered", "delivered"], ["Cancelled", "cancelled"], 
+                ["Refunded", "refunded"]].each do |label, value| %>
+                <%= check_box_tag "status[]", value, params[:status]&.include?(value) %> 
+                <%= label_tag "status_#{value}", label %> <br>
+            <% end %>
+
+            <%= form.submit "filter" %>
+        <% end %>
+    </details>
+    <%= button_to "Reset", dashboard_orders_path,  method: :get %>
+
+<% unless @orders.nil? %>
+    <% @orders.each do |order| %>
+        <div>
+            <h3>Order 
+            <%= link_to order.id, dashboard_order_path(order) %> — 
+            <%= order.created_at.strftime("%b %d, %Y") %>, 
+            status: <%= order.status %> 
+            total: <%= convert_from_cents(order.order_items.sum {|item| item.variant.price}) %> EUR
+            
+            </h3>
+
+        </div>
+    <% end %>
+<% else %>
+    <p> No orders! </p>
+<% end %>
