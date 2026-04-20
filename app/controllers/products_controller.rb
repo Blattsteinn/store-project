@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-    before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :destroy]
+    before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :destroy, :product_visibility]
 
     def index
         @products = Product.visible.includes(:variants, product_images: :image_attachment)
@@ -31,7 +31,6 @@ class ProductsController < ApplicationController
 
     def update
         @product = Product.find(params[:id])
-        
         if @product.update(product_params) 
             #This is probably not correct
             if @product.previous_changes.any? || @product.saved_changes.any?
@@ -45,6 +44,32 @@ class ProductsController < ApplicationController
             flash.now[:fail_edit]= "Product failed to edit"
             render :edit, status: :unprocessable_entity
         end
+    end
+
+
+    def product_visibility
+        @product = Product.find(params[:id])
+        new_visibility = @product.visibility == "live" ? "hidden" : "live"
+        @product.update!(visibility: new_visibility)
+        redirect_to dashboard_products_path
+    end
+
+    def duplicate_product
+        @original_p = Product.find(params[:id])
+        @original_v = @original_p.variants
+
+        @product = Product.create(@original_p.attributes.except("id","created_at","updated_at"))
+        @original_v.each do |variant|
+            v = Variant.create!(variant.attributes.except("id", "created_at","updated_at"))
+            v.update!(product_id: @product.id)
+        end
+
+        if @product.save  
+            redirect_to @product
+        else
+            render :new, status: :unprocessable_entity
+        end
+
     end
 
     def destroy

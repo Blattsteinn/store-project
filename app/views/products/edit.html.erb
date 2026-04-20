@@ -1,6 +1,6 @@
 
 
-<p> <%= link_to "View product", dashboard_product_view_path(@product) %> </p> 
+<p> <%= link_to "View product", product_path(@product) %> </p> 
 
 <% if flash[:fail_edit] %>
     <p> <%= flash[:fail_edit]  %></p>

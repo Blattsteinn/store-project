@@ -16,9 +16,10 @@
     </div>
     
     <% @products.each do |product| %>
+
       <div class="dashboard-product">
         <div class="dashboard-title">
-          <p id = "dashboard-link-to-product"> <%= link_to product.title, dashboard_product_view_path(product) %> </p>
+          <p id = "dashboard-link-to-product"> <%= link_to product.title, product_path(product), target: "_blank" %> </p>
           <p> Stock: <%= product.variants.sum(:stock) %></p>
         </div>
 
@@ -27,9 +28,21 @@
         <p class="dashboard-sales"> Didn't calculate </p>
 
         <div>
-        <%= link_to "Edit", edit_product_path(product.id), class: "dashboard-more-choice" %> <br>
-        <%= link_to "View insights", dashboard_product_view_path(product) %>
+          <details>
+            <summary> ... </summary>
+              <%= link_to "Edit", edit_product_path(product.id), class: "dashboard-more-choice" %> <br>
+              <%= link_to "View", product_path(product), target: "_blank" %> <br>
+
+              <%= button_to product.visibility == "live" ? "Hide" : "Unhide",
+              product_visibility_product_path(product), method: :patch %> <br>
+
+              <%= button_to "Duplicate", 
+              duplicate_product_product_path(product), method: :post %> <br>
+
+              <%= button_to "Delete", product_path(product), method: :delete %> <br>
+          </details>
         </div>
+
       </div>
     <% end %>
 </div>

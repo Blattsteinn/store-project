@@ -1,0 +1,21 @@
+<div id="dashboard-order-page">
+  <%= render 'orders/order_preview' %>
+
+  <p> Update status </p>
+  <%= form_with model: @order, method: :patch do |form| %>
+        <%= form.label :status %>
+        <%= form.select :status, [
+            ["Pending", "pending"],
+            ["Paid", "paid"],
+            ["Delivered", "delivered"],
+            ["Cancelled", "cancelled"],
+            ["Refunded", "refunded"]
+        ]%>
+
+        <%= form.submit %>
+  <% end %>
+
+  <%= link_to "Back to Orders", orders_path %>
+
+
+</div>

@@ -14,6 +14,15 @@ Rails.application.routes.draw do
   
   resources :products
   
+  resources :products do 
+    member do
+      patch :product_visibility
+      post :duplicate_product
+    end
+
+  end
+
+  
   post   "cart_items",     to: "cart_items#create",  as: "cart_items"
   patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
@@ -24,12 +33,11 @@ Rails.application.routes.draw do
 
   get "cart", to: "carts#show", as: "cart"
 
-  get "dashboard",              to: "dashboard#index",           as: "dashboard"
-  get "dashboard/products",     to: "dashboard#products_view",   as: "dashboard_products"
-  get "dashboard/products/:id", to: "dashboard#product_view",    as: "dashboard_product_view"
+  get "dashboard",              to: "dashboard#index",            as: "dashboard"
+  get "dashboard/products",     to: "dashboard#products_index",   as: "dashboard_products"
 
   get "dashboard/orders",       to: "dashboard#orders_index",    as: "dashboard_orders"
-  get "dashboard/orders/:id",   to: "dashboard#order",           as: "dashboard_order"
+  get "dashboard/orders/:id",   to: "dashboard#order_show",      as: "dashboard_order"
 
   root "products#index"
 
