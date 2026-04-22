@@ -31,18 +31,19 @@ class ProductsController < ApplicationController
 
     def update
         @product = Product.find(params[:id])
-        if @product.update(product_params) 
-            #This is probably not correct
-            if @product.previous_changes.any? || @product.saved_changes.any?
-                flash[:successful_edit] = "Product successfully edited."
-            else
-                flash[:successful_edit] = "No changes were made."
-            end
-            redirect_to dashboard_products_path
+        @product.assign_attributes(product_params)
 
+        if @product.changed?
+            if @product.save
+                flash[:successful_edit] = "Saved succesfully."
+                redirect_to dashboard_products_path
+            else
+                flash.now[:fail_edit] = "Failed to save succesfully."
+                render :edit, status: :unprocessable_entity
+            end
         else
-            flash.now[:fail_edit]= "Product failed to edit"
-            render :edit, status: :unprocessable_entity
+            flash[:successful_edit] = "No changes were made."
+            redirect_to dashboard_products_path
         end
     end
 

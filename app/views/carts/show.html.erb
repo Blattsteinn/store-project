@@ -1,60 +1,19 @@
 <!-- app/views/carts/show.html.erb -->
-<h1> Cart page </h1>
 
 <div id="cart-container" data-controller="price">
-    <% if @cart_items.any? %>
-        <div id="cart-items-container">
-            <% @cart_items.each do |variant, quantity| %>
-                <div class="cart-item">
 
-                    <div style="display: flex; gap: 10px;">
-                        <p> <%= variant.product.title %>  </p>
-                        <p> (<%= variant.title %>)  </p>
-                    </div>
+    <%= render "carts/cart" %>
 
-                    <div style="display: flex; gap: 5px;">
-                        <p class="cart-product-price"> <%= convert_from_cents(variant.price) %> </p> 
-                        <p> EUR </p>
-                    </div>
-                    
-                    <div style="display: flex; gap: 5px;">
-                        <p>Total:</p> <p class="cart-quantity"><%= quantity %></p>
-                   
-                        <%= button_to "-", cart_item_path, method: :patch,
-                            params: { variant_id: variant.id, quantity: quantity.to_i - 1 }, class: "qty-button" %>
-
-                        <%= button_to "+", cart_item_path, method: :patch,
-                            params: { variant_id: variant.id, quantity: quantity.to_i + 1 }, class: "qty-button" %>
-
-                        <p> (maximum </p> <p><%= variant.stock %>)  </p>    
-                    </div>
-                    
-                    <%= button_to "Remove from cart", remove_cart_item_path, method: :delete,
-                    params: {variant_id: variant.id}, class: "remove-button" %>
-
-                </div>
-            <% end %>
-        </div>
-
-        <div id="cart_summary">
-            <div id="total">
-               Cart Summary:  <p data-price-target="price"> <p>
-            </div>
-
-            <div id="payment_method">
+    <div id="checkout-info">
+        <div id="payment-method"> 
                 <p> Payment method here </p>
-            </div>
-
-            <div>
-                <input id="email" type="email" value=<%= current_user.email %>>  
-            </div>
-
-            <%= button_to "Purchase", orders_path, method: :post %>
-
         </div>
-        
-    <% else %>
-        <h2> Your cart is empty </h2>
-        <p> Add some products <%= link_to "by clicking here", products_path %> <p>
-    <% end %>
+
+        <div>
+            <input id="email" type="email" value=<%= current_user.email %>>  
+        </div>
+
+    </div>
+    <%= button_to "Purchase", orders_path, method: :post %>
+
 </div>

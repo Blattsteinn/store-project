@@ -20,7 +20,7 @@
     <tbody>
         <% @order.order_items.each do |item| %>
         <tr>
-            <td><%= link_to item.product.title, dashboard_product_view_path(item.product) %></td>
+            <td><%= link_to item.product.title, dashboard_products_path(item.product) %></td>
             <td><%= item.variant.title %></td>
             <td><%= item.quantity %></td>
             <td><%= convert_from_cents(item.price) %> EUR</td>

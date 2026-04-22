@@ -40,13 +40,11 @@
       <div style="display: flex">
           <%= link_to (image_tag '/assets/cart-outline.svg', class: 'cart-icon'), cart_path %>
 
-          <p> 
-            <% if session[:cart].nil?  %> 
-              <%= 0 %>
-            <% else  %>
-              <%= session[:cart].length %>
-            <% end %>  
-          </p>
+            <turbo-frame id="cart-counter">
+              <p>
+                <%= session[:cart]&.length || 0 %>
+              </p>
+            </turbo-frame>
 
       </div>
       

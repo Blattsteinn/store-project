@@ -1,10 +1,9 @@
 class OrdersController < ApplicationController
     # pending, paid, processing, delivered, cancelled, refunded.
-    before_action :authenticate_admin!, only: [:destroy]
+    before_action :authenticate_admin!, only: [:update, :destroy]
 
     def index
         @orders = Order.all.where(user_id: current_user.id)
-        
     end
 
     def show
@@ -24,10 +23,8 @@ class OrdersController < ApplicationController
         
         # Validate all stock before touching the DB
         cart_items.each do |variant, quantity|
-            if variant.stock < quantity
-                redirect_to cart_path, alert: "#{variant.title} is out of stock"
-                return
-            end
+            variant.lock!  
+            raise ActiveRecord::Rollback if variant.stock < quantity
         end
 
 

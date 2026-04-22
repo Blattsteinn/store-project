@@ -1,0 +1,37 @@
+
+<% if @cart_items.any? %>
+    <div id="cart-items-container">
+        <% @cart_items.each do |variant, quantity| %>
+            <turbo-frame id="<%=dom_id(variant)%>">
+                <div class="cart-item">
+
+                    <div style="display: flex; gap: 10px;">
+                        <p><%= variant.product.title %> (<%= variant.title %>) </p>
+                    </div>
+
+                    <div style="display: flex; gap: 5px;">
+                        <p class="cart-product-price"> <%= convert_from_cents(variant.price) %> </p> 
+                        <p> EUR </p>
+                    </div>
+
+                    <%= render 'cart_total', variant: variant, quantity: quantity %>
+
+                    <%= button_to "Remove from cart", remove_cart_item_path, method: :delete,
+                    params: {variant_id: variant.id}, class: "remove-button"
+                      %>
+                </div>
+            </turbo-frame>
+        <% end %>
+    </div>
+
+    <div id="cart_summary">
+        <div id="total">
+        Cart Summary:  <p data-price-target="price"> </p>
+        </div>
+
+    </div>
+    
+<% else %>
+    <h2> Your cart is empty </h2>
+    <p> Add some products <%= link_to "by clicking here", products_path %> <p>
+<% end %>

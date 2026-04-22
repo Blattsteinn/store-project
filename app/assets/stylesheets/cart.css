@@ -1,5 +1,7 @@
 /* ---------------------------- */
  #cart-container{
+    /* position: fixed;
+    top: 1rem; */
     background-color: #0c0c0d;
     border: 2px solid grey;
     padding: 25px;

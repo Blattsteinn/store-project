@@ -31,7 +31,8 @@ Rails.application.routes.draw do
   resources :orders, only: [:show, :index, :create, :destroy, :update]
   resources :order_items, only: [:create, :destroy]
 
-  get "cart", to: "carts#show", as: "cart"
+  get "cart",       to: "carts#show",        as: "cart"
+  get "cart_mini",  to: "carts#mini_show",   as: "cart_mini"
 
   get "dashboard",              to: "dashboard#index",            as: "dashboard"
   get "dashboard/products",     to: "dashboard#products_index",   as: "dashboard_products"
