@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
     end
 
     def show
-        current_user.orders.find(params[:id])
+        @order = current_user.orders.includes(order_items: [:product, :variant]).find(params[:id])
     end
 
     def create

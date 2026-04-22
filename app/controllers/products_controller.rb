@@ -63,19 +63,20 @@ class ProductsController < ApplicationController
         @original_v = @original_p.variants
 
         @product = Product.create!(@original_p.attributes.except("id","created_at","updated_at"))
+        @product.update!(title: @product.title + " Copy")
         @original_v.each do |variant|
             v = Variant.create!(variant.attributes.except("id", "created_at","updated_at"))
             v.update!(product_id: @product.id)
         end
 
-        redirect_to @product
+        redirect_to edit_product_path(@product)
         
     end
 
     def destroy
         @product = Product.find(params[:id])
         @product.destroy
-        redirect_to products_path
+        redirect_to dashboard_products_path
     end
 
     private
