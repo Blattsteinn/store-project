@@ -9,7 +9,7 @@ class CartItemsController < ApplicationController
         # Hash structure
         # variant_id => quantitiy,
 
-        if session[:cart][variant.id.to_s].present?  
+        if session[:cart][variant.id.to_s].present?
             total = session[:cart][variant.id.to_s].to_i + quantity
             session[:cart][variant.id.to_s] = total unless total > variant.stock
         else
@@ -32,7 +32,7 @@ class CartItemsController < ApplicationController
         variant = Variant.find(params[:variant_id])
         quantity = params[:quantity].to_i
 
-        if quantity < 1 || quantity > variant.stock 
+        if quantity < 1 || quantity > variant.stock
             redirect_to cart_path
             return
         end
@@ -40,17 +40,16 @@ class CartItemsController < ApplicationController
         session[:cart][params[:variant_id].to_s] = quantity
 
         respond_to do |format|
-            format.turbo_stream do 
+            format.turbo_stream do
                 render turbo_stream: turbo_stream.replace(
                     "increase_variant_#{variant.id}",
                     # arba  ActionView::RecordIdentifier.dom_id(variant, :increase),
                     partial: "carts/cart_total",
-                    locals: {quantity: quantity, variant: variant }
+                    locals: { quantity: quantity, variant: variant }
                 )
             end
-            format.html {redirect_to cart_path}
+            format.html { redirect_to cart_path }
         end
-
     end
 
     def destroy
@@ -64,13 +63,11 @@ class CartItemsController < ApplicationController
                     turbo_stream.replace(
                         "cart-counter",
                         partial: "carts/cart_counter",
-                        locals: { count: session[:cart].length}
+                        locals: { count: session[:cart].length }
                     )
                 ]
             end
-            format.html {redirect_to cart_path}
+            format.html { redirect_to cart_path }
         end
-
-
     end
 end

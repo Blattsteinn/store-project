@@ -11,25 +11,23 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  
   resources :products
-  
-  resources :products do 
+
+  resources :products do
     member do
       patch :product_visibility
       post :duplicate_product
     end
-
   end
 
-  
+
   post   "cart_items",     to: "cart_items#create",  as: "cart_items"
   patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
 
 
-  resources :orders, only: [:show, :index, :create, :destroy, :update]
-  resources :order_items, only: [:create, :destroy]
+  resources :orders, only: [ :show, :index, :create, :destroy, :update ]
+  resources :order_items, only: [ :create, :destroy ]
 
   get "cart",       to: "carts#show",        as: "cart"
   get "cart_mini",  to: "carts#mini_show",   as: "cart_mini"
@@ -41,7 +39,4 @@ Rails.application.routes.draw do
   get "dashboard/orders/:id",   to: "dashboard#order_show",      as: "dashboard_order"
 
   root "products#index"
-
-
-
 end

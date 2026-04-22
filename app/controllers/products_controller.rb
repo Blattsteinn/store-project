@@ -26,14 +26,17 @@ class ProductsController < ApplicationController
     end
 
     def edit
-        @product = Product.find(params[:id])
+        @product = Product.includes(product_images: :image_attachment).find(params[:id])
     end
 
     def update
         @product = Product.find(params[:id])
         @product.assign_attributes(product_params)
 
-        if @product.changed?
+        has_changes = @product.changed? || @product.variants.any?(&:changed?) || @product.product_images.any?(&:changed?)
+
+
+        if has_changes
             if @product.save
                 flash[:successful_edit] = "Saved succesfully."
                 redirect_to dashboard_products_path
@@ -59,18 +62,14 @@ class ProductsController < ApplicationController
         @original_p = Product.find(params[:id])
         @original_v = @original_p.variants
 
-        @product = Product.create(@original_p.attributes.except("id","created_at","updated_at"))
+        @product = Product.create!(@original_p.attributes.except("id","created_at","updated_at"))
         @original_v.each do |variant|
             v = Variant.create!(variant.attributes.except("id", "created_at","updated_at"))
             v.update!(product_id: @product.id)
         end
 
-        if @product.save  
-            redirect_to @product
-        else
-            render :new, status: :unprocessable_entity
-        end
-
+        redirect_to @product
+        
     end
 
     def destroy

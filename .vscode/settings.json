@@ -1,0 +1,7 @@
+{
+  "[ruby]": {
+    "editor.defaultFormatter": "none",
+    "editor.formatOnSave": false
+  },
+  "rubyLsp.formatter": "none"
+}
