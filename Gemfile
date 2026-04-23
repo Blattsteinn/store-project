@@ -66,7 +66,7 @@ group :test do
 end
 
 gem "devise", "~> 5.0"
-gem 'bullet', group: 'development'
+gem "bullet", group: [:development, :test]
 
 gem "stripe", "~> 13.0"
 gem "dotenv-rails", groups: [ :development, :test ]
