@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
     before_action :authenticate_admin!, only: [ :update, :destroy ]
 
     def index
-        @orders = Order.all.where(user_id: current_user.id)
+        @orders = Order.where(user_id: current_user.id)
     end
 
     def show
@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
     def destroy
         @order = Order.find(params[:id])
         @order.destroy
-        redirect_to products_path
+        redirect_to dashboard_orders_path
     end
 
     private
