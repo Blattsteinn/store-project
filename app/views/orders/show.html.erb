@@ -1,4 +1,7 @@
 <div id="dashboard-order-page">
+  <% if params[:stripe] == "success" %>
+    <div class="notice">Payment received! Your order is being processed.</div>
+  <% end %>
 
   <%= render 'orders/order_preview' %>
   <%= link_to "Back to Orders", orders_path %>

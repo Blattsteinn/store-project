@@ -26,7 +26,14 @@ Rails.application.routes.draw do
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
 
 
-  resources :orders, only: [ :show, :index, :create, :destroy, :update ]
+  resources :orders, only: [ :show, :index, :create, :destroy, :update ] do
+    member do
+      get :cancel_stripe_checkout
+    end
+  end
+
+  post "stripe/webhooks", to: "stripe_webhooks#create", as: "stripe_webhooks"
+
   resources :order_items, only: [ :create, :destroy ]
 
   get "cart",       to: "carts#show",        as: "cart"

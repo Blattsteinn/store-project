@@ -3,4 +3,9 @@ class Order < ApplicationRecord
 
         belongs_to :user
         has_many :order_items, dependent: :destroy
+
+        #idk why tabs are 8 wide here
+        def restore_stock!
+            order_items.each { |item| item.variant.increment!(:stock, item.quantity) }
+        end
 end

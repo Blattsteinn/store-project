@@ -5,8 +5,8 @@
     <%= render "carts/cart" %>
 
     <div id="checkout-info">
-        <div id="payment-method"> 
-                <p> Payment method here </p>
+        <div id="payment-method">
+        <p>You will be redirected to Stripe's secure checkout to complete payment.</p>
         </div>
 
         <div>
@@ -14,6 +14,6 @@
         </div>
 
     </div>
-    <%= button_to "Purchase", orders_path, method: :post %>
+    <%= button_to "Purchase", orders_path, method: :post, data: { turbo: false } %>
 
 </div>
