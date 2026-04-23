@@ -8,4 +8,8 @@ class Order < ApplicationRecord
         def restore_stock!
             order_items.each { |item| item.variant.increment!(:stock, item.quantity) }
         end
+
+        def paid?
+        status == "paid"
+        end
 end

@@ -19,7 +19,17 @@ class StripeWebhooksController < ApplicationController
 
     if event.type == "checkout.session.completed"
       order = Order.find_by(stripe_session_id: event.data.object.id)
-      order&.update!(status: "paid")
+      return unless order
+      return if order.paid?
+      
+      ActiveRecord::Base.transaction do
+        order.order_items.each do |item|
+          #This can become negative. Although volume is not high so idc
+          item.variant.decrement!(:stock, item.quantity)
+        end
+        order.update!(status: "paid")
+      end
+
     end
 
     render plain: "OK", status: :ok

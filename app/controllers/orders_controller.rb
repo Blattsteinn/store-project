@@ -13,43 +13,42 @@ class OrdersController < ApplicationController
     end
 
     def create
-        if session[:cart].blank?
-            redirect_to cart_path, alert: "Cart is empty" and return
-        end
+        return redirect_to cart_path, alert: "Cart is empty" if session[:cart].blank?
 
+        # === Check the stock ===
         cart_items = session[:cart].map do |variant_id, quantity|
             [ Variant.find(variant_id), quantity ]
         end
 
-        # Validate all stock before touching the DB
-        ActiveRecord::Base.transaction do
-            cart_items.each do |variant, quantity|
-                variant.lock!
-                raise ActiveRecord::Rollback if variant.stock < quantity
-                variant.update!(stock: variant.stock- quantity.to_i)
+        cart_items.each do |variant, quantity|
+            if variant.stock < quantity
+                redirect_to cart_path, alert: "Not enough stock available"
+                return  
             end
+        end
 
+        # === Create an order ===
+        ActiveRecord::Base.transaction do
             @order = Order.create!(user_id: current_user.id)
             cart_items.each do |variant, quantity|
                 product = variant.product
                 OrderItem.create!(
                         order_id: @order.id,
-                        product_id: product.id,
+                        product_id: variant.product_id,
                         variant_id: variant.id,
                         quantity: quantity,
                         price: variant.price)
-                
             end
         end
-        session[:cart] = {}
 
-        # after transaction commits and session[:cart] = {}
+        # === Set-up for Stripe ===
         line_items = @order.order_items.map do |item|
-        { quantity: item.quantity,
+        {   quantity: item.quantity,
             price_data: { currency: "eur", unit_amount: item.price,
-                        product_data: { name: item.product.title } } }
+                        product_data: { name: item.product.title + " (#{item.variant.title })"} } }
         end
 
+        # === Stripe session thing ===
         stripe_session = Stripe::Checkout::Session.create(
         mode: "payment",
         line_items: line_items,
@@ -58,13 +57,15 @@ class OrdersController < ApplicationController
         success_url: order_url(@order, stripe: "success"),
         cancel_url: cancel_stripe_checkout_order_url(@order)
         )
+
         @order.update!(stripe_session_id: stripe_session.id)
+        session[:cart] = {}
         redirect_to stripe_session.url, allow_other_host: true
 
+        # === Incase we fail?
         rescue Stripe::StripeError => e
-        @order&.restore_stock!
-        @order&.destroy
-        redirect_to cart_path, alert: "Payment could not be initiated: #{e.message}"
+            @order&.destroy
+            redirect_to cart_path, alert: "Payment could not be initiated: #{e.message}"
 
     end
 
