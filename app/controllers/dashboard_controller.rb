@@ -2,6 +2,16 @@ class DashboardController < ApplicationController
     before_action :authenticate_admin!
 
     def index
+        @orders = Order.includes(:order_items).all
+
+        @revenue = 0
+        @orders.each do |order|
+            order.order_items.each do |item|
+                @revenue += item.price * item.quantity
+            end
+        end
+        
+
     end
 
     def products_index

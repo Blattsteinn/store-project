@@ -1,4 +1,56 @@
-<h1> Dashboard </h1>
 
-<%= link_to "Products", dashboard_products_path %> <br>
-<%= link_to "Orders", dashboard_orders_path %>
+<div id="dashboard-container">
+    <div id = "dashboard-links">
+        <%= link_to "Products", dashboard_products_path %> <br>
+        <%= link_to "Orders", dashboard_orders_path %>
+    </div>
+    
+    
+    <div id="dashboard-main">
+        <p> Select date here... </p>
+        
+
+        <div id="dashboard-statistics">
+            <div id="dashboard-revenue" class="dashboard-specific-information">
+                <p>Revenue</p>
+                <p><%=convert_from_cents(@revenue)  %></p>
+            </div>
+
+            <div id="dashboard-orders" class="dashboard-specific-information">
+                <p>Orders</p>
+                <p><%=@orders.length %></p>
+            </div>
+
+            <div id="dashboard-visitors" class="dashboard-specific-information">
+                <p>Visitors</p>
+                <p>TBD <%= %></p>
+            </div>
+
+            <div id="dashboard-conversationrate" class="dashboard-specific-information">
+                <p>Conversion Rate</p>
+                <p> TBD <%= %></p>
+            </div>
+        </div>
+
+        <div id="dashboard-graph">
+            <p>TBD graph</p>
+        </div>
+
+        <div id="dashboard-location">
+            <p>TBD location</p>
+        </div>
+
+        <div id="dashboard-top-performing">
+            <p>TBD best performing</p>
+        </div>
+
+        <div id="dashboard-pages">
+            <p>TBD pages</p>
+        </div>
+
+        <div id="dashboard-sources">
+            <p>TBD sources</p>
+        </div>
+
+    </div>
+</div>
