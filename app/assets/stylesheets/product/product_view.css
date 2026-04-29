@@ -1,24 +1,55 @@
 
-#product-view-container{
-    display: grid;
-    grid-template-columns: 60% 40%;
+/* Back link */
+.product-back-link {
+    margin-top: 20px;
+    
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.15s, color 0.15s;
+}
 
-    padding: 20px;
-    gap: 20px;
-    border: 2px solid black;
+.product-back-link:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+#product-view-container{
+    --color-background: #18181b;
+    --color-inside-product: #0c0c0d;
+    --color-pure-black: #000000;
+    --color-border: #545153;
+
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    padding: 20px 0;
+
+    background-color: var(--color-inside-product); 
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
 }
 
 /* ========================== */
+/* == First column == */
 #product-view-first-column{
     grid-column: 1;
+
+    background-color: var(--color-pure-black);
     border: 2px solid black;
+    border-radius: 20px;
+    margin: 0 20px;
+    padding: 10px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
 }
 
 #product-image-container{
@@ -32,10 +63,10 @@
     object-fit: contain;
 }
 
-
-
 #product-view-first-column .title {
     font-size: 28px;
+    text-align: center;
+    font-weight: 1000;
 }
 
 #product-view-first-column .description {
@@ -43,16 +74,107 @@
 }
 
 /* ========================== */
+/* == Second column == */
 #product-view-second-column{
     grid-column: 2;
-
-    border: 2px solid black;
 }
 
-.product-separate-variant{
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    border: 2px solid black;
-    padding: 10px;
-    margin: 5px;
+.product-separate-variant {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+
+    border: 1px solid var(--color-border);
+    border-radius: 15px;
+
+    padding: 16px;
+    margin: 8px 12px;
+
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.product-separate-variant:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Variant info (left side) */
+.product-separate-variant .variant-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.product-separate-variant .variant-info p:first-child {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 1000;
+    font-size: 1.2rem;
+}
+
+.product-separate-variant .variant-info .variant-description{
+    opacity: 0.8;
+}
+
+.product-separate-variant .variant-info .variant-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    margin-top: 8px;
+}
+
+/* Variant actions (right side) */
+.product-separate-variant .variant-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.product-separate-variant .variant-stock {
+    margin: 0;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.product-separate-variant form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.product-separate-variant form label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* Add to cart stylings */
+.product-separate-variant form input[type="number"] {
+    width: 52px;
+    padding: 5px 8px;
+    font-size: 0.85rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.07);
+    color: white;
+    outline: none;
+}
+
+.product-separate-variant form input[type="submit"] {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: white;
+    color: #0d1321;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.product-separate-variant form input[type="submit"]:hover {
+    opacity: 0.85;
 }
