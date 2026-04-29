@@ -1,55 +1,103 @@
+ 
  /* ======================== */
  /* Product model styling */
 
  #product-index-page{
+
+  
+
   display: flex;
   flex-direction: column;
 
   align-items: center;
   gap: 10px;
+ }
 
+
+ #random-empty-space{
+  height: 150px;
  }
- #search-bar-container{
-  display: flex;
-  justify-content: center;
-  padding: 10px;
- }
+
+ /* ======================== */
+ /* == All products displayed in this */
  #product-container{
    display: grid;
-   grid-template-columns: 1fr 1fr 1fr;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
    gap: 20px;
  }
-
+ /* ======================== */
+ /* == Box where the product lives */
  .product-box{
-   border: 2px solid black;
-   /* padding: 10px; */
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   border-radius: 16px;
 
    display: flex;
    flex-direction: column;
    align-items: center;
+   overflow: hidden;
 
-   gap: 10px;
+   background-color: var(--color-lighter-blue);
+   color: white;
+
+   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+   transition: transform 0.2s, box-shadow 0.2s;
+
+   text-decoration: none;
  }
 
- .product-box-image-container{
-   display: flex;
-   align-items: center;
-   justify-content: center;
-
-   height: 150px;
+ .product-box:hover {
+   transform: translateY(-3px);
+   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
  }
 
-  .product-box-image-container img{
-   max-height: 150px;
+ /* == Upper part of the box is for the image */
+ .product-box .image-container{
+  flex: 0 0 150px;
+  width: 100%; 
+  height: 150px; 
+  overflow: hidden;
+ }
+
+  .product-box .image-container img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
   }
 
- .product-box-text-container{
+/* == Middle part reserved for title */
+  .product-box .title-box{
+    flex: 0 0 40px;
+    padding: 10px;
+    margin-bottom: 10px;
+     align-self: flex-start;
+  }
+  
+  .product-box .title-box .product-title {
+    text-align: left; 
+    margin: 0;   
+    white-space: nowrap;
+    overflow: hidden;    
+    width: 100%;
+    font-weight: 1000;
+  
+}
+  .product-box .title-box .product-title a{
+    color: white;
+    text-decoration: none;
+    text-overflow: ellipsis;
+  }
+
+/* == Bottom part for some details */
+ .product-box .text-container{
+    flex: 0 0 55px;
     align-self: flex-start;
 
     display: flex;
     justify-content: space-between;
     width: 100%;
 
-    padding: 10px;
+    padding: 0 10px;
  }
  

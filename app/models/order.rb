@@ -10,6 +10,6 @@ class Order < ApplicationRecord
         end
 
         def paid?
-        status == "paid"
+            status == "paid"
         end
 end

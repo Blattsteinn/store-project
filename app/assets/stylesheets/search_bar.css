@@ -1,0 +1,56 @@
+ /* ====================== */
+ /* Search bar */
+ #search-bar-container{
+  display: flex;
+  justify-content: center;
+  padding: 12px 20px;
+  width: 100%;
+ }
+
+ #search-bar-container form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+ }
+
+ #search-bar-container label {
+  font-size: 0.9rem;
+  color: #444;
+  white-space: nowrap;
+ }
+
+ #search-bar-container input[type="text"] {
+  padding: 4px 15px;
+  font-size: 0.95rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  outline: none;
+  flex: 1;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+ }
+
+ #search-bar-container input[type="text"]:focus {
+  border-color: #0d1321;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 2px rgba(13, 19, 33, 0.12);
+ }
+
+ #search-bar-container input[type="submit"] {
+  padding: 10px 24px;
+  font-size: 0.9rem;
+  background-color: #0d1321;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
+ }
+
+ #search-bar-container input[type="submit"]:hover {
+  background-color: #1e2d4a;
+ }

@@ -15,22 +15,25 @@
 
             <%= form.submit "filter" %>
         <% end %>
+        
     </details>
     <%= button_to "Reset", dashboard_orders_path,  method: :get %>
 
-<% unless @orders.nil? %>
-    <% @orders.each do |order| %>
-        <div>
-            <h3>Order 
-            <%= link_to order.id, dashboard_order_path(order) %> — 
-            <%= order.created_at.strftime("%b %d, %Y") %>, 
-            status: <%= order.status %> 
-            total: <%= convert_from_cents(order.order_items.sum {|item| item.variant.price}) %> EUR
-            
-            </h3>
+<div id="order-index-container">
+    <% unless @orders.nil? %>
+        <% @orders.each do |order| %>
+            <div class="order-index-order">
+                <h3>Order 
+                <%= link_to order.id, dashboard_order_path(order) %> — 
+                <%= order.created_at.strftime("%b %d, %Y") %>, 
+                status: <%= order.status %> 
+                total: <%= convert_from_cents(order.order_items.sum {|item| item.variant.price}) %> EUR
+                
+                </h3>
 
-        </div>
+            </div>
+        <% end %>
+    <% else %>
+        <p> No orders! </p>
     <% end %>
-<% else %>
-    <p> No orders! </p>
-<% end %>
+</div>

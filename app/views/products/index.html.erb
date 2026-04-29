@@ -2,9 +2,13 @@
 
 <div id="product-index-page">
 
+
+  <div id="random-empty-space">
+
+  </div>
+
   <div id="search-bar-container">
     <%= form_with url: products_path, method: :get do |form| %>
-        <%= form.label :product_name, "What you're looking for?" %> <br>
         <%= form.text_field :product_name %>
         <%= form.submit "Search" %>
     <% end %>
@@ -12,29 +16,31 @@
 
   <div id="product-container">
     <% @products.each do |product| %>
-      <div class="product-box">
-    
-        <div class="product-box-image-container">
+      <%= link_to product_path(product), class: "product-box" do %> 
+
+        <div class="image-container">
           <% product.product_images.each do |image| %>
-              <%= image_tag image.image, alt: product.title, style: "max-width: 300px;" %>
+              <%= image_tag image.image, alt: product.title %>
               <% break %> <%# Break for now%>
           <% end %>
         </div>
 
-        <p><%= link_to product.title, product_path(product) %> </p>
-
-        <div class="product-box-text-container">
-          
-          <% stock = 0 %>
-          <% product.variants.each do |variant| %>
-            <% stock += variant.stock %>
-          <% end %>
-          <p> <%= convert_from_cents(product.variants.minimum(:price)) %> EUR </p>
-          <p> <%= stock %> in stock </p>
-          
+        <div class="title-box">
+          <p class="product-title"><%= product.title %></p>
         </div>
 
-      </div>
+        <div class="text-container">
+            <!--I don't like the approach here. Fix later.-->
+            <% stock = 0 %>
+            <% product.variants.each do |variant| %>
+                  <% stock += variant.stock %>
+            <% end %>
+
+            <p class="product-price"> <%= convert_from_cents(product.variants.minimum(:price)) %> EUR </p>
+            <p class="product-stock"> <%= stock %> in stock </p>
+        </div>
+      <% end%>
+
     <% end %>
   </div>
 
