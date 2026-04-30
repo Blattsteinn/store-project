@@ -1,14 +1,18 @@
 
 <turbo-frame id="<%= dom_id(variant, :increase) %>"> 
-    <div style="display: flex; gap: 5px;">
-        <p>Total:</p> <p class="cart-quantity"><%= quantity %> </p> 
-            
-        <%= button_to "-", cart_item_path, method: :patch,
-            params: { variant_id: variant.id, quantity: quantity.to_i - 1 }, class: "qty-button" %>
+    <div>
+        
+        <div class="increase-decrease-cart">
+            <%= button_to "-", cart_item_path, method: :patch,
+                params: { variant_id: variant.id, quantity: quantity.to_i - 1 }, class: "qty-button" %>
 
-        <%= button_to "+", cart_item_path, method: :patch,
-            params: { variant_id: variant.id, quantity: quantity.to_i + 1 }, class: "qty-button" %>
+            <p class="cart-quantity"><%= quantity %> </p> 
 
-        <p> (maximum </p> <p><%= variant.stock %>)  </p>    
+            <%= button_to "+", cart_item_path, method: :patch,
+                params: { variant_id: variant.id, quantity: quantity.to_i + 1 }, class: "qty-button" %>
+        </div>
+        <div class="cart-variant-limit">
+             <p><%= variant.stock %> in Stock </p>    
+        </div>
     </div>
 </turbo-frame>

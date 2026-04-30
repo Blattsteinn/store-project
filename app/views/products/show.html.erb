@@ -83,29 +83,29 @@
 
       </div>
 
-      <div id="product-variant-container">
+      <div>
         <%= form_with local: true do |form| %>
           <% @product.variants.each do |variant| %>
             <% next if variant.stock <= 0 %>
 
               <label class="product-separate-variant">
-                <div class="variant-info">
-                  <%= form.radio_button :product_id, variant.id, 
-                    data: {action: "change->product-view#update_form_values",
-                    stock: variant.stock,
-                    variant_id: variant.id,
-                    product_id: @product.id,
-                    price: variant.price
-                    } %>
+                <%= form.radio_button :product_id, variant.id, 
+                  data: {action: "change->product-view#update_form_values",
+                  stock: variant.stock,
+                  variant_id: variant.id,
+                  product_id: @product.id,
+                  price: variant.price
+                  } %>
+                  <div class="variant-info">
+                    <p><%= variant.title %></p>
+                    <p class="variant-description"><%= variant.description %></p>
+                    <p class="variant-price"><%= convert_from_cents(variant.price) %> EUR</p>
+                  </div>
+                  
+                  <div class="variant-actions">
+                    <p class="variant-stock"><%= variant.stock %> in stock</p>
+                  </div>
 
-                  <p><%= variant.title %></p>
-                  <p class="variant-description"><%= variant.description %></p>
-                  <p class="variant-price"><%= convert_from_cents(variant.price) %> EUR</p>
-                </div>
-                
-                <div class="variant-actions">
-                  <p class="variant-stock"><%= variant.stock %> in stock</p>
-                </div>
               </label>
             
           <% end %>

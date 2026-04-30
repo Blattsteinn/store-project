@@ -2,18 +2,26 @@
 
 <div id="cart-container" data-controller="price">
 
+    
     <%= render "carts/cart" %>
 
     <div id="checkout-info">
-        <div id="payment-method">
-        <p>You will be redirected to Stripe's secure checkout to complete payment.</p>
+
+        <div id="cart_summary" class="general-box" style="display: flex;">
+            <p>  Cart Summary: </p>
+            <p data-price-target="price"> </p>
         </div>
 
-        <div>
+        <div class = "general-box">
+            <label for="email"> Email </label>
             <input id="email" type="email" value=<%= current_user.email %>>  
         </div>
 
+        <div id="payment-method">
+            <p>You will be redirected to Stripe's secure checkout to complete payment.</p>
+        </div>
+
+         <%= button_to "Purchase", orders_path, method: :post, data: { turbo: false } %>
     </div>
-    <%= button_to "Purchase", orders_path, method: :post, data: { turbo: false } %>
 
 </div>

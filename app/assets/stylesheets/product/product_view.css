@@ -103,7 +103,6 @@ nav.products-show {
 
 .product-separate-variant {
     display: flex;
-    justify-content: space-between;
     cursor: pointer;
     align-items: flex-start;
     gap: 12px;
@@ -126,7 +125,9 @@ nav.products-show {
 .product-separate-variant .variant-info {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 4px;
+
 }
 
 .product-separate-variant .variant-info p:first-child {
