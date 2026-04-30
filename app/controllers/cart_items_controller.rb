@@ -28,6 +28,17 @@ class CartItemsController < ApplicationController
         end
     end
 
+    def create_instantly
+    session[:cart] = {}
+    
+    variant  = Variant.find(params[:variant_id])
+    quantity = params[:quantity].to_i
+
+    session[:cart][variant.id.to_s] = quantity unless quantity > variant.stock
+
+    redirect_to orders_path, method: :post
+    end
+
     def update
         variant = Variant.find(params[:variant_id])
         quantity = params[:quantity].to_i

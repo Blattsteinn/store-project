@@ -25,6 +25,8 @@ Rails.application.routes.draw do
   patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
   delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
 
+  post "cart_items/instantly", to: "cart_items#create_instantly", as: "cart_create_instantly"
+
 
   resources :orders, only: [ :show, :index, :create, :destroy, :update ] do
     member do

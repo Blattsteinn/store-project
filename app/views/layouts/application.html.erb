@@ -14,6 +14,9 @@
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
@@ -23,11 +26,11 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="<%= controller_name %>-<%= action_name %>">
     <% flash.each do |type, message| %>
       <div class="flash <%= type %>"><%= message %></div>
     <% end %>
-    <nav>
+    <nav class="<%= controller_name %>-<%= action_name %>">
       <%= link_to "Dokkan Store", root_path, class: "nav-brand" if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
       <%= link_to "Products", products_path %>
       <%= link_to "Orders", orders_path %>

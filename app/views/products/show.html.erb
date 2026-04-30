@@ -1,6 +1,6 @@
 
 <%= link_to "← Back to products", products_path, class: "product-back-link" %>
-<div id="product-view-container">
+<div id="product-view-container" data-controller="product-view">
   
   
 
@@ -22,32 +22,94 @@
     
   </div>
 
-  <div id="product-view-second-column">
+  <div id="product-view-second-column" >
+
+      <div id="instant-payment" data-product-view-target="entireDiv" hidden>
+
+        <%= form_with url: cart_items_path, method: :post do |form|%>
+
+          <div class="general-box" id="quantity-change">
+              <p data-product-view-target="price">  </p>
+
+
+              <div style="display: flex">
+                <button type="button" data-action="click->product-view#decrease" class="increase-decrease"> - </button>
+                  <%= form.number_field :quantity, max: 1, value: 1, min: 1,
+                  readonly: true,
+                  data: {product_view_target: "variantMax",
+                  action: "change->product-view#update_quantity",
+
+                  } %>
+                  <button type="button" data-action="click->product-view#increase" class="increase-decrease"> + </button>
+               </div>
+          </div>
+
+          <div class="general-box">
+            <%= form.radio_button :payment_method, "stripe", :checked => true  %>
+            <%= form.label :payment_method_stripe, "Stripe" %>
+
+            <%= form.radio_button :payment_method, "paypal"%>
+            <%= form.label :payment_method_paypal, "PayPal" %>
+          </div>
+
+          <div class="general-box">
+              <%= form.label :email %> <br>
+              <%= form.email_field :email, value: current_user.email %>
+          </div>
+
+        <% end %>
+        
+        <div class="general-box" style="display: flex" >
+          <%# Add to cart %>
+          <div class="cart-instant">
+            <%= form_with url: cart_items_path, method: :post do |form| %>
+              <%= form.hidden_field :variant_id, data: { product_view_target: "addToCartVariantId" } %>
+              <%= form.hidden_field :quantity, value: 1, data: { product_view_target: "addToCartQuantity" } %>
+                <%= form.submit "Add to Cart" %>
+            <% end %>
+          </div>
+
+          <%# Stripe instant buy %>
+          <div class="stripe-instant">
+            <%= form_with url: orders_path, method: :post, data: { turbo: false } do |form| %>
+              <%= form.hidden_field :variant_id, data: { product_view_target: "stripeVariantId" } %>
+              <%= form.hidden_field :quantity, value: 1, data: { product_view_target: "stripeQuantity" }%>
+              <%= form.submit "Purchase" %>
+            <% end %>
+          </div>
+
+
+        </div>
+
+      </div>
 
       <div id="product-variant-container">
-        <% @product.variants.each do |variant| %>
-          <% next if variant.stock <= 0 %>
-          <div class="product-separate-variant">
-            <div class="variant-info">
-              <p><%= variant.title %></p>
-              <p class="variant-description"><%= variant.description %></p>
-              <p class="variant-price"><%= convert_from_cents(variant.price) %> EUR</p>
-            </div>
+        <%= form_with local: true do |form| %>
+          <% @product.variants.each do |variant| %>
+            <% next if variant.stock <= 0 %>
 
-            <div class="variant-actions">
-              <%= form_with url: cart_items_path, method: :post do |f| %>
-                <%= f.hidden_field :variant_id, value: variant.id %>
-                <%= f.hidden_field :quantity, value: 1, min: 1, max: variant.stock %>
-                <%= f.submit "Add To Cart" %>
-              <% end %>
-              <p class="variant-stock"><%= variant.stock %> in stock</p>
-            </div>
-          </div>
-          
-       
-          
+              <label class="product-separate-variant">
+                <div class="variant-info">
+                  <%= form.radio_button :product_id, variant.id, 
+                    data: {action: "change->product-view#update_form_values",
+                    stock: variant.stock,
+                    variant_id: variant.id,
+                    product_id: @product.id,
+                    price: variant.price
+                    } %>
+
+                  <p><%= variant.title %></p>
+                  <p class="variant-description"><%= variant.description %></p>
+                  <p class="variant-price"><%= convert_from_cents(variant.price) %> EUR</p>
+                </div>
+                
+                <div class="variant-actions">
+                  <p class="variant-stock"><%= variant.stock %> in stock</p>
+                </div>
+              </label>
+            
+          <% end %>
         <% end %>
-
          
       </div>
 

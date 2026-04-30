@@ -13,8 +13,14 @@ class OrdersController < ApplicationController
     end
 
     def create
-        return redirect_to cart_path, alert: "Cart is empty" if session[:cart].blank?
+        if params[:variant_id].present?
+            session[:cart] = {}
+            variant = Variant.find(params[:variant_id])
+            session[:cart][variant.id.to_s] = params[:quantity].to_i
+        end
 
+        return redirect_to cart_path, alert: "Cart is empty" if session[:cart].blank?
+        
         # === Check the stock ===
         cart_items = session[:cart].map do |variant_id, quantity|
             [ Variant.find(variant_id), quantity ]

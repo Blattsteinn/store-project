@@ -1,8 +1,16 @@
+:root {
+    --color-background: #161617;
+    --color-inside-product: #0c0c0d;
+    --color-pure-black: #000000;
+    --color-border: #545153;
+
+    --border-radius: 15px;
+}
 
 /* Back link */
 .product-back-link {
     margin-top: 20px;
-    
+
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -21,20 +29,22 @@
 }
 
 #product-view-container{
-    --color-background: #18181b;
-    --color-inside-product: #0c0c0d;
-    --color-pure-black: #000000;
-    --color-border: #545153;
-
     display: grid;
-    grid-template-columns: 40% 1fr;
+    grid-template-columns: 50% 1fr;
     padding: 20px 0;
 
     background-color: var(--color-inside-product); 
     border: 2px solid var(--color-border);
-    border-radius: 20px;
+    border-radius: var(--border-radius)
 }
 
+body.products-show {
+  background-color: var(--color-background);
+}
+
+nav.products-show {
+    background-color: var(--color-inside-product);
+}
 /* ========================== */
 /* == First column == */
 #product-view-first-column{
@@ -42,7 +52,7 @@
 
     background-color: var(--color-pure-black);
     border: 2px solid black;
-    border-radius: 20px;
+    border-radius: var(--border-radius);
     margin: 0 20px;
     padding: 10px;
 
@@ -64,17 +74,29 @@
 }
 
 #product-view-first-column .title {
-    font-size: 28px;
+    font-size: 24px;
     text-align: center;
     font-weight: 1000;
+    padding: 12px 0;
 }
 
 #product-view-first-column .description {
+    margin-top: 40px;
     font-size: 14px;
 }
 
 /* ========================== */
 /* == Second column == */
+.general-box {
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+
+    padding: 16px;
+    margin: 8px 12px;
+
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
 #product-view-second-column{
     grid-column: 2;
 }
@@ -82,11 +104,12 @@
 .product-separate-variant {
     display: flex;
     justify-content: space-between;
+    cursor: pointer;
     align-items: flex-start;
     gap: 12px;
 
     border: 1px solid var(--color-border);
-    border-radius: 15px;
+    border-radius: var(--border-radius);
 
     padding: 16px;
     margin: 8px 12px;
@@ -156,7 +179,7 @@
     width: 52px;
     padding: 5px 8px;
     font-size: 0.85rem;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     border: 1px solid rgba(255, 255, 255, 0.15);
     background-color: rgba(255, 255, 255, 0.07);
     color: white;
@@ -170,11 +193,50 @@
     background-color: white;
     color: #0d1321;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     cursor: pointer;
     transition: opacity 0.15s;
 }
 
 .product-separate-variant form input[type="submit"]:hover {
     opacity: 0.85;
+}
+
+/* ========================== */
+/* == Variant Radio Buttons == */
+.product-separate-variant {
+    cursor: pointer;
+}
+
+.product-separate-variant input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    background-color: transparent;
+
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 3px;
+}
+
+.product-separate-variant input[type="radio"]:hover:not(:checked) {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.product-separate-variant input[type="radio"]:checked {
+    border-color: white;
+    background-color: white;
+    box-shadow: inset 0 0 0 4px var(--color-inside-product);
+}
+
+/* Highlight card when selected */
+.product-separate-variant:has(input[type="radio"]:checked) {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
