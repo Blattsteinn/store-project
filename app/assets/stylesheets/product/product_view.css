@@ -81,8 +81,17 @@ nav.products-show {
 }
 
 #product-view-first-column .description {
-    margin-top: 40px;
     font-size: 14px;
+    align-self: flex-start;
+    padding: 15px;
+}
+
+.description li {
+    list-style: circle;
+    padding: 5px;
+}
+.description ul {
+  padding-left: 20px;
 }
 
 /* ========================== */

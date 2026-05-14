@@ -12,3 +12,10 @@
     padding: 10px; 
     margin: 10px 0;
 }
+
+
+
+textarea {
+  width: 80%;
+  height: 500px;
+}

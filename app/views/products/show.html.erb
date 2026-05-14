@@ -16,9 +16,9 @@
       <% end %>
     </div>
 
-    <p class="description"> 
-      <%= @product.description %>  
-    </p>
+    <div class="description"> 
+      <%= raw markdown(@product.description) %>  
+    </div>
     
   </div>
 
