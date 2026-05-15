@@ -30,4 +30,14 @@ class DashboardController < ApplicationController
         render "dashboard/order/order_show"
     end
 
+    def feedback_index
+        @feedbacks = Feedback.all.includes(:user)
+        render "dashboard/feedback/feedback_index"
+    end
+
+    def feedback_show
+        @feedback = Feedback.find(params[:id])
+        render "dashboard/feedback/feedback_show"
+    end
+
 end

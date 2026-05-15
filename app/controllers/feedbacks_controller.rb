@@ -10,6 +10,7 @@ class FeedbacksController < ApplicationController
     def create
         @feedback = Feedback.new(feedback_params)
         @feedback.user_id = current_user.id
+
         if @feedback.save
             redirect_to feedbacks_path
         else
@@ -18,12 +19,22 @@ class FeedbacksController < ApplicationController
     end
 
     def edit
+        authenticate_admin!
+        @feedback = Feedback.find(params[:id])
     end
 
     def update
+        authenticate_admin!
+        @feedback = Feedback.find(params[:id])
+        @feedback.update!(feedback_params)
+        redirect_to dashboard_feedbacks_path
     end
 
     def destroy
+        authenticate_admin!
+        @feedback = Feedback.find(params[:id])
+        @feedback.destroy
+        redirect_to dashboard_feedbacks_path
     end
 
     private

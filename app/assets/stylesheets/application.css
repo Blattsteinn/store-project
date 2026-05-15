@@ -11,9 +11,8 @@
 
 
 body{
-    --color-dark-blue: #0d1321;
+    --color-dark-blue: #161617;
     --color-lighter-blue: #0d1521;
-
     /* background-color: #18181b; */
     max-width: 1200px;
     height: 5888px; 

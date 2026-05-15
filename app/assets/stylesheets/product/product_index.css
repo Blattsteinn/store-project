@@ -5,6 +5,12 @@ nav.products-index{
   background-color: var(--color-lighter-blue);
 }
 
+body.products-index{
+   background-color: #0d1321;
+}
+
+/* ========================== */
+
  #product-index-page{
   display: flex;
   flex-direction: column;

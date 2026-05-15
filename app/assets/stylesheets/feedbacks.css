@@ -50,6 +50,9 @@ body.feedbacks-new {
 }
 
 .feedback-box {
+  overflow: auto;    /* scrollbar appears only when needed */
+
+  height: 200px;
   background: #0c0c0d;
   border: 1px solid #545153;
   border-radius: 15px;

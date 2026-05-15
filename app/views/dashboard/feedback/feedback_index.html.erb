@@ -1,0 +1,37 @@
+
+<h1> Feedback Index (Admin) </h1>
+
+<% if @feedbacks.any? %>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Rating</th>
+        <th>Feedback</th>
+        <th>Order</th>
+        <th>Created</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @feedbacks.each do |feedback| %>
+        <tr>
+          <td><%= feedback.id %></td>
+          <td><%= feedback.user&.email || 'N/A' %></td>
+          <td>
+            <span class="badge badge-info"><%= feedback.rating %>/5</span>
+          </td>
+          <td><%= truncate(feedback.feedback, length: 50) %></td>
+          <td><%= link_to feedback.order_id, dashboard_order_path(feedback.order_id) if feedback.order_id %></td>
+          <td><%= feedback.created_at.strftime('%b %d, %Y') %></td>
+          <td>
+            <%= link_to 'View', dashboard_feedback_show_path(feedback), class: 'btn btn-sm btn-info' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No feedbacks found.</p>
+<% end %>
