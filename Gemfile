@@ -69,7 +69,7 @@ end
 gem "devise", "~> 5.0"
 gem "bullet", group: [:development, :test]
 
-gem "stripe", "~> 13.0"
+gem "stripe", "~> 19.1"
 gem "dotenv-rails", groups: [ :development, :test ]
 
 gem 'redcarpet' #md formatting
