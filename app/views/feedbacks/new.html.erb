@@ -1,0 +1,47 @@
+<div id="feedback-new-page">
+  <div class="feedback-form-card">
+
+    <div class="feedback-form-header">
+      <h2>Leave Feedback</h2>
+      <p>Your feedback helps us improve. Please be honest — reviews are tied to a real order.</p>
+    </div>
+
+    <% if @feedback.errors.any? %>
+      <div class="feedback-errors">
+        <strong>Please fix the following:</strong>
+        <ul>
+          <% @feedback.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with model: @feedback, class: "feedback-form" do |form| %>
+
+      <div class="form-group">
+        <%= form.label :order_id, "Order" %>
+        <p class="form-hint">Enter your order ID.</p>
+        <%= form.text_field :order_id, class: "form-input" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :rating, "Rating (1–5)" %>
+        <p class="form-hint">1 = Poor, 5 = Excellent.</p>
+        <%= form.number_field :rating, min: 1, max: 5, class: "form-input form-input--short" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :feedback, "Your Review" %>
+        <p class="form-hint">Minimum 10 characters. Describe your experience with the order.</p>
+        <%= form.textarea :feedback, rows: 5, placeholder: "Tell us about your experience...", class: "form-input" %>
+      </div>
+
+      <div class="form-actions">
+        <%= link_to "Cancel", feedbacks_path, class: "btn-cancel" %>
+        <%= form.submit "Submit Feedback", class: "btn-submit" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

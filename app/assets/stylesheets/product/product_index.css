@@ -1,11 +1,11 @@
  
  /* ======================== */
  /* Product model styling */
+nav.products-index{
+  background-color: var(--color-lighter-blue);
+}
 
  #product-index-page{
-
-  
-
   display: flex;
   flex-direction: column;
 

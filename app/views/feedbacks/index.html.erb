@@ -1,0 +1,21 @@
+<div id="feedbacks-index-page">
+  <div class="feedbacks-header-row">
+    <h2 class="feedbacks-title">Feedback</h2>
+    <%= link_to "Leave Feedback", new_feedback_path, class: "feedback-new-link" %>
+  </div>
+
+  <div id="feedbacks-grid">
+    <% @feedbacks.each do |feedback| %>
+      <div class="feedback-box">
+        <div class="feedback-header">
+          <span class="feedback-rating">
+            <%= "★" * feedback.rating %><%= "☆" * (5 - feedback.rating) %>
+          </span>
+          <span class="feedback-order">Order #<%= feedback.order_id %></span>
+        </div>
+        <p class="feedback-body"><%= feedback.feedback %></p>
+        <p class="feedback-meta">By User #<%= feedback.user_id %></p>
+      </div>
+    <% end %>
+  </div>
+</div>

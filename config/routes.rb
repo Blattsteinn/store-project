@@ -48,4 +48,6 @@ Rails.application.routes.draw do
   get "dashboard/orders/:id",   to: "dashboard#order_show",      as: "dashboard_order"
 
   root "products#index"
+
+  resources :feedbacks, only: [:index, :new, :create, :destroy, :update]
 end

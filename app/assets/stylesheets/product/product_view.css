@@ -41,10 +41,6 @@
 body.products-show {
   background-color: var(--color-background);
 }
-
-nav.products-show {
-    background-color: var(--color-inside-product);
-}
 /* ========================== */
 /* == First column == */
 #product-view-first-column{
