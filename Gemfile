@@ -57,6 +57,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
 end
 
 group :test do
@@ -71,4 +72,5 @@ gem "bullet", group: [:development, :test]
 gem "stripe", "~> 13.0"
 gem "dotenv-rails", groups: [ :development, :test ]
 
-gem 'redcarpet'
+gem 'redcarpet' #md formatting
+# gem 'resend'

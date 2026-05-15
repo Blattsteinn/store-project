@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  after_create_commit { UserMailer.welcome_email(self).deliver_later }
+  
   has_many :cart_items, dependent: :destroy
   has_many :orders,     dependent: :nullify
 
