@@ -52,5 +52,6 @@ Rails.application.routes.draw do
 
   root "products#index"
 
-  resources :feedbacks, only: [:index, :new, :create, :destroy, :edit, :update]
+  resources :feedbacks, only:  [:index, :new, :create, :destroy, :edit, :update]
+  resources :wish_lists, only: [:index, :create, :destroy, :update]
 end

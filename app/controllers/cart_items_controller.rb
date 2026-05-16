@@ -18,11 +18,12 @@ class CartItemsController < ApplicationController
         # redirect_to products_path, notice: "Added to cart"
         respond_to do |format|
             format.turbo_stream do
-                render turbo_stream: turbo_stream.replace(
+                render turbo_stream: [turbo_stream.replace(
                 "cart-counter",
                 partial: "carts/cart_counter",
                 locals: { count: session[:cart].length }
-                )
+                ),
+                turbo_stream.replace("saved-message", partial: "products/shared/cart_add")]
             end
             format.html { redirect_to products_path, notice: "Added to cart" }
         end

@@ -1,7 +1,7 @@
 class Feedback < ApplicationRecord
     belongs_to :user
     belongs_to :order
-
+    
     validates :rating, presence: true, numericality: {
         only_integer: true, 
         greater_than: 0,

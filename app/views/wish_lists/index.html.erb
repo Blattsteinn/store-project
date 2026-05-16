@@ -1,0 +1,29 @@
+<turbo-frame id="saved-message">
+</turbo-frame>
+
+
+<div id="wish-list-container">
+  <h1>My Wish List</h1>
+
+  <% if @wish_lists.empty? %>
+    <p class="wish-list-empty">Your wish list is empty.</p>
+  <% else %>
+    <div id="wish-list-items">
+      <% @wish_lists.each do |wish_list| %>
+        <% variant = wish_list.variant %>
+        <% product = variant.product %>
+        <div class="wish-list-item general-box">
+          <div class="wish-list-info">
+            <p class="wish-list-product-title"><%= link_to product.title, product_path(product) %></p>
+            <p class="wish-list-variant-title"><%= variant.title %></p>
+            <p class="wish-list-price"><%= convert_from_cents(variant.price) %> EUR</p>
+            <p class="wish-list-quantity">Qty: <%= wish_list.quantity %></p>
+          </div>
+          <div class="wish-list-actions">
+            <%= button_to "Remove", wish_list_path(wish_list), method: :delete, class: "wish-list-remove" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

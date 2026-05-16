@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_15_101757) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_15_173130) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -128,6 +128,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_101757) do
     t.index ["product_id"], name: "index_variants_on_product_id"
   end
 
+  create_table "wish_lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.bigint "variant_id", null: false
+    t.index ["user_id"], name: "index_wish_lists_on_user_id"
+    t.index ["variant_id"], name: "index_wish_lists_on_variant_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "products"
@@ -140,4 +150,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_101757) do
   add_foreign_key "orders", "users"
   add_foreign_key "product_images", "products"
   add_foreign_key "variants", "products"
+  add_foreign_key "wish_lists", "users"
+  add_foreign_key "wish_lists", "variants"
 end

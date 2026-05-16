@@ -27,9 +27,6 @@
   </head>
 
   <body class="<%= controller_name %>-<%= action_name %>">
-    <% flash.each do |type, message| %>
-      <div class="flash <%= type %>"><%= message %></div>
-    <% end %>
     <nav class="<%= controller_name %>-<%= action_name %>">
       <%= link_to "Dokkan Store", root_path, class: "nav-brand" if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
       <%= link_to "Products", products_path %>
@@ -53,10 +50,22 @@
           </turbo-frame>
         <% end %>
 
-        <%= "❤️" %>
-        
+          <%= link_to  wish_lists_path, class: "nav-cart" do %>
+           <%= "❤️" %>
+            <turbo-frame id="wishlist-counter">
+                <p><%= current_user.wish_lists.length || 0 %></p>
+            </turbo-frame>
+          <% end %>
+
       </div>
     </nav>
+
+    <% if flash[:notice] %>
+      <div class="flash-notice">
+        <p><%= flash[:notice] %></p>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

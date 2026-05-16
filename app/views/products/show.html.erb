@@ -1,3 +1,6 @@
+<turbo-frame id="saved-message">
+</turbo-frame>
+
 
 <%= link_to "← Back to products", products_path, class: "product-back-link" %>
 <div id="product-view-container" data-controller="product-view">
@@ -75,6 +78,14 @@
               <%= form.hidden_field :variant_id, data: { product_view_target: "stripeVariantId" } %>
               <%= form.hidden_field :quantity, value: 1, data: { product_view_target: "stripeQuantity" }%>
               <%= form.submit "Purchase" %>
+            <% end %>
+          </div>
+
+          <div class="wish-list">
+            <%= form_with model: WishList.new, url: wish_lists_path, method: :post do |form| %>
+              <%= form.hidden_field :quantity, value: 1 , data: { product_view_target: "addToWishListQuantity" }%>
+              <%= form.hidden_field :variant_id ,         data: { product_view_target: "addToWishListVariantId" }%>
+              <%= form.submit "❤️" %>
             <% end %>
           </div>
 
