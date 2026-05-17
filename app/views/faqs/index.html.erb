@@ -1,0 +1,18 @@
+<h1>Frequently Asked Questions</h1>
+
+<% if @faqs.any? %>
+  <dl style="max-width:720px;">
+    <% @faqs.each do |faq| %>
+      <div style="margin-bottom:1.5rem;">
+        <dt style="font-weight:bold;"><%= faq.question %></dt>
+        <dd style="margin:0.25rem 0 0 1rem;"><%= faq.answer %></dd>
+      </div>
+    <% end %>
+  </dl>
+<% else %>
+  <p>No FAQs available yet.</p>
+<% end %>
+
+<% if current_user&.admin? %>
+  <%= link_to "Manage FAQs (Admin)", dashboard_faqs_path %>
+<% end %>

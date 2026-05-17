@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  get "faqs/new"
+  get "faqs/create"
+  get "faqs/destroy"
+  get "faqs/update"
+  get "faqs/edit"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -50,10 +55,13 @@ Rails.application.routes.draw do
   get "dashboard/feedback_index" ,to: "dashboard#feedback_index", as: "dashboard_feedbacks"
   get "dashboard/feedback_show/:id", to: "dashboard#feedback_show", as: "dashboard_feedback_show"
 
+  get "dashboard/faq_index", to: "dashboard#faq_index", as: "dashboard_faqs"
+
   root "products#index"
 
   resources :feedbacks, only:  [:index, :new, :create, :destroy, :edit, :update]
   resources :wish_lists, only: [:index, :create, :destroy, :update]
 
   resources :support_messages, only: [:index, :show, :new, :create, :destroy, :update]
+  resources :faqs, only: [:index, :new, :create, :destroy, :update, :edit]
 end

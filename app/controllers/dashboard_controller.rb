@@ -40,4 +40,9 @@ class DashboardController < ApplicationController
         render "dashboard/feedback/feedback_show"
     end
 
+    def faq_index
+        @faqs = Faq.all
+        render "dashboard/faq/faq_index"
+    end
+
 end

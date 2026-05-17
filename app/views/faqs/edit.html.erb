@@ -1,0 +1,17 @@
+<h1>Faqs#edit</h1>
+<p>Find me in app/views/faqs/edit.html.erb</p>
+
+<%= form_with model: @faq do |form| %> 
+    <div>
+        <%= form.label :question %> <br>
+        <%= form.text_field :question %>
+    </div>
+
+    <div>
+        <%= form.label :answer %> <br>
+        <%= form.textarea :answer %>
+    </div>
+
+    <%= form.submit "Update" %>
+
+<% end %>
