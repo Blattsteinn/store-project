@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_15_173130) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_17_170403) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -104,6 +104,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_173130) do
     t.string "visibility", default: "hidden", null: false
   end
 
+  create_table "support_messages", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.text "message"
+    t.bigint "order_id", null: false
+    t.string "status", default: "open"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_support_messages_on_order_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.boolean "admin", default: false, null: false
     t.datetime "created_at", null: false
@@ -149,6 +160,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_173130) do
   add_foreign_key "order_items", "variants"
   add_foreign_key "orders", "users"
   add_foreign_key "product_images", "products"
+  add_foreign_key "support_messages", "orders"
   add_foreign_key "variants", "products"
   add_foreign_key "wish_lists", "users"
   add_foreign_key "wish_lists", "variants"

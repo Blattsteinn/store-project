@@ -4,6 +4,7 @@ class Order < ApplicationRecord
         belongs_to :user
         has_many :order_items, dependent: :destroy
         has_many :feedbacks
+        has_many :support_messages
 
         #idk why tabs are 8 wide here
         def restore_stock!

@@ -41,3 +41,13 @@ body{
     70%  { opacity: 1; transform: translateY(0); }
     100% { opacity: 0; transform: translateY(0.5rem); }
 }
+
+.field_with_errors input,
+.field_with_errors textarea,
+.field_with_errors select {
+  border-color: red;
+}
+
+.field_with_errors label {
+  color: red;
+}

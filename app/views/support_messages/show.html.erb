@@ -1,0 +1,27 @@
+<h1>Support Message #<%= @support_message.id %></h1>
+
+<dl>
+  <dt>Title</dt>
+  <dd><%= @support_message.title %></dd>
+
+  <dt>Email</dt>
+  <dd><%= @support_message.email %></dd>
+
+  <dt>Order ID</dt>
+  <dd><%= @support_message.order_id %></dd>
+
+  <dt>Status</dt>
+  <dd><%= @support_message.status %></dd>
+
+  <dt>Message</dt>
+  <dd><%= @support_message.message %></dd>
+
+  <dt>Created At</dt>
+  <dd><%= @support_message.created_at.strftime("%b %d, %Y %H:%M") %></dd>
+</dl>
+
+
+<%= button_to "Close case", support_message_path(@support_message), method: :patch, params: { status: "closed"} %>
+<%= button_to "Open case", support_message_path(@support_message), method: :patch, params: { status: "open"} %>
+
+<%= link_to "Back to all messages", support_messages_path %>

@@ -54,4 +54,6 @@ Rails.application.routes.draw do
 
   resources :feedbacks, only:  [:index, :new, :create, :destroy, :edit, :update]
   resources :wish_lists, only: [:index, :create, :destroy, :update]
+
+  resources :support_messages, only: [:index, :show, :new, :create, :destroy, :update]
 end
