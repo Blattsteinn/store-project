@@ -1,14 +1,21 @@
 class WishListsController < ApplicationController
     def index
-        @wish_lists = current_user.wish_lists.includes(variant: :product)
+        @wish_lists = current_user.wish_lists.includes([variant: {product: {product_images: :image_attachment}}])
     end
 
     def create
-  
         @wish_list = WishList.find_by(user_id: current_user.id, variant_id: params[:wish_list][:variant_id])
+        variant = Variant.find(params[:wish_list][:variant_id])
+
+        if params[:wish_list][:quantity].to_i > variant.stock
+            render turbo_stream: turbo_stream.replace("saved-message", partial: "products/shared/unsuccessful_add")
+            return
+        end
+
+        #happens only if exists
         unless @wish_list.nil?
             quantity = @wish_list.quantity + params[:wish_list][:quantity].to_i
-            variant = Variant.find(params[:wish_list][:variant_id])
+            
             # Rails.logger.debug "stock: #{variant.stock}, quantity: #{quantity}"
             # byebug
 
@@ -41,10 +48,29 @@ class WishListsController < ApplicationController
     def destroy
         @wish_list = current_user.wish_lists.find(params[:id])
         @wish_list.destroy
-        redirect_to wish_lists_path, notice: "Removed from wish list."
+        render turbo_stream: [ turbo_stream.replace("variant_#{@wish_list.variant.id}", 
+            partial: "wish_lists/empty"),
+            turbo_stream.replace("wishlist-counter", partial: "wish_lists/wish_list_remove")
+    ]
+        # redirect_to wish_lists_path, notice: "Removed from wish list."
     end
 
     def update
+        @wish_list = WishList.find_by(user_id: current_user.id, variant_id: params[:variant_id])
+        quantity = params[:quantity].to_i
+        stock = @wish_list.variant.stock
+
+        if quantity > stock  || quantity < 1
+            render turbo_stream: turbo_stream.replace("variant_#{@wish_list.variant.id}", 
+            partial: "wish_lists/wish_list_quantity",
+            locals: { wish_list: @wish_list })
+            return
+        end
+
+        @wish_list.update!(quantity: params[:quantity])
+            render turbo_stream: turbo_stream.replace("variant_#{@wish_list.variant.id}", 
+            partial: "wish_lists/wish_list_quantity",
+            locals: { wish_list: @wish_list })
     end
 
     private

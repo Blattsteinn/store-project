@@ -53,7 +53,9 @@
           <%= link_to  wish_lists_path, class: "nav-cart" do %>
            <%= "❤️" %>
             <turbo-frame id="wishlist-counter">
+            <% if user_signed_in? %>
                 <p><%= current_user.wish_lists.length || 0 %></p>
+                <% end %>
             </turbo-frame>
           <% end %>
 

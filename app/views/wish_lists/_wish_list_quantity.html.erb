@@ -1,16 +1,3 @@
-<turbo-frame id="saved-message">
-</turbo-frame>
-
-
-<div id="wish-list-container">
-  <h1>My Wish List</h1>
-
-  <% if @wish_lists.empty? %>
-    <p class="wish-list-empty">Your wish list is empty.</p>
-  <% else %>
-    <div id="wish-list-items">
-
-      <% @wish_lists.each do |wish_list| %>
         <turbo-frame id= <%=dom_id(wish_list.variant)%> >
           <% variant = wish_list.variant %>
           <% product = variant.product %>
@@ -50,10 +37,3 @@
 
           </div>
         </turbo-frame>
-      <% end %>
-
-      
-
-    </div>
-  <% end %>
-</div>
