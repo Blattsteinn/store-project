@@ -6,8 +6,19 @@ module ProductsHelper
     end
 
     def markdown(text)
-        renderer = Redcarpet::Render::HTML.new(hard_wrap: true, link_attributes: { target: "_blank" })
-        Redcarpet::Markdown.new(renderer, autolink: true, tables: true).render(text)
+        renderer = Redcarpet::Render::HTML.new(
+            hard_wrap: true,
+            filter_html: true,
+            link_attributes: { target: "_blank", rel: "noopener noreferrer" }
+        )
+
+        markdown = Redcarpet::Markdown.new(
+            renderer,
+            autolink: true,
+            tables: true
+        )
+
+        sanitize(markdown.render(text))
     end
 
 end

@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  get "faqs/new"
-  get "faqs/create"
-  get "faqs/destroy"
-  get "faqs/update"
-  get "faqs/edit"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
