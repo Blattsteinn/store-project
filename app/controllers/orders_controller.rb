@@ -3,7 +3,10 @@ require "stripe"
 class OrdersController < ApplicationController
     # pending, paid, processing, delivered, cancelled, refunded.
     before_action :authenticate_admin!, only: [ :update, :destroy ]
+    before_action :authenticate_user!, only: [:index, :show]
 
+    # -------------------------------------------------------------------
+    # --- Only for Users who are signed in ------------------------------
     def index
         @orders = Order.where(user_id: current_user.id)
     end
@@ -11,43 +14,39 @@ class OrdersController < ApplicationController
     def show
         @order = current_user.orders.includes(order_items: [:product, :variant]).find(params[:id])
     end
+    # -------------------------------------------------------------------
+    # -------------------------------------------------------------------
+
 
     def create
-        if params[:variant_id].present?
-            session[:cart] = {}
-            variant = Variant.find(params[:variant_id])
-            session[:cart][variant.id.to_s] = params[:quantity].to_i
+
+        unless params[:email].present? && params[:variant_id].present? && params[:quantity].present?
+            redirect_to products_path, alert: "Wrong inputs"
+            return  
         end
 
-        return redirect_to cart_path, alert: "Cart is empty" if session[:cart].blank?
-        
-        # === Check the stock ===
-        cart_items = session[:cart].map do |variant_id, quantity|
-            [ Variant.find(variant_id), quantity ]
+        @email = params[:email]
+        @variant = Variant.find(params[:variant_id].to_i)
+        @quantity = params[:quantity].to_i
+
+        # --- Checking the stock ---
+        if @variant.stock < @quantity
+            redirect_to product_path(Product.find_by(variant_id: @variant)), alert: "Not enough stock available"
+            return  
         end
 
-        cart_items.each do |variant, quantity|
-            if variant.stock < quantity
-                redirect_to cart_path, alert: "Not enough stock available"
-                return  
-            end
-        end
-
-        # === Create an order ===
         ActiveRecord::Base.transaction do
-            @order = Order.create!(user_id: current_user.id)
-            cart_items.each do |variant, quantity|
-                product = variant.product
-                OrderItem.create!(
-                        order_id: @order.id,
-                        product_id: variant.product_id,
-                        variant_id: variant.id,
-                        quantity: quantity,
-                        price: variant.price)
-            end
+            @order = Order.create!(email: @email)
+            OrderItem.create!(
+                order_id: @order.id,
+                product_id: @variant.product_id,
+                variant_id: @variant.id,
+                quantity: @quantity,
+                price: @variant.price
+            )
         end
 
-        # === Set-up for Stripe ===
+        # --- Set-up for Stripe ---
         line_items = @order.order_items.map do |item|
         {   quantity: item.quantity,
             price_data: { currency: "eur", unit_amount: item.price,
@@ -58,17 +57,15 @@ class OrdersController < ApplicationController
         stripe_session = Stripe::Checkout::Session.create(
         mode: "payment",
         line_items: line_items,
-        customer_email: current_user.email,
+        customer_email: @email,
         client_reference_id: @order.id.to_s,
-        success_url: order_url(@order, stripe: "success"),
+        success_url: products_url(stripe: "success"),
         cancel_url: cancel_stripe_checkout_order_url(@order)
         )
 
         @order.update!(stripe_session_id: stripe_session.id)
-        session[:cart] = {}
         redirect_to stripe_session.url, allow_other_host: true
 
-        # === Incase we fail?
         rescue Stripe::StripeError => e
             @order&.destroy
             redirect_to cart_path, alert: "Payment could not be initiated: #{e.message}"
@@ -76,8 +73,8 @@ class OrdersController < ApplicationController
     end
 
     def cancel_stripe_checkout
-        @order = current_user.orders.find(params[:id])
-        if @order.status == "pending"
+        @order = Order.find(params[:id])
+        if @order.status == "cancelled"
             @order.restore_stock!
             @order.destroy
             redirect_to cart_path, notice: "Checkout cancelled. Your cart has been restored."
@@ -86,6 +83,7 @@ class OrdersController < ApplicationController
         end
     end
 
+    # Admin methods
     def update
         @order = Order.find(params[:id])
         @order.update!(order_params)

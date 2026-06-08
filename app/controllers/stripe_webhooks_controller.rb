@@ -1,6 +1,6 @@
 class StripeWebhooksController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_action :authenticate_user!
+  # skip_before_action :authenticate_user!
 
   def create
     payload    = request.body.read
@@ -28,6 +28,7 @@ class StripeWebhooksController < ApplicationController
           item.variant.decrement!(:stock, item.quantity)
         end
         order.update!(status: "paid")
+        PurchaseSuccessMailer.successful_purchase(order).deliver_later
       end
 
     end

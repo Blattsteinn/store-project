@@ -10,9 +10,9 @@ export default class extends Controller {
 
   static targets = [ "variantMax", "entireDiv",
     "stripeQuantity", "stripeVariantId", 
-    "addToCartQuantity", "addToCartVariantId",
+    // "addToCartQuantity", "addToCartVariantId",
     "price",
-    "addToWishListQuantity","addToWishListVariantId"
+    // "addToWishListQuantity","addToWishListVariantId"
 
   ]
 
@@ -27,14 +27,14 @@ export default class extends Controller {
     this.variantMaxTarget.value = 1;
     this.variantMaxTarget.max = stock;
 
-    this.addToCartVariantIdTarget.value = variantId;
-    this.addToCartQuantityTarget.value = 1;
+    // this.addToCartVariantIdTarget.value = variantId;
+    // this.addToCartQuantityTarget.value = 1;
 
     this.stripeVariantIdTarget.value = variantId;
     this.stripeQuantityTarget.value = 1;
 
-    this.addToWishListVariantIdTarget.value = variantId;
-    this.addToWishListQuantityTarget.value = 1;
+    // this.addToWishListVariantIdTarget.value = variantId;
+    // this.addToWishListQuantityTarget.value = 1;
 
     this.priceTarget.textContent = (1 * this.price)/100
   }
@@ -47,10 +47,9 @@ export default class extends Controller {
 
     this.variantMaxTarget.value = quantity
 
-    this.addToCartQuantityTarget.value = quantity;
+    // this.addToWishListQuantityTarget.value = quantity;
+    // this.addToCartQuantityTarget.value = quantity;
     this.stripeQuantityTarget.value = quantity;
-    this.addToWishListQuantityTarget.value = quantity;
-
     this.priceTarget.textContent = (quantity * this.price)/100
   }
 
@@ -61,9 +60,9 @@ export default class extends Controller {
     }
 
     this.variantMaxTarget.value = quantity
-    this.addToCartQuantityTarget.value = quantity;
+    // this.addToCartQuantityTarget.value = quantity;
     this.stripeQuantityTarget.value = quantity;
-    this.addToWishListQuantityTarget.value = quantity;
+    // this.addToWishListQuantityTarget.value = quantity;
 
     this.priceTarget.textContent = (quantity * this.price)/100
   }

@@ -1,4 +1,6 @@
 class WishListsController < ApplicationController
+    before_action :authenticate_user
+    
     def index
         @wish_lists = current_user.wish_lists.includes([variant: {product: {product_images: :image_attachment}}])
     end

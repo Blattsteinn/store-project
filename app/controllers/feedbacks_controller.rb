@@ -1,4 +1,5 @@
 class FeedbacksController < ApplicationController
+    before_action :authenticate_admin!, only: [:edit, :update, :destroy]
     def index
         @feedbacks = Feedback.all
     end

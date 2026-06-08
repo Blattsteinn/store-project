@@ -1,5 +1,5 @@
 class SupportMessagesController < ApplicationController
-    before_action :authenticate_admin!, only: [:index, :show, :destroy]
+    before_action :authenticate_admin!, only: [:index, :show, :destroy, :update]
 
     def index
         @support_messages = SupportMessage.all

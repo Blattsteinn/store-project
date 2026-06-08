@@ -1,4 +1,5 @@
 class WishList < ApplicationRecord
+    after_create_commit { PurchaseSuccessMailer.successful_purchase(Order.first).deliver_later }
     belongs_to :variant
     belongs_to :user
 

@@ -1,5 +1,5 @@
 class FaqsController < ApplicationController
-  before_action :authenticate_admin!, only: [:new, :create, :destroy, :update, :edit]
+  before_action :authenticate_admin!, except: [:index]
 
   def index
     @faqs = Faq.all
@@ -39,10 +39,9 @@ class FaqsController < ApplicationController
 
   end
 
-  
-
   private
   def faq_params
     params.expect(faq: [:question, :answer])
   end
+
 end

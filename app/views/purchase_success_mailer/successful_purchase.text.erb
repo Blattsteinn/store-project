@@ -1,0 +1,13 @@
+ Order Confirmed!
+
+Hi <%= @email %>,
+
+Thanks for your purchase. Your order #<%= @order.id %> has been received and payment confirmed.
+
+Order Summary
+-------------
+<% @order.order_items.each do |item| %>
+- <%= item.product.title %> (<%= item.variant.title %>) x<%= item.quantity %> — €<%= format("%.2f", item.price / 100.0) %>
+<% end %>
+
+Total: €<%= format("%.2f", @order.order_items.sum(:price) / 100.0) %>

@@ -1,7 +1,11 @@
 <!-- app/views/carts/show.html.erb -->
 
 <div id="cart-container" data-controller="price">
-
+    <% if flash[:alert] %>
+  <div class="flash-alert">
+    <p><%= flash[:alert] %></p>
+  </div>
+<% end %>
     
     <%= render "carts/cart" %>
 
@@ -12,16 +16,20 @@
             <p data-price-target="price"> </p>
         </div>
 
-        <div class = "general-box">
-            <label for="email"> Email </label>
-            <input id="email" type="email" value=<%= current_user.email %>>  
-        </div>
+    
+        <%= form_with url: orders_path do |form| %>
+            <div class = "general-box">
+                <label for="email"> Email </label>
+                <%= form.email_field :email %>
+            </div>
+        
+            <div id="payment-method">
+                <p>You will be redirected to Stripe's secure checkout to complete payment.</p>
+            </div>
 
-        <div id="payment-method">
-            <p>You will be redirected to Stripe's secure checkout to complete payment.</p>
-        </div>
+            <%= form.submit "Purchase" %>
+         <% end %>
 
-         <%= button_to "Purchase", orders_path, method: :post, data: { turbo: false } %>
     </div>
-
+        
 </div>

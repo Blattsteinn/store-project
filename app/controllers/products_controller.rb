@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-    before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :destroy, :product_visibility]
+    before_action :authenticate_admin!, except: [:index, :show]
 
     def index
         @products = Product.visible.includes(:variants, product_images: :image_attachment)

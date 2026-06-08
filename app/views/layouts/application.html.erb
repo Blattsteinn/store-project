@@ -27,47 +27,72 @@
   </head>
 
   <body class="<%= controller_name %>-<%= action_name %>">
-    <nav class="<%= controller_name %>-<%= action_name %>">
-      <%= link_to "Dokkan Store", root_path, class: "nav-brand" if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
-      <%= link_to "Products", products_path %>
-      <%= link_to "Orders", orders_path %>
-      <%= link_to "Dashboard", dashboard_path %>
-      <%= link_to "Support", new_support_message_path %>
-      <%= link_to "Feedback", feedbacks_path %>
-      <%= link_to "FAQ", faqs_path %>
 
-      <div class="nav-right">
-        <% if user_signed_in? %>
-          <span class="nav-user"><%= current_user.email %> (<%= current_user.admin? ? "admin" : "user" %>)</span>
-          <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete } %>
-        <% else %>
-          <%= link_to "Sign In", new_user_session_path %>
+    <%# Displays different navs for different users, kinda repetitive,
+     but whatever would solve with templates (different files anyway)  %>
+
+    <% if user_signed_in? %>
+      <nav class="<%= controller_name %>-<%= action_name %>">
+        <%= link_to "Dokkan Store", root_path, class: "nav-brand" if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
+        <%= link_to "Products", products_path %>
+        <%= link_to "Orders", orders_path %>
+        <%= link_to "Support", new_support_message_path %>
+        <%= link_to "Feedback", feedbacks_path %>
+        <%= link_to "FAQ", faqs_path %>
+        
+        <% if current_user.admin? %>
+          <%= link_to "Dashboard", dashboard_path %>
         <% end %>
 
-        <%= link_to cart_path, class: "nav-cart" do %>
-          <%= image_tag '/assets/cart-outline.svg', class: 'cart-icon' %>
-          <turbo-frame id="cart-counter">
-            <p><%= session[:cart]&.length || 0 %></p>
-          </turbo-frame>
-        <% end %>
+        
+          <div class="nav-right">
+            
+              <span class="nav-user"><%= current_user.email %> (<%= current_user.admin? ? "admin" : "user" %>)</span>
+              <%= link_to "Sign Out", destroy_user_session_path, data: { turbo_method: :delete } %>
+              <%= link_to "Sign In", new_user_session_path %>
+            
 
-          <%= link_to  wish_lists_path, class: "nav-cart" do %>
-           <%= "❤️" %>
-            <turbo-frame id="wishlist-counter">
-            <% if user_signed_in? %>
-                <p><%= current_user.wish_lists.length || 0 %></p>
-                <% end %>
-            </turbo-frame>
-          <% end %>
+            <%= link_to cart_path, class: "nav-cart" do %>
+              <%= image_tag '/assets/cart-outline.svg', class: 'cart-icon' %>
+              <turbo-frame id="cart-counter">
+                <p><%= session[:cart]&.length || 0 %></p>
+              </turbo-frame>
+            <% end %>
 
-      </div>
-    </nav>
+              <%= link_to  wish_lists_path, class: "nav-cart" do %>
+              <%= "❤️" %>
+                <turbo-frame id="wishlist-counter">
+                <% if user_signed_in? %>
+                    <p><%= current_user.wish_lists.length || 0 %></p>
+                    <% end %>
+                </turbo-frame>
+              <% end %>
 
-    <% if flash[:notice] %>
+          </div>
+        
+      </nav>
+
+    <% else %>
+
+      <%# Display this if not signed in %>
+
+      <nav class="<%= controller_name %>-<%= action_name %>">
+        <%= link_to "Dokkan Store", root_path, class: "nav-brand" if Rails.application.routes.url_helpers.respond_to?(:root_path) %>
+        <%= link_to "Products", products_path %>
+        <%= link_to "Support", new_support_message_path %>
+        <%= link_to "Feedback", feedbacks_path %>
+        <%= link_to "FAQ", faqs_path %>
+
+      </nav>
+
+    <% end %>
+
+    <% if flash[:notice]  %>
       <div class="flash-notice">
         <p><%= flash[:notice] %></p>
       </div>
     <% end %>
+   
 
     <%= yield %>
   </body>

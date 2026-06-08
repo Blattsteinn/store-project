@@ -1,0 +1,32 @@
+
+<h1>Order Confirmed!</h1>
+<p>Hi <%= @email %>,</p>
+<p>Thanks for your purchase. Your order <strong>#<%= @order.id %></strong> has been received and payment confirmed.</p>
+
+<h2>Order Summary</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Variant</th>
+      <th>Qty</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+    <tr>
+      <td><%= item.product.title %></td>
+      <td><%= item.variant.title %></td>
+      <td><%= item.quantity %></td>
+      <td>&euro;<%= format("%.2f", item.price / 100.0) %></td>
+    </tr>
+    <% end %>
+  </tbody>
+  <tfoot>
+    <tr>
+      <td colspan="3"><strong>Total</strong></td>
+      <td><strong>&euro;<%= format("%.2f", @order.order_items.sum(:price) / 100.0) %></strong></td>
+    </tr>
+  </tfoot>
+</table>
