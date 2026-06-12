@@ -11,10 +11,9 @@
           <span class="feedback-rating">
             <%= "★" * feedback.rating %><%= "☆" * (5 - feedback.rating) %>
           </span>
-          <span class="feedback-order">Order #<%= feedback.order_id %></span>
+          <span class="feedback-order"> <%= feedback.order.created_at %></span>
         </div>
         <p class="feedback-body"><%= feedback.feedback %></p>
-        <p class="feedback-meta">By User #<%= feedback.user_id %></p>
       </div>
     <% end %>
   </div>
