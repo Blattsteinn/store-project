@@ -19,10 +19,9 @@ class OrdersController < ApplicationController
 
 
     def create
-
         unless params[:email].present? && params[:variant_id].present? && params[:quantity].present?
             redirect_to products_path, alert: "Wrong inputs"
-            return  
+            return
         end
 
         @email = params[:email]
@@ -31,8 +30,8 @@ class OrdersController < ApplicationController
 
         # --- Checking the stock ---
         if @variant.stock < @quantity
-            redirect_to product_path(Product.find_by(variant_id: @variant)), alert: "Not enough stock available"
-            return  
+            redirect_to product_path(Product.find_by(@variant.product)), alert: "Not enough stock available"
+            return
         end
 
         ActiveRecord::Base.transaction do

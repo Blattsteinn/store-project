@@ -10,8 +10,8 @@ class FaqsController < ApplicationController
   end
 
   def create
-    faq = Faq.create(faq_params)
-    if faq.save 
+    faq = Faq.new(faq_params)
+    if faq.save
       redirect_to dashboard_faqs_path
     else
       render :new, status: :unprocessable_entity
@@ -36,12 +36,10 @@ class FaqsController < ApplicationController
     else
       render :update, status: :unprocessable_entity
     end
-
   end
 
   private
   def faq_params
-    params.expect(faq: [:question, :answer])
+    params.expect(faq: [ :question, :answer ])
   end
-
 end

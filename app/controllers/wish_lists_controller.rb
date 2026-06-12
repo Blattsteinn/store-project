@@ -1,6 +1,7 @@
 class WishListsController < ApplicationController
-    before_action :authenticate_user
-    
+    before_action :authenticate_admin!
+    # Intended for later use.
+    #
     def index
         @wish_lists = current_user.wish_lists.includes([variant: {product: {product_images: :image_attachment}}])
     end
@@ -14,16 +15,15 @@ class WishListsController < ApplicationController
             return
         end
 
-        #happens only if exists
         unless @wish_list.nil?
             quantity = @wish_list.quantity + params[:wish_list][:quantity].to_i
-            
+
             # Rails.logger.debug "stock: #{variant.stock}, quantity: #{quantity}"
             # byebug
 
-            if variant.stock >= quantity 
+            if variant.stock >= quantity
                 @wish_list.update!(quantity: quantity)
-           
+
                 render turbo_stream: [
                     turbo_stream.replace("saved-message", partial: "products/shared/successful_add"),
                     turbo_stream.replace("wishlist-counter", partial: "wish_lists/wish_list_counter")

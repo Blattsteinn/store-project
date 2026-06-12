@@ -46,7 +46,7 @@ class CartItemsController < ApplicationController
 
     def create_instantly
         session[:cart] = {}
-        
+
         variant  = Variant.find(params[:variant_id])
         quantity = params[:quantity].to_i
 

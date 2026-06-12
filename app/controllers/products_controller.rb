@@ -8,6 +8,9 @@ class ProductsController < ApplicationController
 
     def show
         @product = Product.includes(:variants, product_images: :image_attachment).find(params[:id])
+        unless @product.visibility == "live"
+            redirect_to products_path
+        end
     end
 
     def new
@@ -18,7 +21,7 @@ class ProductsController < ApplicationController
 
     def create
         @product = Product.new(product_params)
-        if @product.save  
+        if @product.save 
             redirect_to @product
         else
             render :new, status: :unprocessable_entity
@@ -70,7 +73,6 @@ class ProductsController < ApplicationController
         end
 
         redirect_to edit_product_path(@product)
-        
     end
 
     def destroy
