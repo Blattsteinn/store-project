@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
         end
 
         @email    = params[:email]
-        @variant  = Variant.find_by(id: params[:variant_id].to_i)
+        @variant  = Variant.includes(:product).find_by(id: params[:variant_id].to_i)
         @quantity = params[:quantity].to_i
 
         unless @variant
@@ -51,7 +51,7 @@ class OrdersController < ApplicationController
         line_items = @order.order_items.map do |item|
         {   quantity: item.quantity,
             price_data: { currency: "eur", unit_amount: item.price,
-                        product_data: { name: item.product.title + " (#{item.variant.title })"} } }
+                        product_data: { name: @variant.product.title + " (#{@variant.title })"} } }
         end
 
         # === Stripe session thing ===

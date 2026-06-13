@@ -1,50 +1,71 @@
-<%= link_to "New Product", new_product_path %>
+<div id="dashboard-container">
+  <%= render "dashboard/sidebar" %>
 
-
-<div id="dashboard">
-  <% if flash[:successful_edit] %>
-    <p style="background: #d4edda; color: #155724; padding: 10px 16px; border-radius: 6px; border: 1px solid #c3e6cb;">
-      Successfully edited a post
-    </p>
-  <% end %>
-
-    <div id = "dashboard-header">
-      <p class="dashboard-title"> Title </p>
-      <p class="dashboard-status"> Status </p>
-      <p class="dashboard-price"> Price </p>
-      <p class="dashboard-sales"> Sales </p>
-    </div>
-    
-    <% @products.each do |product| %>
-
-      <div class="dashboard-product">
-        <div class="dashboard-title">
-          <p id = "dashboard-link-to-product"> <%= link_to product.title, product_path(product), target: "_blank" %> </p>
-          <p> Stock: <%= product.variants.sum(:stock) %></p>
-        </div>
-
-        <p class="dashboard-status"> <%=product.visibility %> </p>
-        <p class="dashboard-price">  <%= product.variants.minimum(:price)&.to_s || "—" %> EUR </p>
-        <p class="dashboard-sales"> Didn't calculate </p>
-
-        <div>
-          <details open>
-            <summary> ... </summary>
-              <%= link_to "Edit", edit_product_path(product.id), class: "dashboard-more-choice" %> <br>
-              <%= link_to "View", product_path(product), target: "_blank" %> <br>
-
-              <%= button_to product.visibility == "live" ? "Hide" : "Unhide",
-              product_visibility_product_path(product), method: :patch %> <br>
-
-              <%= button_to "Duplicate", 
-              duplicate_product_product_path(product), method: :post %> <br>
-
-              <%= button_to "Delete", product_path(product), method: :delete %> <br>
-          </details>
-        </div>
-
+  <main id="dashboard-main">
+    <header class="dashboard-page-header">
+      <div>
+        <h1>Products</h1>
+        <p class="text-muted"><%= @products.count %> products</p>
       </div>
-    <% end %>
-</div>
- 
+      <%= link_to "+ New Product", new_product_path, class: "btn-primary" %>
+    </header>
 
+    <% if flash[:successful_edit] %>
+      <div class="dash-flash dash-flash-success"><%= flash[:successful_edit] %></div>
+    <% end %>
+
+    <div class="dashboard-card">
+      <div class="card-body" style="padding: 0;">
+        <table class="dash-table dash-table--products">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Visibility</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @products.each do |product| %>
+              <tr>
+                <td>
+                  <%= link_to product.title, product_path(product), target: "_blank", class: "product-link" %>
+                </td>
+                <td>
+                  <span class="status-badge status-vis-<%= product.visibility %>">
+                    <%= product.visibility == "live" ? "● Live" : "○ Hidden" %>
+                  </span>
+                </td>
+                <td class="mono">
+                  <%= product.variants.minimum(:price)&.then { |p| convert_from_cents(p) } || "—" %> €
+                </td>
+                <td class="mono"><%= product.variants.sum(:stock) %></td>
+                <td>
+                  <div class="action-group">
+                    <%= link_to "Edit", edit_product_path(product), class: "btn-sm" %>
+                    <%= link_to "View", product_path(product), target: "_blank", class: "btn-sm btn-sm-muted" %>
+
+                    <%= button_to product.visibility == "live" ? "Hide" : "Unhide",
+                        product_visibility_product_path(product), method: :patch,
+                        class: "btn-sm btn-sm-muted", form_class: "inline-form" %>
+
+                    <%= button_to "Dup", duplicate_product_product_path(product),
+                        method: :post, class: "btn-sm btn-sm-muted", form_class: "inline-form" %>
+
+                    <%= button_to "Delete", product_path(product), method: :delete,
+                        class: "btn-sm btn-sm-danger", form_class: "inline-form",
+                        data: { turbo_confirm: "Delete #{product.title}?" } %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <% if @products.empty? %>
+          <p class="empty-state">No products yet. <%= link_to "Create one", new_product_path %>.</p>
+        <% end %>
+      </div>
+    </div>
+  </main>
+</div>

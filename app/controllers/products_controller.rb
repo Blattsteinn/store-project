@@ -29,7 +29,7 @@ class ProductsController < ApplicationController
     end
 
     def edit
-        @product = Product.includes(product_images: :image_attachment).find(params[:id])
+        @product = Product.includes(:variants, product_images: :image_attachment).find(params[:id])
     end
 
     def update
@@ -62,7 +62,7 @@ class ProductsController < ApplicationController
     end
 
     def duplicate_product
-        @original_p = Product.find(params[:id])
+        @original_p = Product.includes(:variants).find(params[:id])
         @original_v = @original_p.variants
 
         @product = Product.create!(@original_p.attributes.except("id","created_at","updated_at"))

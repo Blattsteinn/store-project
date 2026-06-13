@@ -13,13 +13,12 @@
 body{
     --color-dark-blue: #161617;
     --color-lighter-blue: #0d1521;
-    /* background-color: #18181b; */
-    max-width: 1200px;
-    height: 5888px; 
+    max-width: 1400px;
     margin: 0 auto;
     background-color: var(--color-dark-blue);
     color: white;
     font-family: 'Inter', sans-serif;
+    min-height: 100vh;
 }
 
 .flash-notice {

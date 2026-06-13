@@ -2,7 +2,7 @@ class FeedbacksController < ApplicationController
     before_action :authenticate_admin!, only: [ :edit, :update, :destroy ]
 
     def index
-        @feedbacks = Feedback.all
+        @feedbacks = Feedback.includes(:order).all
     end
 
     def new

@@ -1,21 +1,100 @@
-<div id="dashboard-order-page">
-  <%= render 'orders/order_preview' %>
+<div id="dashboard-container">
+  <%= render "dashboard/sidebar" %>
 
-  <p> Update status </p>
-  <%= form_with model: @order, method: :patch do |form| %>
-        <%= form.label :status %>
-        <%= form.select :status, [
-            ["Pending", "pending"],
-            ["Paid", "paid"],
-            ["Delivered", "delivered"],
-            ["Cancelled", "cancelled"],
-            ["Refunded", "refunded"]
-        ]%>
+  <main id="dashboard-main">
+    <header class="dashboard-page-header">
+      <div>
+        <h1>Order #<%= @order.public_id&.first(12) %></h1>
+        <p class="text-muted"><%= @order.created_at.strftime("%B %d, %Y at %H:%M") %></p>
+      </div>
+      <span class="status-badge status-<%= @order.status %>" style="font-size: 0.875rem;"><%= @order.status %></span>
+    </header>
 
-        <%= form.submit %>
-  <% end %>
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <div class="card-header"><h3>Order Details</h3></div>
+        <div class="card-body">
+          <dl class="detail-list">
+            <div class="detail-row">
+              <dt>Email</dt>
+              <dd><%= @order.email %></dd>
+            </div>
+            <div class="detail-row">
+              <dt>Order ID</dt>
+              <dd class="mono"><%= @order.public_id %></dd>
+            </div>
+            <div class="detail-row">
+              <dt>Placed</dt>
+              <dd><%= @order.created_at.strftime("%B %d, %Y %H:%M") %></dd>
+            </div>
+            <div class="detail-row">
+              <dt>Status</dt>
+              <dd><span class="status-badge status-<%= @order.status %>"><%= @order.status %></span></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
 
-  <%= link_to "Back to Orders", orders_path %>
+      <div class="dashboard-card">
+        <div class="card-header"><h3>Update Status</h3></div>
+        <div class="card-body">
+          <%= form_with model: @order, method: :patch, class: "status-form" do |form| %>
+            <div class="form-row">
+              <%= form.select :status, [
+                  ["Pending", "pending"],
+                  ["Paid", "paid"],
+                  ["Processing", "processing"],
+                  ["Delivered", "delivered"],
+                  ["Cancelled", "cancelled"],
+                  ["Refunded", "refunded"]
+              ], {}, class: "form-select" %>
+              <%= form.submit "Update", class: "btn-primary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
 
+    <div class="dashboard-card">
+      <div class="card-header"><h3>Line Items</h3></div>
+      <div class="card-body" style="padding: 0;">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Variant</th>
+              <th>Qty</th>
+              <th>Unit</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.order_items.each do |item| %>
+              <tr>
+                <td><%= item.product.title %></td>
+                <td><%= item.variant.title %></td>
+                <td class="mono"><%= item.quantity %></td>
+                <td class="mono"><%= convert_from_cents(item.price) %> €</td>
+                <td class="mono"><%= convert_from_cents(item.price * item.quantity) %> €</td>
+              </tr>
+            <% end %>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" class="text-right"><strong>Total</strong></td>
+              <td class="mono"><strong><%= convert_from_cents(@order.order_items.sum { |i| i.price * i.quantity }) %> €</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
 
+    <div style="margin-top: 1rem;">
+      <%= link_to "← Back to Orders", dashboard_orders_path, class: "btn-sm btn-sm-muted" %>
+      <%= button_to "Delete Order", order_path(@order), method: :delete,
+          class: "btn-sm btn-sm-danger", form_class: "inline-form",
+          data: { turbo_confirm: "Delete this order?" } %>
+    </div>
+  </main>
+</div>
 </div>

@@ -1,31 +1,49 @@
-<h1>FAQs (Admin)</h1>
+<div id="dashboard-container">
+  <%= render "dashboard/sidebar" %>
 
-<%= link_to "+ New FAQ", new_faq_path, style: "display:inline-block;margin-bottom:1rem;" %>
+  <main id="dashboard-main">
+    <header class="dashboard-page-header">
+      <div>
+        <h1>FAQs</h1>
+        <p class="text-muted"><%= @faqs.count %> entries</p>
+      </div>
+      <%= link_to "+ New FAQ", new_faq_path, class: "btn-primary" %>
+    </header>
 
-<table border="1" cellpadding="8" cellspacing="0" style="width:100%;border-collapse:collapse;">
-  <thead>
-    <tr>
-      <th style="text-align:left">#</th>
-      <th style="text-align:left">Question</th>
-      <th style="text-align:left">Answer</th>
-      <th style="text-align:left">Created</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @faqs.each do |faq| %>
-      <tr>
-        <td><%= faq.id %></td>
-        <td><%= faq.question %></td>
-        <td><%= faq.answer %></td>
-        <td><%= faq.created_at.strftime("%b %d, %Y") %></td>
-        <td>
-          <%= link_to "Edit", edit_faq_path(faq) %> |
-          <%= button_to "Delete", faq_path(faq), method: :delete,
-                data: { turbo_confirm: "Delete this FAQ?" },
-                style: "background:none;border:none;color:red;cursor:pointer;padding:0;" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <div class="dashboard-card">
+      <div class="card-body" style="padding: 0;">
+        <% if @faqs.any? %>
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th>Created</th>
+                <th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @faqs.each do |faq| %>
+                <tr>
+                  <td><strong><%= faq.question %></strong></td>
+                  <td><%= truncate(faq.answer, length: 80) %></td>
+                  <td><%= faq.created_at.strftime("%b %d, %Y") %></td>
+                  <td>
+                    <div class="action-group">
+                      <%= link_to "Edit", edit_faq_path(faq), class: "btn-sm" %>
+                      <%= button_to "Delete", faq_path(faq), method: :delete,
+                          class: "btn-sm btn-sm-danger", form_class: "inline-form",
+                          data: { turbo_confirm: "Delete this FAQ?" } %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="empty-state">No FAQs yet. <%= link_to "Create one", new_faq_path %>.</p>
+        <% end %>
+      </div>
+    </div>
+  </main>
+</div>

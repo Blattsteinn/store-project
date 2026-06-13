@@ -10,7 +10,7 @@ class Order < ApplicationRecord
         has_many :support_messages, dependent: :destroy
 
         def restore_stock!
-            order_items.each { |item| item.variant.increment!(:stock, item.quantity) }
+            order_items.reset.includes(:variant).each { |item| item.variant.increment!(:stock, item.quantity) }
         end
 
         def paid?

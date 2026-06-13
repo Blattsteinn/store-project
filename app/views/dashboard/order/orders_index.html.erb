@@ -1,39 +1,67 @@
 
+<div id="dashboard-container">
+  <%= render "dashboard/sidebar" %>
 
-<h2> All orders </h2>
+  <main id="dashboard-main">
+    <header class="dashboard-page-header">
+      <h1>Orders</h1>
+    </header>
 
-    <details>
-        <summary>Filter</summary>
-        <%= form_with url: dashboard_orders_path, method: :get do |form| %>
-            <%= form.label :status %> <br>
-
-            <% [["Pending", "pending"], ["Paid", "paid"], ["Delivered", "delivered"], ["Cancelled", "cancelled"], 
-                ["Refunded", "refunded"]].each do |label, value| %>
-                <%= check_box_tag "status[]", value, params[:status]&.include?(value) %> 
-                <%= label_tag "status_#{value}", label %> <br>
-            <% end %>
-
-            <%= form.submit "filter" %>
-        <% end %>
-        
-    </details>
-    <%= button_to "Reset", dashboard_orders_path,  method: :get %>
-
-<div id="order-index-container">
-    <% unless @orders.nil? %>
-        <% @orders.each do |order| %>
-            <div class="order-index-order">
-                <h3>Order 
-                <%= link_to order.id, dashboard_order_path(order) %> — 
-                <%= order.created_at.strftime("%b %d, %Y") %>, 
-                status: <%= order.status %> 
-                total: <%= convert_from_cents(order.order_items.sum {|item| item.variant.price}) %> EUR
-                
-                </h3>
-
+    <div class="dashboard-card">
+      <div class="card-header card-header--toolbar">
+        <h3>All Orders</h3>
+        <div class="toolbar-controls">
+          <details class="filter-dropdown">
+            <summary class="btn-sm btn-sm-muted">Filter by Status</summary>
+            <div class="filter-panel">
+              <%= form_with url: dashboard_orders_path, method: :get do |form| %>
+                <% [["Pending", "pending"], ["Paid", "paid"], ["Delivered", "delivered"], ["Cancelled", "cancelled"], ["Refunded", "refunded"]].each do |label, value| %>
+                  <label class="filter-option">
+                    <%= check_box_tag "status[]", value, params[:status]&.include?(value) %>
+                    <span class="status-badge status-<%= value %>"><%= label %></span>
+                  </label>
+                <% end %>
+                <div class="filter-actions">
+                  <%= form.submit "Apply", class: "btn-sm" %>
+                  <%= link_to "Reset", dashboard_orders_path, class: "btn-sm btn-sm-muted" %>
+                </div>
+              <% end %>
             </div>
+          </details>
+        </div>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <% if @orders.any? %>
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @orders.each do |order| %>
+                <tr>
+                  <td>
+                    <%= link_to dashboard_order_path(order), class: "mono-link" do %>
+                      #<%= order.public_id&.first(12) %>
+                    <% end %>
+                  </td>
+                  <td><%= order.email %></td>
+                  <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
+                  <td class="mono"><%= convert_from_cents(order.order_items.sum { |item| item.price * item.quantity }) %> €</td>
+                  <td><%= order.created_at.strftime("%b %d, %H:%M") %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <p class="empty-state">No orders found.</p>
         <% end %>
-    <% else %>
-        <p> No orders! </p>
-    <% end %>
+      </div>
+    </div>
+  </main>
 </div>
