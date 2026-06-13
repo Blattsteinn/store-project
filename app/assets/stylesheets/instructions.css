@@ -1,0 +1,155 @@
+.ic {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 2rem 1rem;
+}
+
+.ic-header {
+  margin-bottom: 1.5rem;
+}
+
+.ic-header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.ic-header p {
+  font-size: 14px;
+  color: #999;
+}
+
+.ic .card {
+  background: #1a1a1b;
+  border: 0.5px solid #3a3a3c;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 12px;
+}
+
+.ic .card h2 {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.ic .card p {
+  color: #ccc;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.ic .card p:last-child {
+  margin-bottom: 0;
+}
+
+.ic .card p strong {
+  color: #f0f0f0;
+}
+
+.ic .row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 0.5px solid #2a2a2c;
+}
+
+.ic .row:last-of-type {
+  border-bottom: none;
+}
+
+.ic .row-label {
+  font-size: 13px;
+  color: #888;
+  min-width: 120px;
+}
+
+.ic .row-val {
+  font-size: 15px;
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+.ic .steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: s;
+}
+
+.ic .steps li {
+  counter-increment: s;
+  display: flex;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid #2a2a2c;
+  align-items: flex-start;
+}
+
+.ic .steps li:last-child {
+  border-bottom: none;
+}
+
+.ic .steps li::before {
+  content: counter(s);
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #222224;
+  border: 0.5px solid #3a3a3c;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.ic .steps li span {
+  font-size: 15px;
+  color: #ddd;
+}
+
+.ic .steps li span strong {
+  color: #f0f0f0;
+}
+
+.ic .note {
+  font-size: 13px;
+  color: #777;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.ic .warn {
+  background: #1a1a1b;
+  border: 0.5px solid #3a3a3c;
+  border-left: 3px solid #666;
+  border-radius: 0;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+.ic .warn strong {
+  color: #f0f0f0;
+}
+
+@media (max-width: 480px) {
+  .ic-header h1 {
+    font-size: 18px;
+  }
+
+  .ic .row-label {
+    min-width: 90px;
+  }
+}

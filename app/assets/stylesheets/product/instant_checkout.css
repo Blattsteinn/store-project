@@ -204,7 +204,7 @@
     
     font-size: 1rem;
     font-weight: 700;
-    color: rgba(0, 0, 0, 0.9);
+    /* color: rgba(0, 0, 0, 0.9); */
     
     background-color: white;
     border: 2px solid white;
@@ -213,7 +213,6 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-transform: none;
-    margin: 8px 12px;
 }
 
 .stripe-instant input[type="submit"]:hover {
@@ -257,4 +256,47 @@
 .cart-instant input[type="submit"]:active {
     transform: translateY(0);
     background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Stripe logo sizing for instant purchase */
+/* .stripe-logo {
+        max-width: 100px;
+        max-height: 30px;
+        width: auto;
+        height: auto;
+        display: block;
+        margin-top: 8px;
+} */
+
+@media (max-width: 480px) {
+    .stripe-logo { max-width: 100px; max-height: 36px; }
+}
+
+/* Button that contains the Stripe logo */
+.stripe-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background-color: white;
+        border: 2px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 20%
+}
+
+.stripe-button:hover {
+        background-color: rgba(255,255,255,0.95);
+        transform: translateY(-1px);
+}
+
+.stripe-button .stripe-logo {
+        margin-top: 0;
+        max-width: 120px;
+        max-height: 25px;
+}
+
+@media (max-width: 480px) {
+    .stripe-button .stripe-logo { max-width: 92px; max-height: 32px; }
 }

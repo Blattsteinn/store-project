@@ -10,7 +10,10 @@ class FeedbacksController < ApplicationController
     end
 
     def create
+        @order = Order.find_by(public_id: params[:feedback][:public_id])
         @feedback = Feedback.new(feedback_params)
+        @feedback.order_id = @order.id if @order.present?
+
 
         if @feedback.save
             redirect_to feedbacks_path
@@ -37,6 +40,6 @@ class FeedbacksController < ApplicationController
 
     private
     def feedback_params
-        params.expect(feedback: [ :feedback, :rating, :order_id ])
+        params.expect(feedback: [ :feedback, :rating ])
     end
 end

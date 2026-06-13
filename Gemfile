@@ -69,6 +69,8 @@ end
 gem "devise", "~> 5.0"
 gem "bullet", group: [:development, :test]
 
+gem "rack-attack"
+
 gem "stripe", "~> 13.0"
 gem "dotenv-rails", groups: [ :development, :test ]
 

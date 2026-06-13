@@ -21,14 +21,20 @@ class StripeWebhooksController < ApplicationController
       order = Order.find_by(stripe_session_id: event.data.object.id)
       return unless order
       return if order.paid?
-      
+
       ActiveRecord::Base.transaction do
-        order.order_items.each do |item|
-          #This can become negative. Although volume is not high so idc
-          item.variant.decrement!(:stock, item.quantity)
-        end
         order.update!(status: "paid")
         PurchaseSuccessMailer.successful_purchase(order).deliver_later
+      end
+
+    elsif event.type == "checkout.session.expired"
+      order = Order.find_by(stripe_session_id: event.data.object.id)
+      return unless order
+      return unless order.status == "pending"
+
+      ActiveRecord::Base.transaction do
+        order.restore_stock!
+        order.destroy
       end
 
     end

@@ -19,25 +19,10 @@ Rails.application.routes.draw do
   end
 
 
-  post   "cart_items",     to: "cart_items#create",  as: "cart_items"
-  patch  "cart_items",     to: "cart_items#update",  as: "cart_item"
-  delete "cart_items",     to: "cart_items#destroy", as: "remove_cart_item"
-
-  post "cart_items/instantly", to: "cart_items#create_instantly", as: "cart_create_instantly"
-
-
-  resources :orders, only: [ :show, :index, :create, :destroy, :update ] do
-    member do
-      get :cancel_stripe_checkout
-    end
-  end
+  resources :orders, only: [ :create, :destroy, :update ]
+  get "orders/:public_id/cancel", to: "orders#cancel_stripe_checkout", as: "cancel_stripe_checkout_order"
 
   post "stripe/webhooks", to: "stripe_webhooks#create", as: "stripe_webhooks"
-
-  resources :order_items, only: [ :create, :destroy ]
-
-  get "cart",       to: "carts#show",        as: "cart"
-  get "cart_mini",  to: "carts#mini_show",   as: "cart_mini"
 
   get "dashboard",              to: "dashboard#index",            as: "dashboard"
   get "dashboard/products",     to: "dashboard#products_index",   as: "dashboard_products"
@@ -52,8 +37,9 @@ Rails.application.routes.draw do
 
   root "products#index"
 
+  get "instructions", to: "instructions#instructions", as: "instructions"
+
   resources :feedbacks, only:  [:index, :new, :create, :destroy, :edit, :update]
-  resources :wish_lists, only: [:index, :create, :destroy, :update]
 
   resources :support_messages, only: [:index, :show, :new, :create, :destroy, :update]
   resources :faqs, only: [:index, :new, :create, :destroy, :update, :edit]

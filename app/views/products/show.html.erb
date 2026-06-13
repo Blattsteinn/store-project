@@ -59,7 +59,15 @@
                   minlength: 5 %>
             </div>
             
-            <%= form.submit "Purchase with Stripe" %>
+            <div class="general-box">
+              <%= button_tag type: 'submit', class: 'stripe-button' do %>
+                <%= image_tag 'stripe.png', class: 'stripe-logo', alt: 'Pay with Stripe' %>
+              <% end %>
+              <p class="payment-methods">
+                Pay by card, Venmo, Apple Pay, Google Pay
+              </p>
+            </div>
+            
           <% end %>
         </div>
 
@@ -80,7 +88,8 @@
                   stock: variant.stock,
                   variant_id: variant.id,
                   product_id: @product.id,
-                  price: variant.price
+                  price: variant.price,
+                  selected: false,
                   } %>
                   <div class="variant-info">
                     <p><%= variant.title %></p>

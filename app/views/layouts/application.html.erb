@@ -28,8 +28,7 @@
 
   <body class="<%= controller_name %>-<%= action_name %>">
 
-    <%# Displays different navs for different users, kinda repetitive,
-     but whatever would solve with templates (different files anyway)  %>
+
 
     <% if user_signed_in? %>
       <nav class="<%= controller_name %>-<%= action_name %>">
@@ -86,7 +85,13 @@
       </nav>
 
     <% end %>
-   
+
+       <% flash.each do |type, message| %>
+      <div class="alert alert-danger">
+              <%= message %>
+      </div>
+    <% end %>
+        
     <%= yield %>
     
   </body>

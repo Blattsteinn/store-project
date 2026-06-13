@@ -16,6 +16,10 @@ class SupportMessagesController < ApplicationController
 
     def create
         @support_message = SupportMessage.new(support_message_params)
+        if params[:support_message][:public_id].present?
+            order = Order.find_by(public_id: params[:support_message][:public_id])
+            @support_message.order = order if order
+        end
         if @support_message.save
             redirect_to new_support_message_path
         else
@@ -36,7 +40,7 @@ class SupportMessagesController < ApplicationController
 
     private
     def support_message_params
-        params.expect(support_message: [:title, :email, :message, :order_id])
+        params.expect(support_message: [:title, :email, :message])
     end
 
 end

@@ -3,20 +3,6 @@ require "stripe"
 class OrdersController < ApplicationController
     # pending, paid, processing, delivered, cancelled, refunded.
     before_action :authenticate_admin!, only: [ :update, :destroy ]
-    before_action :authenticate_user!, only: [:index, :show]
-
-    # -------------------------------------------------------------------
-    # --- Only for Users who are signed in ------------------------------
-    def index
-        @orders = Order.where(user_id: current_user.id)
-    end
-
-    def show
-        @order = current_user.orders.includes(order_items: [:product, :variant]).find(params[:id])
-    end
-    # -------------------------------------------------------------------
-    # -------------------------------------------------------------------
-
 
     def create
         unless params[:email].present? && params[:variant_id].present? && params[:quantity].present?
@@ -24,17 +10,28 @@ class OrdersController < ApplicationController
             return
         end
 
-        @email = params[:email]
-        @variant = Variant.find(params[:variant_id].to_i)
+        @email    = params[:email]
+        @variant  = Variant.find_by(id: params[:variant_id].to_i)
         @quantity = params[:quantity].to_i
 
-        # --- Checking the stock ---
-        if @variant.stock < @quantity
-            redirect_to product_path(Product.find_by(@variant.product)), alert: "Not enough stock available"
+        unless @variant
+            redirect_to products_path, alert: "Invalid product"
             return
         end
 
+        # --- Reserve stock atomically to prevent race conditions ---
+        stock_reserved = false
+
         ActiveRecord::Base.transaction do
+            @variant.with_lock do
+                if @variant.stock >= @quantity
+                    @variant.decrement!(:stock, @quantity)
+                    stock_reserved = true
+                end
+            end
+
+            raise ActiveRecord::Rollback unless stock_reserved
+
             @order = Order.create!(email: @email)
             OrderItem.create!(
                 order_id: @order.id,
@@ -43,6 +40,11 @@ class OrdersController < ApplicationController
                 quantity: @quantity,
                 price: @variant.price
             )
+        end
+
+        unless stock_reserved
+            redirect_to product_path(@variant.product), alert: "Not enough stock available"
+            return
         end
 
         # --- Set-up for Stripe ---
@@ -54,31 +56,33 @@ class OrdersController < ApplicationController
 
         # === Stripe session thing ===
         stripe_session = Stripe::Checkout::Session.create(
-        mode: "payment",
-        line_items: line_items,
-        customer_email: @email,
-        client_reference_id: @order.id.to_s,
-        success_url: products_url(stripe: "success"),
-        cancel_url: cancel_stripe_checkout_order_url(@order)
+            mode: "payment",
+            line_items: line_items,
+            customer_email: @email,
+            client_reference_id: @order.id.to_s,
+            success_url: instructions_url,
+            cancel_url: cancel_stripe_checkout_order_url(public_id: @order.public_id)
         )
 
         @order.update!(stripe_session_id: stripe_session.id)
         redirect_to stripe_session.url, allow_other_host: true
 
         rescue Stripe::StripeError => e
-            @order&.destroy
-            redirect_to cart_path, alert: "Payment could not be initiated: #{e.message}"
-
+            if @order
+                @order.restore_stock!
+                @order.destroy
+            end
+            redirect_to product_path(@variant.product), alert: "Payment could not be initiated: #{e.message}"
     end
 
     def cancel_stripe_checkout
-        @order = Order.find(params[:id])
-        if @order.status == "cancelled"
+        @order = Order.find_by!(public_id: params[:public_id])
+        if @order.status == "pending"
             @order.restore_stock!
             @order.destroy
-            redirect_to cart_path, notice: "Checkout cancelled. Your cart has been restored."
+            redirect_to products_path, notice: "Checkout cancelled."
         else
-            redirect_to order_path(@order), alert: "This order cannot be cancelled."
+            redirect_to products_path, alert: "This order cannot be cancelled."
         end
     end
 
@@ -88,7 +92,6 @@ class OrdersController < ApplicationController
         @order.update!(order_params)
         redirect_to dashboard_order_path(@order)
     end
-
 
     def destroy
         @order = Order.find(params[:id])

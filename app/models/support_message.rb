@@ -1,5 +1,5 @@
 class SupportMessage < ApplicationRecord
-  belongs_to :order
+  belongs_to :order, optional: true
 
   validates :email, presence: true
   validates :message, presence: true, length: {minimum: 10}
