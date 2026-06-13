@@ -3,8 +3,8 @@
  #search-bar-container{
   display: flex;
   justify-content: center;
-  padding: 12px 20px;
   width: 100%;
+  margin-bottom: 20px;
  }
 
  #search-bar-container form {

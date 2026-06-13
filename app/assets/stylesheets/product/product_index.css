@@ -12,6 +12,7 @@ body.products-index{
 /* ========================== */
 
  #product-index-page{
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
 
@@ -19,10 +20,6 @@ body.products-index{
   gap: 10px;
  }
 
-
- #random-empty-space{
-  height: 150px;
- }
 
  /* ======================== */
  /* == All products displayed in this */

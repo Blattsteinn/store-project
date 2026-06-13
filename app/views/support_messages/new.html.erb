@@ -1,6 +1,12 @@
-<h1> New of support messages </h1>
+<div id="support-message-new-page">
+  <div class="support-form-card">
 
-<% if @support_message.errors.any? %>
+    <div class="feedback-form-header">
+      <h2>Contact Support</h2>
+      <p>Having an issue with your order? Fill in the form below and we'll get back to you.</p>
+    </div>
+
+    <% if @support_message.errors.any? %>
       <div class="feedback-errors">
         <strong>Please fix the following:</strong>
         <ul>
@@ -11,27 +17,34 @@
       </div>
     <% end %>
 
-<%= form_with model: @support_message do |form| %>
+    <%= form_with model: @support_message, class: "support-form" do |form| %>
 
-    <div>
-        <%= form.label :title %> <br>
-        <%= form.text_field :title %>
-    </div>
+      <div class="form-group">
+        <%= form.label :title, "Subject" %>
+        <%= form.text_field :title, class: "form-input", placeholder: "Brief description of your issue" %>
+      </div>
 
-    <div>
-        <%= form.label :email %> <br>
-        <%= form.email_field :email %>
-    </div>
+      <div class="form-group">
+        <%= form.label :email, "Your Email" %>
+        <%= form.email_field :email, class: "form-input", placeholder: "you@example.com" %>
+      </div>
 
-    <div>
-        <%= form.label :order_id %> <br>
-        <%= form.text_field :order_id %>
-    </div>
+      <div class="form-group">
+        <%= form.label :order_id, "Order ID (optional)" %>
+        <p class="form-hint">Leave blank if not related to a specific order.</p>
+        <%= form.text_field :order_id, class: "form-input form-input--short" %>
+      </div>
 
-    <div>
-        <%= form.label :message %> <br>
-        <%= form.textarea :message %>
-    </div>
+      <div class="form-group">
+        <%= form.label :message, "Message" %>
+        <%= form.textarea :message, rows: 6, class: "form-input", placeholder: "Describe your issue in detail...", maxlength: 1000 %>
+      </div>
 
-    <%= form.submit %>
-<% end %>
+      <div class="form-actions">
+        <%= link_to "Cancel", support_messages_path, class: "btn-cancel" %>
+        <%= form.submit "Send Message", class: "btn-submit" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
