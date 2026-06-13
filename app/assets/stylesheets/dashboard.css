@@ -136,6 +136,12 @@
   border: 1px solid #065f4630;
 }
 
+.dash-flash-error {
+  background: #7f1d1d20;
+  color: #f87171;
+  border: 1px solid #7f1d1d30;
+}
+
 /* ---------- Stat cards ---------- */
 #dashboard-statistics {
   display: grid;

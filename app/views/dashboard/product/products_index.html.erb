@@ -13,6 +13,12 @@
     <% if flash[:successful_edit] %>
       <div class="dash-flash dash-flash-success"><%= flash[:successful_edit] %></div>
     <% end %>
+    <% if flash[:notice] %>
+      <div class="dash-flash dash-flash-success"><%= flash[:notice] %></div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="dash-flash dash-flash-error"><%= flash[:alert] %></div>
+    <% end %>
 
     <div class="dashboard-card">
       <div class="card-body" style="padding: 0;">

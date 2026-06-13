@@ -1,42 +1,60 @@
 
-<%= form_with model: @product, multipart: true  do |form| %>
-    <div>
-        <%= form.label :title %> <br>
-        <%= form.text_field :title %>
-    </div>
-
-    <div>
-        <%= form.label :visibility %> <br>
-        <%= form.select  :visibility, 
-        [["Live", "live"], 
-        ["Hidden", "hidden"], 
-        ["Private", "private"], 
-        ["On Hold", "on_hold"]]  %>
-    </div>
-
-    <div>
-        <%= form.label :description %> <br>
-        <%= form.textarea  :description %>
-    </div>
-
-    <div>
-        <%= form.label :payment_type %> <br>
-        <%= form.select :payment_type,
-        [ ["Single Payment", "single_payment"],
-        ["Subscription", "subscription"],
-        ["Pay What You Want", "any"] ]%>
-    </div>
-    
-    <div>
-        <%= form.label :deliverables %> <br>
-        <%= form.select :deliverables,
-        [ ["Static Value", "static"],
-        ["License Key", "licence"],
-        ["Unique Codes & Serials", "serial"]
-        ]
-         %>
-    </div>
-    
-    <%= form.submit %>
-
+<% content_for :head do %>
+  <%= stylesheet_link_tag "product/product_form" %>
 <% end %>
+
+<div class="pf">
+  <div class="pf-header">
+    <h1>New product</h1>
+    <p>Create a new listing.</p>
+  </div>
+
+  <%= form_with model: @product, multipart: true do |form| %>
+
+    <div class="card">
+      <h2>General</h2>
+      <div class="field">
+        <%= form.label :title %>
+        <%= form.text_field :title %>
+      </div>
+
+      <div class="field">
+        <%= form.label :visibility %>
+        <%= form.select :visibility,
+          [["Live", "live"],
+           ["Hidden", "hidden"],
+           ["Private", "private"],
+           ["On Hold", "on_hold"]] %>
+      </div>
+
+      <div class="field">
+        <%= form.label :description %>
+        <%= form.textarea :description %>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Checkout</h2>
+      <div class="field">
+        <%= form.label :payment_type %>
+        <%= form.select :payment_type,
+          [ ["Single Payment", "single_payment"],
+            ["Subscription", "subscription"],
+            ["Pay What You Want", "any"] ] %>
+      </div>
+
+      <div class="field">
+        <%= form.label :deliverables %>
+        <%= form.select :deliverables,
+          [ ["Static Value", "static"],
+            ["License Key", "licence"],
+            ["Unique Codes & Serials", "serial"] ] %>
+      </div>
+    </div>
+
+    <div class="submit-card">
+      <%= form.submit %>
+    </div>
+
+  <% end %>
+</div>

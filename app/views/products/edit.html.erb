@@ -1,204 +1,207 @@
 
-
-<p> <%= link_to "View product", product_path(@product) %> </p> 
-
-<% if flash[:fail_edit] %>
-    <p> <%= flash[:fail_edit]  %></p>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "product/product_form" %>
 <% end %>
 
-<%= form_with model: @product, multipart: true  do |form| %>
-    <%= form.submit %>
+<div class="pf">
+  <div class="pf-header">
+    <h1>Edit product</h1>
+    <p><%= link_to "View product →", product_path(@product), class: "pf-link" %></p>
+  </div>
 
-    <details open>
-        <summary> General </summary>
-        <div id="edit-general-section">
-            <div>
-                <%= form.label :visibility %> <br>
-                <%= form.select  :visibility, 
-                [["Live", "live"], 
-                ["Hidden", "hidden"], 
-                ["Private", "private"], 
-                ["On Hold", "on_hold"]]  %>
-            </div>
+  <% if flash[:fail_edit] %>
+    <p class="flash"><%= flash[:fail_edit] %></p>
+  <% end %>
 
-            <div>
-                <%= form.label  :title, "Product title" %> <br>
-                <%= form.text_field :title, class: "title-field" %>
-            </div>
+  <%= form_with model: @product, multipart: true do |form| %>
 
-            <div id="edit-description">
-                <%= form.label :description %> <br>
-                <%= form.textarea  :description %>
-            </div>
+    <div class="submit-card">
+      <%= form.submit %>
+    </div>
+
+    <details open class="card">
+      <summary>General</summary>
+      <div id="edit-general-section">
+        <div class="field">
+          <%= form.label :visibility %>
+          <%= form.select :visibility,
+            [["Live", "live"],
+             ["Hidden", "hidden"],
+             ["Private", "private"],
+             ["On Hold", "on_hold"]] %>
         </div>
+
+        <div class="field">
+          <%= form.label :title, "Product title" %>
+          <%= form.text_field :title %>
+        </div>
+
+        <div class="field" id="edit-description">
+          <%= form.label :description %>
+          <%= form.textarea :description %>
+        </div>
+      </div>
     </details>
 
-    <details>
-        <summary>Checkout</summary>
-        <div id="edit-checkout-section">
-            <div>
-                <%= form.label :payment_type %> <br>
-                <%= form.select :payment_type,
-                [ ["Single Payment", "single_payment"],
-                ["Subscription", "subscription"],
-                ["Pay What You Want", "any"] ]%>
-            </div>
-            
-            <div>
-                <%= form.label :deliverables %> <br>
-                <%= form.select :deliverables,
-                [ ["Static Value", "static"],
-                ["License Key", "licence"],
-                ["Unique Codes & Serials", "serial"]
-                ]
-                %>
-            </div>
+    <details class="card">
+      <summary>Checkout</summary>
+      <div id="edit-checkout-section">
+        <div class="field">
+          <%= form.label :payment_type %>
+          <%= form.select :payment_type,
+            [ ["Single Payment", "single_payment"],
+              ["Subscription", "subscription"],
+              ["Pay What You Want", "any"] ] %>
         </div>
+
+        <div class="field">
+          <%= form.label :deliverables %>
+          <%= form.select :deliverables,
+            [ ["Static Value", "static"],
+              ["License Key", "licence"],
+              ["Unique Codes & Serials", "serial"] ] %>
+        </div>
+      </div>
     </details>
 
-    <details>
-        <summary>Variants</summary>
-        <div data-controller="insert-variant" 
-        id="edit-variants-section">
-            
-            <template data-insert-variant-target="template">
-                <%= form.fields_for :variants, Variant.new, child_index: "NEW_RECORD" do |variant| %>
-                    <div style="border: 1px solid #eee; padding: 8px; margin: 8px 0;">
-                        <div>
-                            <%= variant.label :title %>
-                            <%= variant.text_field :title %>
-                        </div>
-                        <div>
-                            <%= variant.label :price %>
-                            <%= variant.number_field :price, min: 0  %>
-                        </div>
-                        <div>
-                            <%= variant.label :stock %>
-                            <%= variant.number_field :stock, min: 0  %>
-                        </div>
-                        <div>
-                            <%= variant.label :description %>
-                            <%= variant.textarea :description %>
-                        </div>
-                        <div>
-                            <%= variant.label :_destroy, "Remove this variant" %>
-                            <%= variant.check_box :_destroy %>
-                        </div>
-                    </div>
-                <% end %>
-            </template>
+    <details class="card">
+      <summary>Variants</summary>
+      <div data-controller="insert-variant" id="edit-variants-section">
 
-            <div>
-                <button type="button" data-action="insert-variant#add" > Add variant </button>
+        <template data-insert-variant-target="template">
+          <%= form.fields_for :variants, Variant.new, child_index: "NEW_RECORD" do |variant| %>
+            <div class="sub-card">
+              <div class="field">
+                <%= variant.label :title %>
+                <%= variant.text_field :title %>
+              </div>
+              <div class="field">
+                <%= variant.label :price %>
+                <%= variant.number_field :price, min: 0 %>
+              </div>
+              <div class="field">
+                <%= variant.label :stock %>
+                <%= variant.number_field :stock, min: 0 %>
+              </div>
+              <div class="field">
+                <%= variant.label :description %>
+                <%= variant.textarea :description %>
+              </div>
+              <div class="field-inline">
+                <%= variant.check_box :_destroy %>
+                <%= variant.label :_destroy, "Remove this variant" %>
+              </div>
             </div>
+          <% end %>
+        </template>
 
-            <div data-insert-variant-target="container">
-                <%= form.fields_for :variants do |variant| %>
-                    <div style="border: 1px solid #eee; padding: 8px; margin: 8px 0;">
-                        <div>
-                            <%= variant.label :title %> <br>
-                            <%= variant.text_field :title %>
-                        </div>
-                        <div>
-                            <%= variant.label :price %> <br>
-                            <%= variant.number_field :price, min: 0  %>
-                        </div>
-                        <div>
-                            <%= variant.label :stock %> <br>
-                            <%= variant.number_field :stock, min: 0  %>
-                        </div>
-                        <div>
-                            <%= variant.label :description %> <br>
-                            <%= variant.textarea :description %>
-                        </div>
-                        <div>
-                            <%= variant.label :_destroy, "Remove this variant" %> <br>
-                            <%= variant.check_box :_destroy %>
-                        </div>
-                    </div>
-                <% end %>
-            </div>
-
+        <div class="btn-row">
+          <button type="button" data-action="insert-variant#add" class="btn-secondary">Add variant</button>
         </div>
+
+        <div data-insert-variant-target="container">
+          <%= form.fields_for :variants do |variant| %>
+            <div class="sub-card">
+              <div class="field">
+                <%= variant.label :title %>
+                <%= variant.text_field :title %>
+              </div>
+              <div class="field">
+                <%= variant.label :price %>
+                <%= variant.number_field :price, min: 0 %>
+              </div>
+              <div class="field">
+                <%= variant.label :stock %>
+                <%= variant.number_field :stock, min: 0 %>
+              </div>
+              <div class="field">
+                <%= variant.label :description %>
+                <%= variant.textarea :description %>
+              </div>
+              <div class="field-inline">
+                <%= variant.check_box :_destroy %>
+                <%= variant.label :_destroy, "Remove this variant" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+      </div>
     </details>
 
-    <details open>
-        <summary>Media</summary>
-        <div data-controller="insert-image" id="edit-media-section">
-            <template data-insert-image-target="template">
-                <%= form.label :product_images, "Product Images" %> <br>
-                <%= form.fields_for :product_images, ProductImage.new, child_index: "NEW_IMAGE" do |image_form| %>
-                    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+    <details open class="card">
+      <summary>Media</summary>
+      <div data-controller="insert-image" id="edit-media-section">
+        <template data-insert-image-target="template">
+          <%= form.fields_for :product_images, ProductImage.new, child_index: "NEW_IMAGE" do |image_form| %>
+            <div class="sub-card">
 
-                            <% if image_form.object.image.attached? %>
-                                <%= image_tag image_form.object.image, style: "max-width: 200px;" %>
-                                <div>
-                                    <%= image_form.label :image, "Change Image" %> <br>
-                                    <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                                </div>
+              <% if image_form.object.image.attached? %>
+                <%= image_tag image_form.object.image, class: "image-preview" %>
+                <div class="field">
+                  <%= image_form.label :image, "Change Image" %>
+                  <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                </div>
 
-                                <div>
-                                    <%= image_form.label :_destroy, "Remove this image" %>
-                                    <%= image_form.check_box :_destroy %>
-                                </div>
+                <div class="field-inline">
+                  <%= image_form.check_box :_destroy %>
+                  <%= image_form.label :_destroy, "Remove this image" %>
+                </div>
 
-                            <% else %>
-                                <%= image_form.label :image, "Upload Image" %> <br>
-                                <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                    
-                            <% end %>
+              <% else %>
+                <div class="field">
+                  <%= image_form.label :image, "Upload Image" %>
+                  <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                </div>
+              <% end %>
 
-                        <div>
-                            <%= image_form.label :priority, "Priority (1 = main)" %> <br>
-                            <%= image_form.number_field :priority, value: 1 %>
-                        </div>
-                        
-                    </div>
-                <% end %>
-            </template>
+              <div class="field">
+                <%= image_form.label :priority, "Priority (1 = main)" %>
+                <%= image_form.number_field :priority, value: 1 %>
+              </div>
 
-            <div>
-                <button type="button" data-action="insert-image#add" >Add additional image</button>
             </div>
+          <% end %>
+        </template>
 
-            <div data-insert-image-target="container">
-                <%= form.label :product_images, "Product Images" %> <br>
-                <%= form.fields_for :product_images do |image_form| %>
-                    <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-
-                            <% if image_form.object.image.attached? %>
-                                <%= image_tag image_form.object.image, style: "max-width: 200px;" %>
-                                <div>
-                                    <%= image_form.label :image, "Change Image" %> <br>
-                                    <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                                </div>
-
-                                <div>
-                                    <%= image_form.label :_destroy, "Remove this image" %>
-                                    <%= image_form.check_box :_destroy %>
-                                </div>
-
-                            <% else %>
-                                <%= image_form.label :image, "Upload Image" %> <br>
-                                <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
-                    
-                            <% end %>
-
-                        <div>
-                            <%= image_form.label :priority, "Priority (1 = main)" %> <br>
-                            <%= image_form.number_field :priority, value: 1 %>
-                        </div>
-                        
-                    </div>
-                <% end %>
-            </div>
-
-            <div>
-                
-            </div>
+        <div class="btn-row">
+          <button type="button" data-action="insert-image#add" class="btn-secondary">Add additional image</button>
         </div>
+
+        <div data-insert-image-target="container">
+          <%= form.fields_for :product_images do |image_form| %>
+            <div class="sub-card">
+
+              <% if image_form.object.image.attached? %>
+                <%= image_tag image_form.object.image, class: "image-preview" %>
+                <div class="field">
+                  <%= image_form.label :image, "Change Image" %>
+                  <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                </div>
+
+                <div class="field-inline">
+                  <%= image_form.check_box :_destroy %>
+                  <%= image_form.label :_destroy, "Remove this image" %>
+                </div>
+
+              <% else %>
+                <div class="field">
+                  <%= image_form.label :image, "Upload Image" %>
+                  <%= image_form.file_field :image, accept: 'image/png,image/gif,image/jpeg' %>
+                </div>
+              <% end %>
+
+              <div class="field">
+                <%= image_form.label :priority, "Priority (1 = main)" %>
+                <%= image_form.number_field :priority, value: 1 %>
+              </div>
+
+            </div>
+          <% end %>
+        </div>
+
+      </div>
     </details>
 
-    
-
-<% end %>
+  <% end %>
+</div>

@@ -1,17 +1,27 @@
-<h1>Faqs#edit</h1>
-<p>Find me in app/views/faqs/edit.html.erb</p>
-
-<%= form_with model: @faq do |form| %> 
-    <div>
-        <%= form.label :question %> <br>
-        <%= form.text_field :question %>
-    </div>
-
-    <div>
-        <%= form.label :answer %> <br>
-        <%= form.textarea :answer %>
-    </div>
-
-    <%= form.submit "Update" %>
-
+<% content_for :head do %>
+  <%= stylesheet_link_tag "faqs" %>
 <% end %>
+
+<div class="faq-form">
+  <div class="faq-header">
+    <h1>Edit FAQ</h1>
+  </div>
+
+  <%= form_with model: @faq do |form| %>
+    <div class="card">
+      <div class="field">
+        <%= form.label :question %>
+        <%= form.text_field :question %>
+      </div>
+
+      <div class="field">
+        <%= form.label :answer %>
+        <%= form.textarea :answer %>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <%= form.submit "Update FAQ" %>
+    </div>
+  <% end %>
+</div>

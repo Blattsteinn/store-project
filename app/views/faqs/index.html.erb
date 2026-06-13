@@ -1,18 +1,24 @@
-<h1>Frequently Asked Questions</h1>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "faqs" %>
+<% end %>
 
-<% if @faqs.any? %>
-  <dl style="max-width:720px;">
+<div class="faq">
+  <div class="faq-header">
+    <h1>Frequently Asked Questions</h1>
+  </div>
+
+  <% if @faqs.any? %>
     <% @faqs.each do |faq| %>
-      <div style="margin-bottom:1.5rem;">
-        <dt style="font-weight:bold;"><%= faq.question %></dt>
-        <dd style="margin:0.25rem 0 0 1rem;"><%= faq.answer %></dd>
+      <div class="card">
+        <dt><%= faq.question %></dt>
+        <dd><%= faq.answer %></dd>
       </div>
     <% end %>
-  </dl>
-<% else %>
-  <p>No FAQs available yet.</p>
-<% end %>
+  <% else %>
+    <p class="faq-empty">No FAQs available yet.</p>
+  <% end %>
 
-<% if current_user&.admin? %>
-  <%= link_to "Manage FAQs (Admin)", dashboard_faqs_path %>
-<% end %>
+  <% if current_user&.admin? %>
+    <%= link_to "Manage FAQs (Admin) →", dashboard_faqs_path, class: "faq-admin-link" %>
+  <% end %>
+</div>

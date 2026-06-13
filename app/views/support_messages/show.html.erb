@@ -1,27 +1,45 @@
-<h1>Support Message #<%= @support_message.id %></h1>
+<% content_for :head do %>
+  <%= stylesheet_link_tag "support_messages" %>
+<% end %>
 
-<dl>
-  <dt>Title</dt>
-  <dd><%= @support_message.title %></dd>
+<div class="sm-show">
+  <%= link_to "← Back to all messages", support_messages_path, class: "sm-back-link" %>
 
-  <dt>Email</dt>
-  <dd><%= @support_message.email %></dd>
+  <div class="card">
+    <h2>Support Message #<%= @support_message.id %></h2>
 
-  <dt>Order ID</dt>
-  <dd><%= @support_message.order_id %></dd>
+    <div class="sm-item">
+      <span class="sm-label">Title</span>
+      <span class="sm-val"><%= @support_message.title %></span>
+    </div>
 
-  <dt>Status</dt>
-  <dd><%= @support_message.status %></dd>
+    <div class="sm-item">
+      <span class="sm-label">Email</span>
+      <span class="sm-val"><%= @support_message.email %></span>
+    </div>
 
-  <dt>Message</dt>
-  <dd><%= @support_message.message %></dd>
+    <div class="sm-item">
+      <span class="sm-label">Order ID</span>
+      <span class="sm-val"><%= @support_message.order_id || "—" %></span>
+    </div>
 
-  <dt>Created At</dt>
-  <dd><%= @support_message.created_at.strftime("%b %d, %Y %H:%M") %></dd>
-</dl>
+    <div class="sm-item">
+      <span class="sm-label">Status</span>
+      <span class="sm-val"><span class="sm-status sm-status-<%= @support_message.status %>"><%= @support_message.status %></span></span>
+    </div>
 
+    <div class="sm-item">
+      <span class="sm-label">Created</span>
+      <span class="sm-val"><%= @support_message.created_at.strftime("%b %d, %Y %H:%M") %></span>
+    </div>
 
-<%= button_to "Close case", support_message_path(@support_message), method: :patch, params: { status: "closed"} %>
-<%= button_to "Open case", support_message_path(@support_message), method: :patch, params: { status: "open"} %>
+    <div class="sm-body">
+      <%= @support_message.message %>
+    </div>
+  </div>
 
-<%= link_to "Back to all messages", support_messages_path %>
+  <div class="sm-actions">
+    <%= button_to "Close case", support_message_path(@support_message), method: :patch, params: { status: "closed" }, form_class: "inline-form" %>
+    <%= button_to "Open case", support_message_path(@support_message), method: :patch, params: { status: "open" }, form_class: "inline-form" %>
+  </div>
+</div>

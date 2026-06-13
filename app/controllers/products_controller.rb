@@ -77,7 +77,9 @@ class ProductsController < ApplicationController
 
     def destroy
         @product = Product.find(params[:id])
-        @product.destroy
+        title = @product.title
+        @product.destroy!
+        flash[:notice] = "\"#{title}\" deleted — existing orders preserved."
         redirect_to dashboard_products_path
     end
 

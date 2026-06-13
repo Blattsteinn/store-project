@@ -1,0 +1,165 @@
+/* ==========================================
+   FAQs — dark card style
+   ========================================== */
+
+body.faqs-index,
+body.faqs-new,
+body.faqs-edit {
+  background-color: #161617;
+}
+
+/* ---- Index ---- */
+.faq {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.faq-header {
+  margin-bottom: 1.5rem;
+}
+
+.faq-header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.faq-header p {
+  font-size: 14px;
+  color: #999;
+}
+
+.faq .card {
+  background: #1a1a1b;
+  border: 0.5px solid #3a3a3c;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 12px;
+}
+
+.faq .card dt {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin-bottom: 6px;
+}
+
+.faq .card dd {
+  font-size: 14px;
+  color: #aaa;
+  line-height: 1.6;
+  margin: 0 0 0 0;
+}
+
+.faq-empty {
+  text-align: center;
+  color: #777;
+  padding: 2rem;
+}
+
+.faq-admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  margin-top: 1.5rem;
+  transition: color 0.15s;
+}
+
+.faq-admin-link:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- New / Edit form ---- */
+.faq-form {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.faq-form .card {
+  background: #1a1a1b;
+  border: 0.5px solid #3a3a3c;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.faq-form .field {
+  margin-bottom: 14px;
+}
+
+.faq-form .field:last-child {
+  margin-bottom: 0;
+}
+
+.faq-form .field label {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.faq-form .field input[type="text"],
+.faq-form .field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  background: #0c0c0d;
+  border: 0.5px solid #3a3a3c;
+  border-radius: 8px;
+  color: #ddd;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.faq-form .field textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.faq-form .field input:focus,
+.faq-form .field textarea:focus {
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+}
+
+.faq-form input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0d1321;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  font-family: inherit;
+}
+
+.faq-form input[type="submit"]:hover {
+  opacity: 0.85;
+}
+
+.faq-form .submit-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 480px) {
+  .faq,
+  .faq-form {
+    padding: 1rem 0.5rem;
+  }
+
+  .faq-header h1 {
+    font-size: 18px;
+  }
+}
