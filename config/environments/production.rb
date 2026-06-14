@@ -90,8 +90,9 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    "dbzdokkanstore.com",     # Allow requests from example.com
-    /.*\.dbzdokkanstore\.com/ # Allow requests from subdomains like `www.example.com`
+    "dbzdokkanstore.com",
+    /.*\.dbzdokkanstore\.com/,
+    /.*\.up\.railway\.app/     # ← add this line
   ]
   #
   # Skip DNS rebinding protection for the default health check endpoint.
