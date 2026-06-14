@@ -10,6 +10,7 @@ class OrdersController < ApplicationController
             return
         end
 
+        @discord  = params[:discord]
         @email    = params[:email]
         @variant  = Variant.includes(:product).find_by(id: params[:variant_id].to_i)
         @quantity = params[:quantity].to_i
@@ -32,13 +33,13 @@ class OrdersController < ApplicationController
 
             raise ActiveRecord::Rollback unless stock_reserved
 
-            @order = Order.create!(email: @email)
+            @order = Order.create!(email: @email, discord: @discord)
             OrderItem.create!(
                 order_id: @order.id,
                 product_id: @variant.product_id,
                 variant_id: @variant.id,
                 quantity: @quantity,
-                price: @variant.price
+                price: @variant.price,
             )
         end
 
@@ -89,7 +90,7 @@ class OrdersController < ApplicationController
     # Admin methods
     def update
         @order = Order.find(params[:id])
-        @order.update!(order_params)
+        @order.update!(update_params)
         redirect_to dashboard_order_path(@order)
     end
 
@@ -100,7 +101,11 @@ class OrdersController < ApplicationController
     end
 
     private
-    def order_params
+    def update_params
         params.expect(order: [ :status ])
+    end
+
+    def order_params
+     params.expect(order: [:product_id, :variant_id, :quantity, :price, :discord ])
     end
 end

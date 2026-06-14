@@ -1,5 +1,6 @@
 class DashboardController < ApplicationController
     before_action :authenticate_admin!
+    before_action :set_open_support
 
     def index
         @revenue = Order.where(status: "paid").joins(:order_items)
@@ -9,11 +10,10 @@ class DashboardController < ApplicationController
         @paid_orders     = Order.where(status: "paid").count
         @pending_orders  = Order.where(status: "pending").count
         @recent_orders   = Order.order(created_at: :desc).limit(8)
-        @open_support    = SupportMessage.where(status: "open").count
     end
 
     def products_index
-        @products = Product.includes(:variants).order(title: "desc")
+        @products = Product.all #sidebar-nav.order(title: "desc")
         render "dashboard/product/products_index"
     end
 
@@ -41,6 +41,12 @@ class DashboardController < ApplicationController
     def faq_index
         @faqs = Faq.all
         render "dashboard/faq/faq_index"
+    end
+
+    private
+
+    def set_open_support
+        @open_support = SupportMessage.where(status: "open").count
     end
 
 end

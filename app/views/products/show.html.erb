@@ -76,10 +76,17 @@
             <%= form.hidden_field :quantity, value: 1, data: { product_view_target: "stripeQuantity" }%>
           
             <div class="general-box">
-              <%= form.label :email %>
+              <%= form.label :email, "Email (required)" %>
               <%= form.email_field :email, placeholder: "Enter your email", required: true,
                   maxlength: 255,
                   minlength: 5 %>
+            </div>
+
+            <div class="general-box">
+              <%= form.label :discord %>
+              <%= form.text_field :discord, placeholder: "Enter your Discord username",
+                  maxlength: 40,
+                  minlength: 3 %>
             </div>
             
             <div class="general-box">

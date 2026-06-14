@@ -1,40 +1,50 @@
 <aside id="dashboard-sidebar">
   <div class="sidebar-header">
-    <%= link_to "Dokkan Store", root_path, class: "sidebar-brand" %>
+    <%= link_to dashboard_path, class: "sidebar-brand" do %>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    <% end %>
   </div>
+
   <nav class="sidebar-nav">
     <%= link_to dashboard_path, class: "sidebar-link #{'active' if controller.action_name == 'index'}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span>Overview</span>
+      Overview
     <% end %>
 
     <%= link_to dashboard_products_path, class: "sidebar-link #{'active' if controller.action_name == 'products_index'}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-      <span>Products</span>
+      Products
     <% end %>
 
     <%= link_to dashboard_orders_path, class: "sidebar-link #{'active' if %w[orders_index order_show].include?(controller.action_name)}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span>Orders</span>
+      Orders
     <% end %>
 
     <%= link_to dashboard_feedbacks_path, class: "sidebar-link #{'active' if %w[feedback_index feedback_show].include?(controller.action_name)}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
-      <span>Feedback</span>
+      Feedback
     <% end %>
 
     <%= link_to support_messages_path, class: "sidebar-link #{'active' if controller.controller_name == 'support_messages'}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span>Support</span>
+      Support
+      <% if @open_support && @open_support > 0 %>
+        <span class="sidebar-badge"><%= @open_support %></span>
+      <% end %>
     <% end %>
 
     <%= link_to dashboard_faqs_path, class: "sidebar-link #{'active' if controller.action_name == 'faq_index'}" do %>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <span>FAQ</span>
+      FAQ
     <% end %>
   </nav>
 
   <div class="sidebar-footer">
-    <%= link_to "← Back to Store", products_path %>
+    <%= link_to products_path do %>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Back to Store
+    <% end %>
   </div>
 </aside>

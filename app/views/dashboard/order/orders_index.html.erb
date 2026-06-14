@@ -40,6 +40,7 @@
                 <th>Status</th>
                 <th>Total</th>
                 <th>Date</th>
+                <th>Discord</th>
               </tr>
             </thead>
             <tbody>
@@ -54,6 +55,7 @@
                   <td><span class="status-badge status-<%= order.status %>"><%= order.status %></span></td>
                   <td class="mono"><%= convert_from_cents(order.order_items.sum { |item| item.price * item.quantity }) %> €</td>
                   <td><%= order.created_at.strftime("%b %d, %H:%M") %></td>
+                  <td><%= order.discord %> </td>
                 </tr>
               <% end %>
             </tbody>
