@@ -9,3 +9,13 @@
 #   end
 # db/seeds.rb
 
+# db/seeds.rb
+admin_email    = ENV.fetch("ADMIN_EMAIL",    "admin@dbzdokkanstore.com")
+admin_password = ENV.fetch("ADMIN_PASSWORD", "changeme123")
+
+User.find_or_create_by!(email: admin_email) do |user|
+  user.password = admin_password
+  user.admin    = true
+end
+
+puts "Admin user ready: #{admin_email}"
