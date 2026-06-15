@@ -24,8 +24,9 @@ class StripeWebhooksController < ApplicationController
 
       ActiveRecord::Base.transaction do
         order.update!(status: "paid")
-        PurchaseSuccessMailer.successful_purchase(order).deliver_now
       end
+
+      PurchaseSuccessMailer.successful_purchase(order).deliver_now
 
     elsif event.type == "checkout.session.expired"
       order = Order.find_by(stripe_session_id: event.data.object.id)
