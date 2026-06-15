@@ -8,8 +8,6 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # db/seeds.rb
-
-# db/seeds.rb
 admin_email    = ENV.fetch("ADMIN_EMAIL",    "admin@dbzdokkanstore.com")
 admin_password = ENV.fetch("ADMIN_PASSWORD", "changeme123")
 
@@ -19,3 +17,28 @@ User.find_or_create_by!(email: admin_email) do |user|
 end
 
 puts "Admin user ready: #{admin_email}"
+
+# ── Test product ──────────────────────────────────────────────
+product = Product.find_or_create_by!(title: "Test - 8,000 Dragon Stones (Global)") do |p|
+  p.description  = "A test account with 8,000 Dragon Stones for development."
+  p.visibility   = "live"
+  p.payment_type = "single_payment"
+  p.deliverables = "static"
+end
+
+Variant.find_or_create_by!(product: product, title: "iOS") do |v|
+  v.price       = 899   # cents → €8.99
+  v.stock       = 10
+  v.description = "iOS version"
+end
+
+Variant.find_or_create_by!(product: product, title: "Android") do |v|
+  v.price       = 599   # cents → €5.99
+  v.stock       = 14
+  v.description = "Android version"
+end
+
+puts "Test product ready: #{product.title}"
+puts "  Variants: #{product.variants.pluck(:title).join(', ')}"
+puts "  Images:   #{product.product_images.count}"
+puts "  Seeding complete!"
