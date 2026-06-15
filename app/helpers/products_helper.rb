@@ -2,6 +2,7 @@ require 'redcarpet'
 
 module ProductsHelper
     def convert_from_cents(cents)
+        return 0 if cents.nil?
         cents = cents * 1.0 / 100
     end
 

@@ -3,6 +3,12 @@
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
+
+  # Ensure SolidCache, SolidQueue, and SolidCable tables exist
+  # (these use separate schema files that db:prepare doesn't touch)
+  ./bin/rails db:schema:load:cache   --if-not-exists 2>/dev/null || true
+  ./bin/rails db:schema:load:queue   --if-not-exists 2>/dev/null || true
+  ./bin/rails db:schema:load:cable   --if-not-exists 2>/dev/null || true
 fi
 
 exec "${@}"
