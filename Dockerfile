@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t dokkan_store .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name dokkan_store dokkan_store
+# docker build -t account_rift .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name account_rift account_rift
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 

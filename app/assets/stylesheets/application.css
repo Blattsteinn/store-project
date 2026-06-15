@@ -50,3 +50,59 @@ body{
 .field_with_errors label {
   color: red;
 }
+
+/* ========================== */
+/* == Shared page gradient (products, feedbacks, faqs, support) == */
+body.products-index,
+body.feedbacks-index,
+body.feedbacks-new,
+body.faqs-index,
+body.faqs-new,
+body.faqs-edit,
+body.support_messages-new,
+body.support_messages-index,
+body.support_messages-show {
+  background: linear-gradient(135deg, #07070d 0%, #080c17 40%, #051422 70%, #1a112b 100%);
+  background-attachment: fixed;
+}
+
+nav.products-index,
+nav.feedbacks-index,
+nav.feedbacks-new,
+nav.faqs-index,
+nav.faqs-new,
+nav.faqs-edit,
+nav.support_messages-new,
+nav.support_messages-index,
+nav.support_messages-show {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: none;
+}
+
+/* ========================== */
+/* == Footer == */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 3rem;
+  border-top: 0.5px solid #3a3a3c;
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-footer a {
+  color: #888;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: #ccc;
+}

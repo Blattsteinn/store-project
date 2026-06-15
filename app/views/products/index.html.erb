@@ -2,15 +2,46 @@
 
 <div id="product-index-page">
 
-
+  <div id="index-banner">
+    <div class="banner-overlay">
+      <h1 class="banner-title">Account Rift</h1>
+      <p class="banner-tagline">Your ultimate game account marketplace</p>
+      <p class="banner-discord">Discord: @dokkanarnis</p>
+    </div>
   </div>
 
   <div id="search-bar-container">
-    <%= form_with url: products_path, method: :get do |form| %>
-        <%= form.text_field :product_name %>
-        <%= form.submit "Search" %>
+    <%= form_with url: products_path, method: :get, class: "search-form" do |form| %>
+      <div class="search-input-wrapper">
+        <span class="search-icon">🔍</span>
+        <%= form.text_field :product_name, placeholder: "Search products…",
+            value: params[:product_name] %>
+        <% if params[:product_name].present? %>
+          <%= link_to "✕", products_path, class: "search-clear", aria_label: "Clear search" %>
+        <% end %>
+      </div>
+      <%= form.submit "Search" %>
     <% end %>
   </div>
+
+  <% if params[:product_name].present? %>
+    <div class="search-badge">
+      Showing results for "<%= params[:product_name] %>"
+      <%= link_to "Clear", products_path, class: "search-badge-clear" %>
+    </div>
+  <% end %>
+
+  <% if @products.empty? %>
+    <div class="empty-state">
+      <p class="empty-state-icon">📭</p>
+      <p class="empty-state-text">No products found</p>
+      <% if params[:product_name].present? %>
+        <p class="empty-state-hint">Try a different search term or <%= link_to "browse all products", products_path %></p>
+      <% else %>
+        <p class="empty-state-hint">Check back soon — new products are on the way!</p>
+      <% end %>
+    </div>
+  <% end %>
 
   <div id="product-container">
     <% @products.each do |product| %>

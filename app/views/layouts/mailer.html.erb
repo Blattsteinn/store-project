@@ -4,13 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-      body { margin: 0; padding: 0; background-color: #0d0d0d; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #ddd; font-size: 15px; line-height: 1.6; }
-      .email-wrapper { max-width: 680px; margin: 0 auto; padding: 2rem 1rem; }
+      body { margin: 0; padding: 0; background-color: #0d0d0d; }
     </style>
   </head>
-  <body>
-    <div class="email-wrapper">
-      <%= yield %>
-    </div>
+  <body style="margin:0;padding:0;background-color:#0d0d0d;">
+    <!-- Wrapper table: forces dark background in ALL email clients -->
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+           style="background-color:#0d0d0d;" bgcolor="#0d0d0d">
+      <tr>
+        <td align="center" style="padding:32px 16px;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%"
+                 style="max-width:680px;background-color:#0d0d0d;color:#ddd;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;">
+            <tr>
+              <td style="padding:0;">
+                <%= yield %>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

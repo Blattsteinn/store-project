@@ -2,12 +2,6 @@
    FAQs — dark card style
    ========================================== */
 
-body.faqs-index,
-body.faqs-new,
-body.faqs-edit {
-  background-color: #161617;
-}
-
 /* ---- Index ---- */
 .faq {
   max-width: 720px;
@@ -31,7 +25,7 @@ body.faqs-edit {
 }
 
 .faq .card {
-  background: #1a1a1b;
+  background: rgba(255, 255, 255, 0.04);
   border: 0.5px solid #3a3a3c;
   border-radius: 12px;
   padding: 1rem 1.25rem;
@@ -81,7 +75,7 @@ body.faqs-edit {
 }
 
 .faq-form .card {
-  background: #1a1a1b;
+  background: rgba(255, 255, 255, 0.04);
   border: 0.5px solid #3a3a3c;
   border-radius: 12px;
   padding: 1.25rem;
@@ -108,10 +102,10 @@ body.faqs-edit {
   width: 100%;
   padding: 9px 12px;
   font-size: 14px;
-  background: #0c0c0d;
-  border: 0.5px solid #3a3a3c;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid #545153;
   border-radius: 8px;
-  color: #ddd;
+  color: #fff;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
   font-family: inherit;

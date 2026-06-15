@@ -4,12 +4,6 @@
   padding: 2rem;
 }
 
-/* dark page backgrounds */
-body.feedbacks-index,
-body.feedbacks-new {
-  background-color: #161617;
-}
-
 .feedbacks-title {
   font-size: 1.75rem;
   font-weight: 700;
@@ -53,8 +47,10 @@ body.feedbacks-new {
   overflow: auto;    /* scrollbar appears only when needed */
 
   height: 200px;
-  background: #0c0c0d;
-  border: 1px solid #545153;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 15px;
   padding: 1.25rem;
   display: flex;
@@ -106,7 +102,7 @@ body.feedbacks-new {
 }
 
 .feedback-form-card {
-  background: #0c0c0d;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid #545153;
   border-radius: 15px;
   padding: 2rem;

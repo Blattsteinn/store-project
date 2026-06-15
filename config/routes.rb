@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   root "products#index"
 
   get "instructions", to: "instructions#instructions", as: "instructions"
+  get "tos", to: "tos#index", as: "tos"
+  get "privacy", to: "privacy#index", as: "privacy"
 
   resources :feedbacks, only:  [:index, :new, :create, :destroy, :edit, :update]
 

@@ -22,10 +22,7 @@ class StripeWebhooksController < ApplicationController
       return unless order
       return if order.paid?
 
-      ActiveRecord::Base.transaction do
-        order.update!(status: "paid")
-      end
-
+      order.update!(status: "paid")
       PurchaseSuccessMailer.successful_purchase(order).deliver_now
 
     elsif event.type == "checkout.session.expired"
