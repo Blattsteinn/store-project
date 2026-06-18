@@ -52,9 +52,22 @@
       </div>
     </div>
 
+    <div class="field" id="edit-description">
+          <%= form.label :game_name %>
+          <%= form.select :game_name,
+            [["DBZ Dokkan Battle", "dokkan"],
+              ["Game 2", "2"],
+              ["Game 3", "3"],
+              ["Game 4", "4"]]
+          
+          %>
+    </div>
+
     <div class="submit-card">
       <%= form.submit %>
     </div>
+
+    
 
   <% end %>
 </div>

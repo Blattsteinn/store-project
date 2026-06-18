@@ -8,15 +8,10 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # db/seeds.rb
-admin_email    = ENV.fetch("ADMIN_EMAIL",    "admin@dbzdokkanstore.com")
-admin_password = ENV.fetch("ADMIN_PASSWORD", "changeme123")
 
-User.find_or_create_by!(email: admin_email) do |user|
-  user.password = admin_password
-  user.admin    = true
-end
 
-puts "Admin user ready: #{admin_email}"
+User.create!(email: "admin@admin", password: "password", admin: true)
+
 
 # ── Test product ──────────────────────────────────────────────
 product = Product.find_or_create_by!(title: "Test - 8,000 Dragon Stones (Global)") do |p|
@@ -38,7 +33,9 @@ Variant.find_or_create_by!(product: product, title: "Android") do |v|
   v.description = "Android version"
 end
 
-puts "Test product ready: #{product.title}"
-puts "  Variants: #{product.variants.pluck(:title).join(', ')}"
-puts "  Images:   #{product.product_images.count}"
-puts "  Seeding complete!"
+Game.create!(name: "dokkan", official_name: "DBZ Dokkan Battle")
+
+# puts "Test product ready: #{product.title}"
+# puts "  Variants: #{product.variants.pluck(:title).join(', ')}"
+# puts "  Images:   #{product.product_images.count}"
+# puts "  Seeding complete!"

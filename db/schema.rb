@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_14_091444) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,6 +68,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_14_091444) do
     t.index ["order_id"], name: "index_feedbacks_on_order_id"
   end
 
+  create_table "games", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.string "official_name"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "order_id", null: false
@@ -107,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_14_091444) do
     t.datetime "created_at", null: false
     t.string "deliverables", default: "static_value", null: false
     t.text "description", null: false
+    t.string "game_name"
     t.string "payment_type", default: "single_payment", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false

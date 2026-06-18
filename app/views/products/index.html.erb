@@ -11,13 +11,13 @@
   </div>
 
   <div id="search-bar-container">
-    <%= form_with url: products_path, method: :get, class: "search-form" do |form| %>
+    <%= form_with url: game_products_url(@game.name), method: :get, class: "search-form" do |form| %>
       <div class="search-input-wrapper">
         <span class="search-icon">🔍</span>
         <%= form.text_field :product_name, placeholder: "Search products…",
             value: params[:product_name] %>
         <% if params[:product_name].present? %>
-          <%= link_to "✕", products_path, class: "search-clear", aria_label: "Clear search" %>
+          <%= link_to "✕", game_products_path(@game.name), class: "search-clear", aria_label: "Clear search" %>
         <% end %>
       </div>
       <%= form.submit "Search" %>
@@ -27,7 +27,7 @@
   <% if params[:product_name].present? %>
     <div class="search-badge">
       Showing results for "<%= params[:product_name] %>"
-      <%= link_to "Clear", products_path, class: "search-badge-clear" %>
+      <%= link_to "Clear", game_products_path(@game.name), class: "search-badge-clear" %>
     </div>
   <% end %>
 
@@ -36,7 +36,10 @@
       <p class="empty-state-icon">📭</p>
       <p class="empty-state-text">No products found</p>
       <% if params[:product_name].present? %>
-        <p class="empty-state-hint">Try a different search term or <%= link_to "browse all products", products_path %></p>
+      
+        <p class="empty-state-hint">Try a different search term or <%= link_to "browse all products", 
+        game_products_path(@game.name) %></p>
+
       <% else %>
         <p class="empty-state-hint">Check back soon — new products are on the way!</p>
       <% end %>
@@ -45,7 +48,7 @@
 
   <div id="product-container">
     <% @products.each do |product| %>
-      <%= link_to product_path(product), class: "product-box" do %> 
+      <%= link_to game_product_path(@game.name, product), class: "product-box" do %> 
 
         <div class="image-container">
           <% product.product_images.each do |image| %>

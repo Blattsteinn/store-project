@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
+  get ":game/products", to: "products#index", as: :game_products
+  get ":game/products/:id", to: "products#show", as: :game_product
+  
   resources :products do
     member do
       patch :product_visibility
@@ -19,13 +22,17 @@ Rails.application.routes.draw do
   end
 
 
+
   resources :orders, only: [ :create, :destroy, :update ]
   get "orders/:public_id/cancel", to: "orders#cancel_stripe_checkout", as: "cancel_stripe_checkout_order"
 
   post "stripe/webhooks", to: "stripe_webhooks#create", as: "stripe_webhooks"
 
+  # -----------------------------
+  # --- Dashboard routes --------
+
   get "dashboard",              to: "dashboard#index",            as: "dashboard"
-  get "dashboard/products",     to: "dashboard#products_index",   as: "dashboard_products"
+  get "dashboard/productss",     to: "dashboard#products_index",   as: "dashboard_products"
 
   get "dashboard/orders",       to: "dashboard#orders_index",    as: "dashboard_orders"
   get "dashboard/orders/:id",   to: "dashboard#order_show",      as: "dashboard_order"
@@ -35,7 +42,9 @@ Rails.application.routes.draw do
 
   get "dashboard/faq_index", to: "dashboard#faq_index", as: "dashboard_faqs"
 
-  root "products#index"
+  # -----------------------------
+
+  root "games#index"
 
   get "instructions", to: "instructions#instructions", as: "instructions"
   get "tos", to: "tos#index", as: "tos"

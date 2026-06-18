@@ -1,0 +1,6 @@
+
+
+<% @games.each do |game| %>
+    <h1> <%= game.official_name %> </h1>
+    <%= link_to game.official_name,  game_products_path("dokkan") %>
+<% end %>

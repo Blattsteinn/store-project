@@ -1,9 +1,12 @@
 class ProductsController < ApplicationController
     before_action :authenticate_admin!, except: [:index, :show]
+    before_action :set_game, only: [:index, :show]
 
     def index
         @products = Product.visible.includes(:variants, product_images: :image_attachment)
+        @products = @products.where(game_name: params[:game])
         @products = @products.where("title ILIKE ?", "%#{params[:product_name]}%") if params[:product_name].present?
+        Rails.logger.debug "PARAMS: #{params.inspect}"
     end
 
     def show
@@ -22,7 +25,7 @@ class ProductsController < ApplicationController
     def create
         @product = Product.new(product_params)
         if @product.save 
-            redirect_to @product
+            redirect_to dashboard_products_path
         else
             render :new, status: :unprocessable_entity
         end
@@ -85,10 +88,14 @@ class ProductsController < ApplicationController
 
     private
     def product_params
-        params.expect(product: [:title, :visibility, :description, :payment_type, :deliverables, 
+        params.expect(product: [:title, :visibility, :description, :payment_type, :deliverables, :game_name,
         product_images_attributes: [[:image, :priority, :_destroy, :id]],
         variants_attributes: [[:stock, :price, :title, :description, :_destroy, :id]]
         ])
+    end
+
+    def set_game
+        @game = Game.find_by!(name: params[:game]) if params[:game].present?
     end
 
 end
