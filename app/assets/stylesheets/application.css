@@ -53,6 +53,7 @@ body{
 
 /* ========================== */
 /* == Shared page gradient (products, feedbacks, faqs, support) == */
+body.games-index,
 body.products-index,
 body.feedbacks-index,
 body.feedbacks-new,
@@ -66,6 +67,7 @@ body.support_messages-show {
   background-attachment: fixed;
 }
 
+nav.games-index,
 nav.products-index,
 nav.feedbacks-index,
 nav.feedbacks-new,
