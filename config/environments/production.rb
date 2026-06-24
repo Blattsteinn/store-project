@@ -59,7 +59,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "dbzdokkanstore.com" }
+  config.action_mailer.default_url_options = { host: "accountrift.com" }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
   # config.action_mailer.smtp_settings = {
@@ -84,8 +84,8 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    "dbzdokkanstore.com",
-    /.*\.dbzdokkanstore\.com/,
+    "accountrift.com",
+    /.*\.accountrift\.com/,
     /.*\.up\.railway\.app/     # ← add this line
   ]
   #

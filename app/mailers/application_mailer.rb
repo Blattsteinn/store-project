@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "noreply@dbzdokkanstore.com"
+  default from: "noreply@accountrift.com"
   layout "mailer"
 end
 
