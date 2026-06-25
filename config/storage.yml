@@ -33,4 +33,4 @@ cloudflare:
   secret_access_key: <%= ENV["CLOUDFLARE_SECRET_ACCESS_KEY"] %>
   region: auto
   bucket: <%= ENV["CLOUDFLARE_BUCKET"] %>
-  force_path_style: truee
+  force_path_style: true
