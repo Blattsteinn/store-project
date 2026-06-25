@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_25_122455) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -73,6 +73,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
     t.string "name"
     t.string "official_name"
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_games_on_name", unique: true
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -97,7 +98,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
     t.string "stripe_session_id"
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.index ["created_at"], name: "index_orders_on_created_at"
     t.index ["public_id"], name: "index_orders_on_public_id", unique: true
+    t.index ["status"], name: "index_orders_on_status"
     t.index ["stripe_session_id"], name: "index_orders_on_stripe_session_id", unique: true
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -119,6 +122,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.string "visibility", default: "hidden", null: false
+    t.index ["game_name"], name: "index_products_on_game_name"
+    t.index ["visibility"], name: "index_products_on_visibility"
   end
 
   create_table "support_messages", force: :cascade do |t|
@@ -130,6 +135,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_15_205812) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.index ["order_id"], name: "index_support_messages_on_order_id"
+    t.index ["status"], name: "index_support_messages_on_status"
   end
 
   create_table "users", force: :cascade do |t|

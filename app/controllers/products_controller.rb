@@ -39,23 +39,15 @@ class ProductsController < ApplicationController
         @product = Product.find(params[:id])
         @product.assign_attributes(product_params)
 
-        has_changes = @product.changed? || @product.variants.any?(&:changed?) || @product.product_images.any?(&:changed?)
 
-
-        if has_changes
-            if @product.save
-                flash[:successful_edit] = "Saved succesfully."
-                redirect_to dashboard_products_path
-            else
-                flash.now[:fail_edit] = "Failed to save succesfully."
-                render :edit, status: :unprocessable_entity
-            end
-        else
-            flash[:successful_edit] = "No changes were made."
+        if @product.save
+            flash[:successful_edit] = "Saved successfully."
             redirect_to dashboard_products_path
+        else
+            flash.now[:fail_edit] = "Failed to save successfully."
+            render :edit, status: :unprocessable_entity
         end
     end
-
 
     def product_visibility
         @product = Product.find(params[:id])

@@ -3,7 +3,7 @@ class Product < ApplicationRecord
 
     has_many :product_images, -> { order(priority: :asc) }, dependent: :destroy
     accepts_nested_attributes_for :product_images, allow_destroy: true,
-    reject_if: ->(attrs) { attrs["image"].blank? }
+        reject_if: ->(attrs) { attrs["id"].blank? && attrs["image"].blank? }
 
     has_many :cart_items, dependent: :destroy
     has_many :order_items, dependent: :nullify
