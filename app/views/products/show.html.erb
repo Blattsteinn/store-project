@@ -16,7 +16,7 @@
       <% images = @product.product_images.to_a %>
       <% if images.any? %>
         <% images.each do |image| %>
-          <%= image_tag image.image, alt: @product.title, data: { product_view_target: "image" } %>
+          <%= image_tag image.image, alt: @product.title, data: { product_view_target: "image", action: "click->product-view#openLightbox" }, style: "cursor: zoom-in" %>
         <% end %>
 
         <% if images.size > 1 %>

@@ -16,6 +16,39 @@ export default class extends Controller {
 
   // ---- Image carousel ----
 
+  openLightbox(event) {
+    // Remove any existing lightbox first
+    this.closeLightbox()
+
+    const overlay = document.createElement('div')
+    overlay.id = 'image-lightbox'
+    overlay.addEventListener('click', () => this.closeLightbox())
+
+    const img = document.createElement('img')
+    img.src = event.currentTarget.src
+    img.addEventListener('click', (e) => e.stopPropagation())
+
+    // Close on Escape key
+    this._escHandler = (e) => { if (e.key === 'Escape') this.closeLightbox() }
+    document.addEventListener('keydown', this._escHandler)
+
+    overlay.appendChild(img)
+    document.body.appendChild(overlay)
+    document.body.style.overflow = 'hidden'
+  }
+
+  closeLightbox() {
+    const overlay = document.getElementById('image-lightbox')
+    if (overlay) {
+      overlay.classList.add('fade-out')
+      setTimeout(() => {
+        overlay.remove()
+        document.body.style.overflow = ''
+        document.removeEventListener('keydown', this._escHandler)
+      }, 150)
+    }
+  }
+
   showImage(index) {
     if (!this.hasImageTarget) return
 
