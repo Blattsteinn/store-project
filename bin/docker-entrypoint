@@ -1,16 +1,21 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+# If running the rails server then create or migrate existing database.
+# Scan all arguments for "./bin/rails" followed by "server" so the check
+# works regardless of how many extra flags (e.g. -b, -p) are passed.
+for i in $(seq 1 $(($# - 1))); do
+  if [ "${@:$i:1}" = "./bin/rails" ] && [ "${@:$((i+1)):1}" = "server" ]; then
+    ./bin/rails db:prepare
 
-  # Ensure SolidCache, SolidQueue, and SolidCable tables exist.
-  # db:prepare only handles the primary database — these load the
-  # separate schema files for the other DB connections. Tables already
-  # exist on subsequent deploys, so failures are ignored (|| true).
-  DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cache || true
-  DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:queue || true
-  DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cable || true
-fi
+    # Ensure SolidCache, SolidQueue, and SolidCable tables exist.
+    # db:prepare only handles the primary database — these load the
+    # separate schema files for the other DB connections. Tables already
+    # exist on subsequent deploys, so failures are ignored (|| true).
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cache || true
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:queue || true
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cable || true
+    break
+  fi
+done
 
 exec "${@}"
