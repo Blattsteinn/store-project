@@ -36,7 +36,7 @@
             <% @products.each do |product| %>
               <tr>
                 <td>
-                  <%= link_to product.title, product_path(product), target: "_blank", class: "product-link" %>
+                  <%= link_to product.title, game_product_path(product.game_name, product), target: "_blank", class: "product-link" %>
                 </td>
                 <td>
                   <span class="status-badge status-vis-<%= product.visibility %>">
@@ -50,7 +50,7 @@
                 <td>
                   <div class="action-group">
                     <%= link_to "Edit", edit_product_path(product), class: "btn-sm" %>
-                    <%= link_to "View", product_path(product), target: "_blank", class: "btn-sm btn-sm-muted" %>
+                    <%= link_to "View", game_product_path(product.game_name, product), target: "_blank", class: "btn-sm btn-sm-muted" %>
 
                     <%= button_to product.visibility == "live" ? "Hide" : "Unhide",
                         product_visibility_product_path(product), method: :patch,
