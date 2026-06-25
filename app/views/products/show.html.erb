@@ -1,140 +1,119 @@
-<turbo-frame id="saved-message">
-</turbo-frame>
+<% images = @product.product_images.to_a %>
+<% min_price = convert_from_cents(@product.variants.where.not(stock: 0).minimum(:price)) %>
 
+<div class="product-hero-wrapper">
 
-<%= link_to "← Back to products", game_products_path(@game.name), class: "product-back-link" %>
-<div id="product-view-container" data-controller="product-view">
-  
-  
+  <%# Blurred background image (like card design) %>
+  <div class="hero-blur-bg">
+    <% if images.any? %>
+      <%= image_tag images.first.image, alt: "" %>
+    <% end %>
+  </div>
 
-  <div id="product-view-first-column">
-    <p class="title">
-      <%= @product.title %>
-    </p>
+  <%= link_to "← Back", game_products_path(@game.name), class: "hero-back-link" %>
 
-    <div id="product-image-container">
-      <% images = @product.product_images.to_a %>
-      <% if images.any? %>
-        <% images.each do |image| %>
-          <%= image_tag image.image, alt: @product.title, data: { product_view_target: "image", action: "click->product-view#openLightbox" }, style: "cursor: zoom-in" %>
-        <% end %>
+  <div class="product-hero-stage">
+    <% if images.any? %>
+      <%= image_tag images.first.image, class: "product-hero-bg", alt: @product.title, id: "hero-bg-image" %>
+    <% end %>
+    <div class="product-hero-overlay"></div>
 
+    <div class="product-hero-content">
+      <span class="hero-badge"><%= @game.name %></span>
+      <h1><%= @product.title %></h1>
+    </div>
+
+    <div class="product-hero-cta-row">
+      <a href="#hero-purchase" class="hero-cta-primary">
+        Buy Now
+      </a>
+      <a href="#hero-description" class="hero-cta-secondary">Learn More</a>
+    </div>
+
+  </div>
+
+  <%# ---- Detail section ---- %>
+  <div class="product-hero-detail">
+    <div class="product-hero-detail-grid">
+
+      <%# Description %>
+      <div class="hero-desc-panel" id="hero-description">
+        <h2>About this product</h2>
+        <div class="hero-desc-body">
+          <%= raw markdown(@product.description) %>
+        </div>
+
+        <%# Gallery — same carousel as regular show view %>
         <% if images.size > 1 %>
-          <button type="button" class="carousel-arrow carousel-prev" data-action="click->product-view#prevImage" aria-label="Previous image">
-            ‹
-          </button>
-          <button type="button" class="carousel-arrow carousel-next" data-action="click->product-view#nextImage" aria-label="Next image">
-            ›
-          </button>
+          <div id="product-image-container" data-controller="product-view" style="margin-top: 2rem;">
+            <% images.each do |image| %>
+              <%= image_tag image.image, alt: @product.title,
+                  data: { product_view_target: "image", action: "click->product-view#openLightbox" },
+                  style: "cursor: zoom-in" %>
+            <% end %>
 
-          <div class="carousel-dots">
-            <% images.each_with_index do |_, i| %>
-              <button type="button" class="carousel-dot <%= 'active' if i == 0 %>"
-                      data-product-view-target="dot"
-                      data-index="<%= i %>"
-                      data-action="click->product-view#goToImage"
-                      aria-label="Image <%= i + 1 %>"></button>
+            <button type="button" class="carousel-arrow carousel-prev" data-action="click->product-view#prevImage" aria-label="Previous image">‹</button>
+            <button type="button" class="carousel-arrow carousel-next" data-action="click->product-view#nextImage" aria-label="Next image">›</button>
+
+            <div class="carousel-dots">
+              <% images.each_with_index do |_, i| %>
+                <button type="button" class="carousel-dot <%= 'active' if i == 0 %>"
+                        data-product-view-target="dot"
+                        data-index="<%= i %>"
+                        data-action="click->product-view#goToImage"
+                        aria-label="Image <%= i + 1 %>"></button>
+              <% end %>
+            </div>
+
+            <span class="carousel-counter" data-product-view-target="imageCounter">1 / <%= images.size %></span>
+          </div>
+        <% end %>
+      </div>
+
+      <%# Purchase panel %>
+      <div class="hero-purchase-panel" id="hero-purchase">
+        <p class="panel-title">Select variant &amp; purchase</p>
+
+        <%= form_with url: orders_path, method: :post, data: { turbo: false },
+              html: { class: "hero-purchase-form" } do |form| %>
+
+          <div class="hero-variant-list">
+            <% @product.variants.each do |variant| %>
+              <% next if variant.stock <= 0 %>
+              <label class="hero-variant-option" data-price="<%= convert_from_cents(variant.price) %>">
+                <%= form.radio_button :variant_id, variant.id, required: true %>
+                <div class="hero-variant-info">
+                  <p class="v-name"><%= variant.title %></p>
+                  <% if variant.description.present? %>
+                    <p class="v-desc"><%= variant.description %></p>
+                  <% end %>
+                </div>
+                <div>
+                  <p class="hero-variant-price"><%= convert_from_cents(variant.price) %>€</p>
+                  <p class="hero-variant-stock"><%= variant.stock %> in stock</p>
+                </div>
+              </label>
             <% end %>
           </div>
 
-          <span class="carousel-counter" data-product-view-target="imageCounter">1 / <%= images.size %></span>
-        <% end %>
-      <% end %>
-    </div>
+          <%= form.hidden_field :quantity, value: 1 %>
 
-    <div class="description"> 
-      <%= raw markdown(@product.description) %>  
-    </div>
-    
-  </div>
+          <%= form.label :email, "Email (required)" %>
+          <%= form.email_field :email, placeholder: "you@example.com", required: true %>
 
-  <div id="product-view-second-column" >
+          <%= form.label :discord, "Discord (optional)" %>
+          <%= form.text_field :discord, placeholder: "username" %>
 
-      <div id="instant-payment" data-product-view-target="entireDiv" hidden>
-
-        <%= form_with do |form|%>
-          <div class="general-box" id="quantity-change">
-              <p class="live-price" data-product-view-target="price">—</p>
-
-              <div class="quantity-row">
-                <button type="button" data-action="click->product-view#decrease" class="increase-decrease"> - </button>
-                  <%= form.number_field :quantity, max: 1, value: 1, min: 1,
-                  readonly: true,
-                  data: {product_view_target: "variantMax",
-                  action: "change->product-view#update_quantity",
-                  } %>
-
-                  <button type="button" data-action="click->product-view#increase" class="increase-decrease"> + </button>
-               </div>
-          </div>
-        <% end %>
-        
-        <%# Instant buy with Stripe %>
-        <div class="stripe-instant">
-          <%= form_with url: orders_path, method: :post, data: { turbo: false } do |form| %>
-            <%= form.hidden_field :variant_id, data: { product_view_target: "stripeVariantId" } %>
-            <%= form.hidden_field :quantity, value: 1, data: { product_view_target: "stripeQuantity" }%>
-          
-            <div class="general-box">
-              <%= form.label :email, "Email (required)" %>
-              <%= form.email_field :email, placeholder: "Enter your email", required: true,
-                  maxlength: 255,
-                  minlength: 5 %>
-            </div>
-
-            <div class="general-box">
-              <%= form.label :discord %>
-              <%= form.text_field :discord, placeholder: "Enter your Discord username",
-                  maxlength: 40,
-                  minlength: 3 %>
-            </div>
-            
-            <div class="general-box">
-              <%= button_tag type: 'submit', class: 'stripe-button' do %>
-                <%= image_tag 'stripe.png', class: 'stripe-logo', alt: 'Pay with Stripe' %>
-              <% end %>
-              <p class="payment-methods">
-                Pay by card, Venmo, Apple Pay, Google Pay
-              </p>
-            </div>
-            
+          <%= button_tag type: 'submit', class: 'hero-stripe-btn' do %>
+            <%= image_tag 'stripe.png', alt: 'Pay with Stripe', style: "height:20px" %>
           <% end %>
-        </div>
 
-        <%# Code is up, just needs tweaking %>
-        <%# Uncomment product_view_controller.js or wont work as intended %>
-        <%# render '/products/more_checkout_options' %>
-
-      </div>
-
-      <div>
-        <%= form_with local: true do |form| %>
-          <% @product.variants.each do |variant| %>
-            <% next if variant.stock <= 0 %>
-
-              <label class="product-separate-variant">
-                <%= form.radio_button :product_id, variant.id, 
-                  data: {action: "change->product-view#update_form_values",
-                  stock: variant.stock,
-                  variant_id: variant.id,
-                  product_id: @product.id,
-                  price: variant.price,
-                  selected: false,
-                  } %>
-                  <div class="variant-info">
-                    <p><%= variant.title %></p>
-                    <p class="variant-description"><%= variant.description %></p>
-                    <p class="variant-price"><%= convert_from_cents(variant.price) %> EUR</p>
-                  </div>
-                  
-                  <div class="variant-actions">
-                    <p class="variant-stock"><%= variant.stock %> in stock</p>
-                  </div>
-              </label>
-          <% end %>
+          <p class="hero-payment-methods">
+            Card · Apple Pay · Google Pay
+          </p>
         <% end %>
       </div>
-
+      
+    </div>
   </div>
-
 </div>

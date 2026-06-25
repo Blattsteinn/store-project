@@ -1,6 +1,7 @@
 class ProductsController < ApplicationController
     before_action :authenticate_admin!, except: [:index, :show]
-    before_action :set_game, only: [:index, :show]
+    before_action :set_game, only: [:index, :show, :show_hero, :show_minimal, :show_split, :show_card, :show_gallery]
+    before_action :set_product_for_designs, only: [:show_hero, :show_minimal, :show_split, :show_card, :show_gallery]
 
     def index
         @products = Product.visible.includes(:variants, product_images: :image_attachment)
@@ -78,6 +79,28 @@ class ProductsController < ApplicationController
         redirect_to dashboard_products_path
     end
 
+    # ---- Alternative product view designs ----
+
+    def show_hero
+        render :show_hero
+    end
+
+    def show_minimal
+        render :show_minimal
+    end
+
+    def show_split
+        render :show_split
+    end
+
+    def show_card
+        render :show_card
+    end
+
+    def show_gallery
+        render :show_gallery
+    end
+
     private
     def product_params
         params.expect(product: [:title, :visibility, :description, :payment_type, :deliverables, :game_name,
@@ -88,6 +111,11 @@ class ProductsController < ApplicationController
 
     def set_game
         @game = Game.find_by!(name: params[:game]) if params[:game].present?
+    end
+
+    def set_product_for_designs
+        @product = Product.includes(:variants, product_images: :image_attachment).find(params[:id])
+        redirect_to products_path unless @product.visibility == "live"
     end
 
 end
